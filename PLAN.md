@@ -2,7 +2,7 @@
 
 | Prop    | Value |
 |---------|-------|
-| Status  | Phase 0 complete 2026-09-27. Phase 1 (vertical slice) next |
+| Status  | Phase 1 accepted 2026-09-27: the hit lands. Phase 2 (first run) next |
 | Updated | 2026-09-26 |
 | Engine  | Godot 4.7.1 (installed at /Applications/Godot.app) |
 | Art     | Aseprite 1.3.18 CLI (installed) |
@@ -97,7 +97,7 @@ Agreed 2026-09-27. MVP is the full legacy loop, built for Jason to decide whethe
 | # | Phase | Ships | Estimate |
 |---|---|---|---|
 | 0 | Foundations (done 2026-09-27) | Git repo, project.godot with pixel settings, CLAUDE.md, GUT 9.7.1 on `make test`, DebugApi and Screenshot autoloads, `--scene` launcher, `scripts/art/export.zsh` (generate, grid-recover, theme colour map, review), theme families bronze, tide and ash in `.claude/themes/` with sprite ramps and skin in `art/palettes/` (hearth and reed follow with the map) | 1 day |
-| 1 | Vertical slice | One battle: three levy heroes, three base classes, two enemy families each with its own deck so the deck system shows, a reinforcement wave, deterministic combat, individual initiative with revealed cards, cooldowns, three conditions, downed bodies, kill and hold objectives. Proves one thing: a hit feels right and a fight is a puzzle | 1 to 2 weeks |
+| 1 | Vertical slice (accepted 2026-09-27) | One battle: three levy heroes, three base classes, two enemy families each with its own deck so the deck system shows, a reinforcement wave, deterministic combat, individual initiative with revealed cards, cooldowns, three conditions, downed bodies, kill and hold objectives. Proves one thing: a hit feels right and a fight is a puzzle | 1 to 2 weeks |
 | 2 | First run | Three chapters on a generated map with battle, friendly city, scribal, rest and Temple nodes. Palace writ (conscription, reports) and Scribes testimony (deed queue, scribal range). One graft source (Smiths' bronze from severe injury) with the paper-doll layer. Two enemy families, one grafted variant. Tracks frozen at Whole. One ambition. Save and load | 2 to 3 weeks |
 | 3 | First Register | Tiers and bands, age, retirement to the Road and one civic seat pool, descendants and inheritance, tier budget at squad creation, the fall by generations elapsed as a stand-in | 2 weeks |
 | 4 | Full loop (MVP) | All four institutions with branching arcs, five tracks with stages and curves, sorcery, bronze memory, seats with recipes and succession, the Chronicle, the fall by three tracks Gone | 4 to 6 weeks |

@@ -3,6 +3,7 @@
 | Prop    | Value |
 |---------|-------|
 | Started | 2026-09-27 |
+| Accepted | 2026-09-27, on the auto-fight recording |
 | Proves  | A hit feels right and a fight is a puzzle |
 
 ## Sim (headless, tested)
