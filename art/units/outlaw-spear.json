@@ -1,0 +1,18 @@
+{
+	"unit": "outlaw-spear",
+	"family": "ash",
+	"identifiers": {
+		"red": {
+			"hex": "#ED2414",
+			"ramp": "cloth",
+			"index": 1
+		},
+		"blue": {
+			"hex": "#2596CC",
+			"ramp": "cloth_dyed",
+			"index": 1
+		}
+	},
+	"seed": 201,
+	"prompt": "a ragged Bronze Age deserter spearman, brown skin, bright red torn tunic, no cap, bright blue rag around one arm, empty hands"
+}

@@ -1,0 +1,23 @@
+{
+	"unit": "tidecaller",
+	"family": "tide",
+	"identifiers": {
+		"green": {
+			"hex": "#14BB27",
+			"ramp": "skin",
+			"index": 1
+		},
+		"blue": {
+			"hex": "#2596CC",
+			"ramp": "cloth_dyed",
+			"index": 0
+		},
+		"yellow": {
+			"hex": "#F1CF20",
+			"ramp": "metal",
+			"index": 1
+		}
+	},
+	"seed": 303,
+	"prompt": "a tall drowned Bronze Age priest, bright green skin, bright blue long robes, bright yellow full-face mask, empty hands"
+}

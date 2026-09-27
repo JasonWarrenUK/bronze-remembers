@@ -1,0 +1,18 @@
+{
+	"unit": "shield",
+	"family": "bronze",
+	"identifiers": {
+		"red": {
+			"hex": "#ED2414",
+			"ramp": "cloth",
+			"index": 1
+		},
+		"yellow": {
+			"hex": "#F1CF20",
+			"ramp": "metal",
+			"index": 1
+		}
+	},
+	"seed": 103,
+	"prompt": "a Bronze Age levy shield-bearer, broad, brown skin, black hair, bright red tunic, bright yellow boar-tusk helmet, empty hands"
+}

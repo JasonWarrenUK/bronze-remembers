@@ -1,0 +1,23 @@
+{
+	"unit": "jointed",
+	"family": "tide",
+	"identifiers": {
+		"white": {
+			"hex": "#FFFFFF",
+			"ramp": "skin",
+			"index": 1
+		},
+		"blue": {
+			"hex": "#2596CC",
+			"ramp": "cloth_dyed",
+			"index": 0
+		},
+		"red": {
+			"hex": "#ED2414",
+			"ramp": "leather",
+			"index": 1
+		}
+	},
+	"seed": 301,
+	"prompt": "a drowned Bronze Age fisherman turned into a thing, bright white skin, bright blue torn rags, bright red rope belt, black hollow eyes, long bent fingers, empty hands"
+}

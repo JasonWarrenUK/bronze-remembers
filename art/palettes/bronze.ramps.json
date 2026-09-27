@@ -1,0 +1,36 @@
+{
+	"family": "bronze",
+	"extends": "bronze.json",
+	"note": "Sprite ramps derived from the theme core. Skin is a setting decision per family. Outline is ink (dark variant surface), highlight is ink (dark variant).",
+	"skin": {
+		"name": "sun-browned",
+		"ramp": [
+			"#5A3A24",
+			"#8B5A3C",
+			"#B77D5A"
+		]
+	},
+	"cloth": [
+		"#8C847D",
+		"#BBB2AB",
+		"#E8DFD7"
+	],
+	"cloth_dyed": [
+		"#245D94",
+		"#518AC4",
+		"#7EB9F6"
+	],
+	"metal": [
+		"#6A3000",
+		"#9E610A",
+		"#D9984F"
+	],
+	"leather": [
+		"#362C21",
+		"#5F5347",
+		"#8B7E71"
+	],
+	"outline": "#1C140C",
+	"highlight": "#EFE6DE",
+	"blood": "#D38781"
+}

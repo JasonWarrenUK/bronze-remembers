@@ -1,0 +1,18 @@
+{
+	"unit": "sling",
+	"family": "bronze",
+	"identifiers": {
+		"red": {
+			"hex": "#ED2414",
+			"ramp": "cloth",
+			"index": 1
+		},
+		"yellow": {
+			"hex": "#F1CF20",
+			"ramp": "cloth_dyed",
+			"index": 1
+		}
+	},
+	"seed": 102,
+	"prompt": "a Bronze Age levy slinger, lean, brown skin, bright red short tunic, bright yellow headband, bare feet, empty hands"
+}

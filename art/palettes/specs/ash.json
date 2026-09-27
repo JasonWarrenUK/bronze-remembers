@@ -1,0 +1,36 @@
+{
+	"family": "ash",
+	"anchor": {
+		"name": "cold ash",
+		"hex": "#6A6E80"
+	},
+	"harmony_hue": 20,
+	"mood": "Deserters at a dead fire: cold grey linen, soot, dried blood, nothing polished.",
+	"inspiration": "Camp ash, unwashed wool, rust on a chipped spearhead.",
+	"anchor_reason": "A cool grey carries none of the Palace's warmth, so an outlaw is visibly someone the bronze world has dropped; it still separates from the Sea's teal by having no green in it.",
+	"rule_bent": "The anchor's chroma is below the rule's floor, so the status and accent-2 colours are raised in chroma instead of matching it, or the palette would be monochrome. Originality warning against tide (0.045) lifted by Jason on 2026-09-27: these are sprite palettes for a game, a different category from app UI themes, and tide and ash are intentional siblings.",
+	"rejected": [
+		{
+			"palette": "Desaturated bronze",
+			"why": "Outlaws looked like tired heroes rather than a different allegiance."
+		},
+		{
+			"palette": "Black and red",
+			"why": "Too villainous for people who are mostly hungry."
+		}
+	],
+	"seed": "Mood words and the slice art pass outlaw colour map (grey linen #8f8a80, dull bronze #8c7a4a).",
+	"fonts": {
+		"display": "Cormorant Garamond",
+		"body": "Source Serif 4",
+		"mono": "JetBrains Mono"
+	},
+	"shape": {
+		"sm": 2,
+		"md": 4,
+		"lg": 8,
+		"blur": 12,
+		"offset": 4,
+		"opacity": 0.25
+	}
+}

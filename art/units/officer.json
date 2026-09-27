@@ -1,0 +1,23 @@
+{
+	"unit": "officer",
+	"family": "ash",
+	"identifiers": {
+		"red": {
+			"hex": "#ED2414",
+			"ramp": "cloth",
+			"index": 1
+		},
+		"green": {
+			"hex": "#14BB27",
+			"ramp": "metal",
+			"index": 1
+		},
+		"yellow": {
+			"hex": "#F1CF20",
+			"ramp": "metal",
+			"index": 2
+		}
+	},
+	"seed": 203,
+	"prompt": "a Bronze Age deserter officer, brown skin, bright green scale corselet over a bright red tunic, bright yellow helmet with a broken crest, empty hands"
+}

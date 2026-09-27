@@ -1,0 +1,36 @@
+{
+	"family": "tide",
+	"extends": "tide.json",
+	"note": "Sprite ramps derived from the theme core. Skin is a setting decision per family. Outline is ink (dark variant surface), highlight is ink (dark variant).",
+	"skin": {
+		"name": "drowned bone",
+		"ramp": [
+			"#8C918A",
+			"#B9BDB2",
+			"#DCDDD3"
+		]
+	},
+	"cloth": [
+		"#7D8A86",
+		"#ABB8B4",
+		"#D7E5E1"
+	],
+	"cloth_dyed": [
+		"#7D4D32",
+		"#AC795D",
+		"#DDA789"
+	],
+	"metal": [
+		"#00463A",
+		"#1F7769",
+		"#5DAE9E"
+	],
+	"leather": [
+		"#20322E",
+		"#475A56",
+		"#718581"
+	],
+	"outline": "#0B1916",
+	"highlight": "#DEEBE8",
+	"blood": "#C58F89"
+}

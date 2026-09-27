@@ -1,0 +1,18 @@
+{
+	"unit": "outlaw-slinger",
+	"family": "ash",
+	"identifiers": {
+		"red": {
+			"hex": "#ED2414",
+			"ramp": "cloth",
+			"index": 1
+		},
+		"yellow": {
+			"hex": "#F1CF20",
+			"ramp": "cloth",
+			"index": 0
+		}
+	},
+	"seed": 202,
+	"prompt": "a ragged Bronze Age deserter slinger, thin, brown skin, bright red torn tunic, bright yellow cloth wrapped around the head, empty hands"
+}

@@ -1,0 +1,23 @@
+{
+	"unit": "drowned",
+	"family": "tide",
+	"identifiers": {
+		"green": {
+			"hex": "#14BB27",
+			"ramp": "skin",
+			"index": 1
+		},
+		"red": {
+			"hex": "#ED2414",
+			"ramp": "cloth",
+			"index": 0
+		},
+		"yellow": {
+			"hex": "#F1CF20",
+			"ramp": "cloth_dyed",
+			"index": 1
+		}
+	},
+	"seed": 302,
+	"prompt": "a bloated drowned Bronze Age soldier, bright green skin, bright red waterlogged tunic, bright yellow seaweed in the hair, arms hanging heavy, empty hands"
+}

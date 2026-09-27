@@ -1,0 +1,36 @@
+{
+	"family": "ash",
+	"extends": "ash.json",
+	"note": "Sprite ramps derived from the theme core. Skin is a setting decision per family. Outline is ink (dark variant surface), highlight is ink (dark variant).",
+	"skin": {
+		"name": "sallow",
+		"ramp": [
+			"#5C4A3E",
+			"#8A705E",
+			"#A98D77"
+		]
+	},
+	"cloth": [
+		"#83868F",
+		"#B1B4BD",
+		"#DEE1EB"
+	],
+	"cloth_dyed": [
+		"#764F4F",
+		"#A47A79",
+		"#D4A7A6"
+	],
+	"metal": [
+		"#353A5D",
+		"#626A8F",
+		"#979FC8"
+	],
+	"leather": [
+		"#2A2D3A",
+		"#515463",
+		"#7C7F8F"
+	],
+	"outline": "#13151F",
+	"highlight": "#E5E7F2",
+	"blood": "#BB938F"
+}

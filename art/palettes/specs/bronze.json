@@ -1,0 +1,16 @@
+{
+	"family": "bronze",
+	"anchor": { "name": "cast bronze", "hex": "#B8792E" },
+	"harmony_hue": 250,
+	"mood": "Palace bronze in lamplight: warm, heavy, official, already tarnishing at the edges.",
+	"inspiration": "Mycenaean and Hittite palace goods: bronze, fired clay, undyed linen, bitumen, a single dark blue from imported lapis.",
+	"anchor_reason": "Bronze is the setting's currency, weapon, graft and memory, and its hue survives both surfaces: dark enough to read on linen, bright enough to read on bitumen.",
+	"rule_bent": "The dark surface carries more chroma than the rule allows (a trace of bitumen brown rather than neutral), because a neutral dark reads as modern.",
+	"rejected": [
+		{ "palette": "Endesga 32 as is", "why": "Generic and saturated; its primaries fight the Bronze Age restraint." },
+		{ "palette": "Sepia monochrome", "why": "No harmony partner, so the UI had no way to mark the Sea or the foreign." }
+	],
+	"seed": "Mood words and the colour maps used in the slice art pass (linen #e8dcc5, bronze #c28b3a, hide #7a4a2a); Endesga 32 as reference only.",
+	"fonts": { "display": "Cormorant Garamond", "body": "Source Serif 4", "mono": "JetBrains Mono" },
+	"shape": { "sm": 2, "md": 4, "lg": 8, "blur": 12, "offset": 4, "opacity": 0.25 }
+}

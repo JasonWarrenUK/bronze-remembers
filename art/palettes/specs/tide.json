@@ -1,0 +1,36 @@
+{
+	"family": "tide",
+	"anchor": {
+		"name": "drowned teal",
+		"hex": "#237A6C"
+	},
+	"harmony_hue": 50,
+	"mood": "Something wet has walked inland: cold teal, bone, weed-green, and one warm rope-orange that does not belong to it.",
+	"inspiration": "Tidal mud at dusk, corroded bronze, drowned linen, the pale of things kept underwater.",
+	"anchor_reason": "Teal sits opposite bronze on the wheel, so anything the Sea touches reads as foreign to the Palace world at a glance, and it holds contrast on both surfaces without going neon.",
+	"rule_bent": "The accent partner is a warm rope-orange rather than a cool harmony, so that the Sea palette keeps one human colour to steal. Originality warning against tumulus (0.044) lifted by Jason on 2026-09-27: these are sprite palettes for a game, a different category from app UI themes, and tide and ash are intentional siblings.",
+	"rejected": [
+		{
+			"palette": "Grey-green monochrome",
+			"why": "The first Jointed sample came out five colours of grey; the Sea needs a warm foil."
+		},
+		{
+			"palette": "Deep navy and cyan",
+			"why": "Reads as science fiction, not brine."
+		}
+	],
+	"seed": "Mood words and the slice art pass Sea colour map (bone #d8d2c4, teal #2f5f5a, rope #c0662e).",
+	"fonts": {
+		"display": "Cormorant Garamond",
+		"body": "Source Serif 4",
+		"mono": "JetBrains Mono"
+	},
+	"shape": {
+		"sm": 2,
+		"md": 4,
+		"lg": 8,
+		"blur": 12,
+		"offset": 4,
+		"opacity": 0.25
+	}
+}

@@ -1,0 +1,262 @@
+{
+	"$schema": "clod-theme/core@1",
+	"family": "bronze",
+	"version": 1,
+	"rationale": {
+		"mood": "Palace bronze in lamplight: warm, heavy, official, already tarnishing at the edges.",
+		"inspiration": "Mycenaean and Hittite palace goods: bronze, fired clay, undyed linen, bitumen, a single dark blue from imported lapis.",
+		"anchor_reason": "Bronze is the setting's currency, weapon, graft and memory, and its hue survives both surfaces: dark enough to read on linen, bright enough to read on bitumen.",
+		"rule_bent": "The dark surface carries more chroma than the rule allows (a trace of bitumen brown rather than neutral), because a neutral dark reads as modern.",
+		"rejected": [
+			{
+				"palette": "Endesga 32 as is",
+				"why": "Generic and saturated; its primaries fight the Bronze Age restraint."
+			},
+			{
+				"palette": "Sepia monochrome",
+				"why": "No harmony partner, so the UI had no way to mark the Sea or the foreign."
+			}
+		]
+	},
+	"anchor": {
+		"name": "cast bronze",
+		"hex": "#B8792E",
+		"oklch": [
+			0.629,
+			0.118,
+			66.8
+		]
+	},
+	"palette": {
+		"ink": {
+			"light": "#211911",
+			"dark": "#EFE6DE",
+			"role": "primary text"
+		},
+		"ink-muted": {
+			"light": "#5F5347",
+			"dark": "#ADA298",
+			"role": "secondary text, captions, meta"
+		},
+		"surface": {
+			"light": "#FCF3EB",
+			"dark": "#1C140C",
+			"role": "page background"
+		},
+		"surface-raised": {
+			"light": "#F5E9DD",
+			"dark": "#292016",
+			"role": "cards, panels, code blocks"
+		},
+		"line": {
+			"light": "#D7CCC0",
+			"dark": "#3A3128",
+			"role": "borders, rules, dividers"
+		},
+		"accent": {
+			"light": "#9E610A",
+			"dark": "#B8792E",
+			"role": "links, primary actions, highlights"
+		},
+		"accent-ink": {
+			"light": "#FDF7F2",
+			"dark": "#110904",
+			"role": "text placed on accent"
+		},
+		"accent-2": {
+			"light": "#2D669D",
+			"dark": "#6FA9E5",
+			"role": "secondary emphasis, gradient partner"
+		},
+		"ok": {
+			"light": "#537F49",
+			"dark": "#7FAD74",
+			"role": "success, done, passing"
+		},
+		"warn": {
+			"light": "#8E6B28",
+			"dark": "#BD9857",
+			"role": "caution, pending, stale"
+		},
+		"danger": {
+			"light": "#A25A55",
+			"dark": "#D38781",
+			"role": "error, blocked, destructive"
+		},
+		"info": {
+			"light": "#4475A7",
+			"dark": "#70A3D7",
+			"role": "neutral notice, in progress"
+		}
+	},
+	"gradient": {
+		"light": [
+			"#B5762B",
+			"#CA84B5",
+			"#88BCF2"
+		],
+		"dark": [
+			"#612800",
+			"#713361",
+			"#356697"
+		]
+	},
+	"typography": {
+		"display": {
+			"family": "Cormorant Garamond",
+			"fallback": "system-ui, sans-serif",
+			"weight": 700
+		},
+		"body": {
+			"family": "Source Serif 4",
+			"fallback": "system-ui, sans-serif",
+			"weight": 400
+		},
+		"mono": {
+			"family": "JetBrains Mono",
+			"fallback": "ui-monospace, monospace",
+			"weight": 400
+		},
+		"scale": {
+			"base_px": 16,
+			"ratio": 1.25,
+			"line_height": 1.5
+		}
+	},
+	"shape": {
+		"radius_px": {
+			"sm": 2,
+			"md": 4,
+			"lg": 8
+		},
+		"shadow": {
+			"blur_px": 12,
+			"offset_y_px": 4,
+			"opacity": 0.25
+		},
+		"space_px": {
+			"unit": 8
+		}
+	},
+	"contrast": {
+		"light": [
+			{
+				"fg": "ink",
+				"bg": "surface",
+				"level": "AA",
+				"ratio": 15.81
+			},
+			{
+				"fg": "ink",
+				"bg": "surface-raised",
+				"level": "AA",
+				"ratio": 14.51
+			},
+			{
+				"fg": "ink-muted",
+				"bg": "surface",
+				"level": "AA",
+				"ratio": 6.81
+			},
+			{
+				"fg": "accent",
+				"bg": "surface",
+				"level": "AA",
+				"ratio": 4.6
+			},
+			{
+				"fg": "accent-ink",
+				"bg": "accent",
+				"level": "AA",
+				"ratio": 4.74
+			},
+			{
+				"fg": "ok",
+				"bg": "surface",
+				"level": "AA-large",
+				"ratio": 4.26
+			},
+			{
+				"fg": "warn",
+				"bg": "surface",
+				"level": "AA-large",
+				"ratio": 4.47
+			},
+			{
+				"fg": "danger",
+				"bg": "surface",
+				"level": "AA-large",
+				"ratio": 4.64
+			},
+			{
+				"fg": "info",
+				"bg": "surface",
+				"level": "AA-large",
+				"ratio": 4.41
+			}
+		],
+		"dark": [
+			{
+				"fg": "ink",
+				"bg": "surface",
+				"level": "AA",
+				"ratio": 14.76
+			},
+			{
+				"fg": "ink",
+				"bg": "surface-raised",
+				"level": "AA",
+				"ratio": 12.99
+			},
+			{
+				"fg": "ink-muted",
+				"bg": "surface",
+				"level": "AA",
+				"ratio": 7.27
+			},
+			{
+				"fg": "accent",
+				"bg": "surface",
+				"level": "AA",
+				"ratio": 5.03
+			},
+			{
+				"fg": "accent-ink",
+				"bg": "accent",
+				"level": "AA",
+				"ratio": 5.46
+			},
+			{
+				"fg": "ok",
+				"bg": "surface",
+				"level": "AA-large",
+				"ratio": 7.04
+			},
+			{
+				"fg": "warn",
+				"bg": "surface",
+				"level": "AA-large",
+				"ratio": 6.75
+			},
+			{
+				"fg": "danger",
+				"bg": "surface",
+				"level": "AA-large",
+				"ratio": 6.54
+			},
+			{
+				"fg": "info",
+				"bg": "surface",
+				"level": "AA-large",
+				"ratio": 6.85
+			}
+		]
+	},
+	"provenance": {
+		"seed": "Mood words and the colour maps used in the slice art pass (linen #e8dcc5, bronze #c28b3a, hide #7a4a2a); Endesga 32 as reference only.",
+		"derived_from": null,
+		"created": "2026-09-27",
+		"updated": "2026-09-27",
+		"tool": "theme-factory@1"
+	}
+}

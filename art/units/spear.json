@@ -1,0 +1,18 @@
+{
+	"unit": "spear",
+	"family": "bronze",
+	"identifiers": {
+		"red": {
+			"hex": "#ED2414",
+			"ramp": "cloth",
+			"index": 1
+		},
+		"blue": {
+			"hex": "#2596CC",
+			"ramp": "leather",
+			"index": 1
+		}
+	},
+	"seed": 101,
+	"prompt": "a Bronze Age levy spearman, brown skin, black hair, bright red knee-length tunic, bright blue leather cap, bare arms, empty hands"
+}

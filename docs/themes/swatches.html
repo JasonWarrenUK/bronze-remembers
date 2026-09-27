@@ -1,0 +1,322 @@
+<title>Theme swatches</title>
+<style>
+:root { --page: #F4F2EE; --page-ink: #1B1B1F; --rule: #D6D2CA; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --page: #141417; --page-ink: #ECEAE4; --rule: #2C2C32; } }
+:root[data-theme="dark"] { --page: #141417; --page-ink: #ECEAE4; --rule: #2C2C32; }
+body { background: var(--page); color: var(--page-ink); font-family: system-ui, sans-serif; margin: 0; padding: 2rem; }
+.family { max-width: 72rem; margin: 0 auto 3rem; }
+.family header { margin-bottom: 1rem; }
+.family h2 small { font-weight: 400; opacity: .7; font-size: .6em; }
+.mood { font-size: 1.1rem; margin: .25rem 0 .75rem; }
+dl { display: grid; grid-template-columns: max-content 1fr; gap: .25rem 1rem; font-size: .9rem; }
+dt { opacity: .6; }
+dd { margin: 0; }
+.variant { border: 1px solid; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+.variant h3 { margin: 0 0 .75rem; text-transform: uppercase; letter-spacing: .1em; font-size: .8rem; opacity: .7; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: .5rem; }
+.swatch { height: 6.5rem; border-radius: 8px; display: flex; align-items: flex-end; padding: .4rem; }
+.chip { font-size: .7rem; line-height: 1.3; padding: .3rem .4rem; border-radius: 4px; }
+.gradient { height: 2.5rem; border-radius: 8px; margin-top: .75rem; }
+table { border-collapse: collapse; font-size: .8rem; margin-top: .75rem; color: inherit; }
+th, td { text-align: left; padding: .2rem .6rem .2rem 0; border-bottom: 1px solid currentColor; opacity: .85; color: inherit; }
+</style>
+<article class="family">
+	<header>
+		<h2>tide <small>anchor drowned teal <code>#237A6C</code></small></h2>
+		<p class="mood">Something wet has walked inland: cold teal, bone, weed-green, and one warm rope-orange that does not belong to it.</p>
+		<dl>
+			<dt>Inspiration</dt><dd>Tidal mud at dusk, corroded bronze, drowned linen, the pale of things kept underwater.</dd>
+			<dt>Anchor</dt><dd>Teal sits opposite bronze on the wheel, so anything the Sea touches reads as foreign to the Palace world at a glance, and it holds contrast on both surfaces without going neon.</dd>
+			<dt>Rule bent</dt><dd>The accent partner is a warm rope-orange rather than a cool harmony, so that the Sea palette keeps one human colour to steal.</dd>
+			<dt>Targets</dt><dd>core only</dd>
+		</dl>
+	</header>
+	<section class="variant" style="background:#EBF9F5;color:#101E1B;border-color:#C1D2CE">
+	<h3>light</h3>
+	<div class="grid"><div class="swatch" style="background:#101E1B">
+	<span class="chip" style="background:#EBF9F5;color:#101E1B">ink<br><code>#101E1B</code><br><small>15.86:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#475A56">
+	<span class="chip" style="background:#EBF9F5;color:#101E1B">ink-muted<br><code>#475A56</code><br><small>6.77:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#EBF9F5">
+	<span class="chip" style="background:#EBF9F5;color:#101E1B">surface<br><code>#EBF9F5</code><br><small>1:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#DEF0EB">
+	<span class="chip" style="background:#EBF9F5;color:#101E1B">surface-raised<br><code>#DEF0EB</code><br><small>1.09:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#C1D2CE">
+	<span class="chip" style="background:#EBF9F5;color:#101E1B">line<br><code>#C1D2CE</code><br><small>1.45:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#237A6C">
+	<span class="chip" style="background:#EBF9F5;color:#101E1B">accent<br><code>#237A6C</code><br><small>4.76:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#F2FBF9">
+	<span class="chip" style="background:#EBF9F5;color:#101E1B">accent-ink<br><code>#F2FBF9</code><br><small>1.03:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#86563B">
+	<span class="chip" style="background:#EBF9F5;color:#101E1B">accent-2<br><code>#86563B</code><br><small>5.69:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#5D7B56">
+	<span class="chip" style="background:#EBF9F5;color:#101E1B">ok<br><code>#5D7B56</code><br><small>4.38:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#866D43">
+	<span class="chip" style="background:#EBF9F5;color:#101E1B">warn<br><code>#866D43</code><br><small>4.53:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#95625E">
+	<span class="chip" style="background:#EBF9F5;color:#101E1B">danger<br><code>#95625E</code><br><small>4.63:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#537598">
+	<span class="chip" style="background:#EBF9F5;color:#101E1B">info<br><code>#537598</code><br><small>4.44:1 on surface</small></span>
+</div></div>
+	<div class="gradient" style="background:linear-gradient(135deg, #449788, #9DA46E, #DBAC91)"></div>
+	<p style="font-family:'Cormorant Garamond', system-ui;font-size:1.6rem;margin:.5rem 0 0">Display: Cormorant Garamond</p>
+	<p style="font-family:'Source Serif 4', system-ui">Body: Source Serif 4. The quick brown fox jumps over the lazy dog.</p>
+	<p style="font-family:'JetBrains Mono', ui-monospace, monospace;background:#DEF0EB;padding:.5rem;border-radius:6px">Mono: JetBrains Mono · const x = 42;</p>
+	<table><thead><tr><th>fg</th><th>bg</th><th>level</th><th>ratio</th></tr></thead><tbody><tr><td>ink</td><td>surface</td><td>AA</td><td>15.86:1</td></tr><tr><td>ink</td><td>surface-raised</td><td>AA</td><td>14.52:1</td></tr><tr><td>ink-muted</td><td>surface</td><td>AA</td><td>6.77:1</td></tr><tr><td>accent</td><td>surface</td><td>AA</td><td>4.76:1</td></tr><tr><td>accent-ink</td><td>accent</td><td>AA</td><td>4.9:1</td></tr><tr><td>ok</td><td>surface</td><td>AA-large</td><td>4.38:1</td></tr><tr><td>warn</td><td>surface</td><td>AA-large</td><td>4.53:1</td></tr><tr><td>danger</td><td>surface</td><td>AA-large</td><td>4.63:1</td></tr><tr><td>info</td><td>surface</td><td>AA-large</td><td>4.44:1</td></tr></tbody></table>
+</section>
+	<section class="variant" style="background:#0B1916;color:#DEEBE8;border-color:#283633">
+	<h3>dark</h3>
+	<div class="grid"><div class="swatch" style="background:#DEEBE8">
+	<span class="chip" style="background:#0B1916;color:#DEEBE8">ink<br><code>#DEEBE8</code><br><small>14.73:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#98A9A5">
+	<span class="chip" style="background:#0B1916;color:#DEEBE8">ink-muted<br><code>#98A9A5</code><br><small>7.34:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#0B1916">
+	<span class="chip" style="background:#0B1916;color:#DEEBE8">surface<br><code>#0B1916</code><br><small>1:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#162522">
+	<span class="chip" style="background:#0B1916;color:#DEEBE8">surface-raised<br><code>#162522</code><br><small>1.13:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#283633">
+	<span class="chip" style="background:#0B1916;color:#DEEBE8">line<br><code>#283633</code><br><small>1.43:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#3C8F80">
+	<span class="chip" style="background:#0B1916;color:#DEEBE8">accent<br><code>#3C8F80</code><br><small>4.66:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#030E0B">
+	<span class="chip" style="background:#0B1916;color:#DEEBE8">accent-ink<br><code>#030E0B</code><br><small>1.09:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#CC977A">
+	<span class="chip" style="background:#0B1916;color:#DEEBE8">accent-2<br><code>#CC977A</code><br><small>7.1:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#89A982">
+	<span class="chip" style="background:#0B1916;color:#DEEBE8">ok<br><code>#89A982</code><br><small>6.92:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#B59A6F">
+	<span class="chip" style="background:#0B1916;color:#DEEBE8">warn<br><code>#B59A6F</code><br><small>6.71:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#C58F89">
+	<span class="chip" style="background:#0B1916;color:#DEEBE8">danger<br><code>#C58F89</code><br><small>6.58:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#7FA2C7">
+	<span class="chip" style="background:#0B1916;color:#DEEBE8">info<br><code>#7FA2C7</code><br><small>6.78:1 on surface</small></span>
+</div></div>
+	<div class="gradient" style="background:linear-gradient(135deg, #00483C, #4C521C, #825840)"></div>
+	<p style="font-family:'Cormorant Garamond', system-ui;font-size:1.6rem;margin:.5rem 0 0">Display: Cormorant Garamond</p>
+	<p style="font-family:'Source Serif 4', system-ui">Body: Source Serif 4. The quick brown fox jumps over the lazy dog.</p>
+	<p style="font-family:'JetBrains Mono', ui-monospace, monospace;background:#162522;padding:.5rem;border-radius:6px">Mono: JetBrains Mono · const x = 42;</p>
+	<table><thead><tr><th>fg</th><th>bg</th><th>level</th><th>ratio</th></tr></thead><tbody><tr><td>ink</td><td>surface</td><td>AA</td><td>14.73:1</td></tr><tr><td>ink</td><td>surface-raised</td><td>AA</td><td>12.98:1</td></tr><tr><td>ink-muted</td><td>surface</td><td>AA</td><td>7.34:1</td></tr><tr><td>accent</td><td>surface</td><td>AA</td><td>4.66:1</td></tr><tr><td>accent-ink</td><td>accent</td><td>AA</td><td>5.07:1</td></tr><tr><td>ok</td><td>surface</td><td>AA-large</td><td>6.92:1</td></tr><tr><td>warn</td><td>surface</td><td>AA-large</td><td>6.71:1</td></tr><tr><td>danger</td><td>surface</td><td>AA-large</td><td>6.58:1</td></tr><tr><td>info</td><td>surface</td><td>AA-large</td><td>6.78:1</td></tr></tbody></table>
+</section>
+</article>
+<article class="family">
+	<header>
+		<h2>ash <small>anchor cold ash <code>#6A6E80</code></small></h2>
+		<p class="mood">Deserters at a dead fire: cold grey linen, soot, dried blood, nothing polished.</p>
+		<dl>
+			<dt>Inspiration</dt><dd>Camp ash, unwashed wool, rust on a chipped spearhead.</dd>
+			<dt>Anchor</dt><dd>A cool grey carries none of the Palace's warmth, so an outlaw is visibly someone the bronze world has dropped; it still separates from the Sea's teal by having no green in it.</dd>
+			<dt>Rule bent</dt><dd>The anchor's chroma is below the rule's floor, so the status and accent-2 colours are raised in chroma instead of matching it, or the palette would be monochrome.</dd>
+			<dt>Targets</dt><dd>core only</dd>
+		</dl>
+	</header>
+	<section class="variant" style="background:#F2F5FF;color:#181A24;border-color:#CACDDB">
+	<h3>light</h3>
+	<div class="grid"><div class="swatch" style="background:#181A24">
+	<span class="chip" style="background:#F2F5FF;color:#181A24">ink<br><code>#181A24</code><br><small>15.91:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#515463">
+	<span class="chip" style="background:#F2F5FF;color:#181A24">ink-muted<br><code>#515463</code><br><small>6.89:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#F2F5FF">
+	<span class="chip" style="background:#F2F5FF;color:#181A24">surface<br><code>#F2F5FF</code><br><small>1:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#E7EAF9">
+	<span class="chip" style="background:#F2F5FF;color:#181A24">surface-raised<br><code>#E7EAF9</code><br><small>1.1:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#CACDDB">
+	<span class="chip" style="background:#F2F5FF;color:#181A24">line<br><code>#CACDDB</code><br><small>1.45:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#6A6E80">
+	<span class="chip" style="background:#F2F5FF;color:#181A24">accent<br><code>#6A6E80</code><br><small>4.64:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#F6F8FF">
+	<span class="chip" style="background:#F2F5FF;color:#181A24">accent-ink<br><code>#F6F8FF</code><br><small>1.03:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#7F5756">
+	<span class="chip" style="background:#F2F5FF;color:#181A24">accent-2<br><code>#7F5756</code><br><small>5.67:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#63795E">
+	<span class="chip" style="background:#F2F5FF;color:#181A24">ok<br><code>#63795E</code><br><small>4.36:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#806F52">
+	<span class="chip" style="background:#F2F5FF;color:#181A24">warn<br><code>#806F52</code><br><small>4.47:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#8C6763">
+	<span class="chip" style="background:#F2F5FF;color:#181A24">danger<br><code>#8C6763</code><br><small>4.55:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#5C748D">
+	<span class="chip" style="background:#F2F5FF;color:#181A24">info<br><code>#5C748D</code><br><small>4.44:1 on surface</small></span>
+</div></div>
+	<div class="gradient" style="background:linear-gradient(135deg, #7C84AB, #B193B0, #D5ACAB)"></div>
+	<p style="font-family:'Cormorant Garamond', system-ui;font-size:1.6rem;margin:.5rem 0 0">Display: Cormorant Garamond</p>
+	<p style="font-family:'Source Serif 4', system-ui">Body: Source Serif 4. The quick brown fox jumps over the lazy dog.</p>
+	<p style="font-family:'JetBrains Mono', ui-monospace, monospace;background:#E7EAF9;padding:.5rem;border-radius:6px">Mono: JetBrains Mono · const x = 42;</p>
+	<table><thead><tr><th>fg</th><th>bg</th><th>level</th><th>ratio</th></tr></thead><tbody><tr><td>ink</td><td>surface</td><td>AA</td><td>15.91:1</td></tr><tr><td>ink</td><td>surface-raised</td><td>AA</td><td>14.47:1</td></tr><tr><td>ink-muted</td><td>surface</td><td>AA</td><td>6.89:1</td></tr><tr><td>accent</td><td>surface</td><td>AA</td><td>4.64:1</td></tr><tr><td>accent-ink</td><td>accent</td><td>AA</td><td>4.76:1</td></tr><tr><td>ok</td><td>surface</td><td>AA-large</td><td>4.36:1</td></tr><tr><td>warn</td><td>surface</td><td>AA-large</td><td>4.47:1</td></tr><tr><td>danger</td><td>surface</td><td>AA-large</td><td>4.55:1</td></tr><tr><td>info</td><td>surface</td><td>AA-large</td><td>4.44:1</td></tr></tbody></table>
+</section>
+	<section class="variant" style="background:#13151F;color:#E5E7F2;border-color:#30323D">
+	<h3>dark</h3>
+	<div class="grid"><div class="swatch" style="background:#E5E7F2">
+	<span class="chip" style="background:#13151F;color:#E5E7F2">ink<br><code>#E5E7F2</code><br><small>14.76:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#A1A4B1">
+	<span class="chip" style="background:#13151F;color:#E5E7F2">ink-muted<br><code>#A1A4B1</code><br><small>7.33:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#13151F">
+	<span class="chip" style="background:#13151F;color:#E5E7F2">surface<br><code>#13151F</code><br><small>1:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#1E212C">
+	<span class="chip" style="background:#13151F;color:#E5E7F2">surface-raised<br><code>#1E212C</code><br><small>1.13:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#30323D">
+	<span class="chip" style="background:#13151F;color:#E5E7F2">line<br><code>#30323D</code><br><small>1.43:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#7981A8">
+	<span class="chip" style="background:#13151F;color:#E5E7F2">accent<br><code>#7981A8</code><br><small>4.78:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#090A14">
+	<span class="chip" style="background:#13151F;color:#E5E7F2">accent-ink<br><code>#090A14</code><br><small>1.08:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#C49897">
+	<span class="chip" style="background:#13151F;color:#E5E7F2">accent-2<br><code>#C49897</code><br><small>7.18:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#8FA68A">
+	<span class="chip" style="background:#13151F;color:#E5E7F2">ok<br><code>#8FA68A</code><br><small>6.92:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#AE9C7D">
+	<span class="chip" style="background:#13151F;color:#E5E7F2">warn<br><code>#AE9C7D</code><br><small>6.8:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#BB938F">
+	<span class="chip" style="background:#13151F;color:#E5E7F2">danger<br><code>#BB938F</code><br><small>6.65:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#88A1BC">
+	<span class="chip" style="background:#13151F;color:#E5E7F2">info<br><code>#88A1BC</code><br><small>6.82:1 on surface</small></span>
+</div></div>
+	<div class="gradient" style="background:linear-gradient(135deg, #32385A, #5D435C, #7D5858)"></div>
+	<p style="font-family:'Cormorant Garamond', system-ui;font-size:1.6rem;margin:.5rem 0 0">Display: Cormorant Garamond</p>
+	<p style="font-family:'Source Serif 4', system-ui">Body: Source Serif 4. The quick brown fox jumps over the lazy dog.</p>
+	<p style="font-family:'JetBrains Mono', ui-monospace, monospace;background:#1E212C;padding:.5rem;border-radius:6px">Mono: JetBrains Mono · const x = 42;</p>
+	<table><thead><tr><th>fg</th><th>bg</th><th>level</th><th>ratio</th></tr></thead><tbody><tr><td>ink</td><td>surface</td><td>AA</td><td>14.76:1</td></tr><tr><td>ink</td><td>surface-raised</td><td>AA</td><td>13.02:1</td></tr><tr><td>ink-muted</td><td>surface</td><td>AA</td><td>7.33:1</td></tr><tr><td>accent</td><td>surface</td><td>AA</td><td>4.78:1</td></tr><tr><td>accent-ink</td><td>accent</td><td>AA</td><td>5.18:1</td></tr><tr><td>ok</td><td>surface</td><td>AA-large</td><td>6.92:1</td></tr><tr><td>warn</td><td>surface</td><td>AA-large</td><td>6.8:1</td></tr><tr><td>danger</td><td>surface</td><td>AA-large</td><td>6.65:1</td></tr><tr><td>info</td><td>surface</td><td>AA-large</td><td>6.82:1</td></tr></tbody></table>
+</section>
+</article>
+<article class="family">
+	<header>
+		<h2>bronze <small>anchor cast bronze <code>#B8792E</code></small></h2>
+		<p class="mood">Palace bronze in lamplight: warm, heavy, official, already tarnishing at the edges.</p>
+		<dl>
+			<dt>Inspiration</dt><dd>Mycenaean and Hittite palace goods: bronze, fired clay, undyed linen, bitumen, a single dark blue from imported lapis.</dd>
+			<dt>Anchor</dt><dd>Bronze is the setting's currency, weapon, graft and memory, and its hue survives both surfaces: dark enough to read on linen, bright enough to read on bitumen.</dd>
+			<dt>Rule bent</dt><dd>The dark surface carries more chroma than the rule allows (a trace of bitumen brown rather than neutral), because a neutral dark reads as modern.</dd>
+			<dt>Targets</dt><dd>core only</dd>
+		</dl>
+	</header>
+	<section class="variant" style="background:#FCF3EB;color:#211911;border-color:#D7CCC0">
+	<h3>light</h3>
+	<div class="grid"><div class="swatch" style="background:#211911">
+	<span class="chip" style="background:#FCF3EB;color:#211911">ink<br><code>#211911</code><br><small>15.81:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#5F5347">
+	<span class="chip" style="background:#FCF3EB;color:#211911">ink-muted<br><code>#5F5347</code><br><small>6.81:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#FCF3EB">
+	<span class="chip" style="background:#FCF3EB;color:#211911">surface<br><code>#FCF3EB</code><br><small>1:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#F5E9DD">
+	<span class="chip" style="background:#FCF3EB;color:#211911">surface-raised<br><code>#F5E9DD</code><br><small>1.09:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#D7CCC0">
+	<span class="chip" style="background:#FCF3EB;color:#211911">line<br><code>#D7CCC0</code><br><small>1.44:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#9E610A">
+	<span class="chip" style="background:#FCF3EB;color:#211911">accent<br><code>#9E610A</code><br><small>4.6:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#FDF7F2">
+	<span class="chip" style="background:#FCF3EB;color:#211911">accent-ink<br><code>#FDF7F2</code><br><small>1.03:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#2D669D">
+	<span class="chip" style="background:#FCF3EB;color:#211911">accent-2<br><code>#2D669D</code><br><small>5.48:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#537F49">
+	<span class="chip" style="background:#FCF3EB;color:#211911">ok<br><code>#537F49</code><br><small>4.26:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#8E6B28">
+	<span class="chip" style="background:#FCF3EB;color:#211911">warn<br><code>#8E6B28</code><br><small>4.47:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#A25A55">
+	<span class="chip" style="background:#FCF3EB;color:#211911">danger<br><code>#A25A55</code><br><small>4.64:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#4475A7">
+	<span class="chip" style="background:#FCF3EB;color:#211911">info<br><code>#4475A7</code><br><small>4.41:1 on surface</small></span>
+</div></div>
+	<div class="gradient" style="background:linear-gradient(135deg, #B5762B, #CA84B5, #88BCF2)"></div>
+	<p style="font-family:'Cormorant Garamond', system-ui;font-size:1.6rem;margin:.5rem 0 0">Display: Cormorant Garamond</p>
+	<p style="font-family:'Source Serif 4', system-ui">Body: Source Serif 4. The quick brown fox jumps over the lazy dog.</p>
+	<p style="font-family:'JetBrains Mono', ui-monospace, monospace;background:#F5E9DD;padding:.5rem;border-radius:6px">Mono: JetBrains Mono · const x = 42;</p>
+	<table><thead><tr><th>fg</th><th>bg</th><th>level</th><th>ratio</th></tr></thead><tbody><tr><td>ink</td><td>surface</td><td>AA</td><td>15.81:1</td></tr><tr><td>ink</td><td>surface-raised</td><td>AA</td><td>14.51:1</td></tr><tr><td>ink-muted</td><td>surface</td><td>AA</td><td>6.81:1</td></tr><tr><td>accent</td><td>surface</td><td>AA</td><td>4.6:1</td></tr><tr><td>accent-ink</td><td>accent</td><td>AA</td><td>4.74:1</td></tr><tr><td>ok</td><td>surface</td><td>AA-large</td><td>4.26:1</td></tr><tr><td>warn</td><td>surface</td><td>AA-large</td><td>4.47:1</td></tr><tr><td>danger</td><td>surface</td><td>AA-large</td><td>4.64:1</td></tr><tr><td>info</td><td>surface</td><td>AA-large</td><td>4.41:1</td></tr></tbody></table>
+</section>
+	<section class="variant" style="background:#1C140C;color:#EFE6DE;border-color:#3A3128">
+	<h3>dark</h3>
+	<div class="grid"><div class="swatch" style="background:#EFE6DE">
+	<span class="chip" style="background:#1C140C;color:#EFE6DE">ink<br><code>#EFE6DE</code><br><small>14.76:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#ADA298">
+	<span class="chip" style="background:#1C140C;color:#EFE6DE">ink-muted<br><code>#ADA298</code><br><small>7.27:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#1C140C">
+	<span class="chip" style="background:#1C140C;color:#EFE6DE">surface<br><code>#1C140C</code><br><small>1:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#292016">
+	<span class="chip" style="background:#1C140C;color:#EFE6DE">surface-raised<br><code>#292016</code><br><small>1.14:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#3A3128">
+	<span class="chip" style="background:#1C140C;color:#EFE6DE">line<br><code>#3A3128</code><br><small>1.43:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#B8792E">
+	<span class="chip" style="background:#1C140C;color:#EFE6DE">accent<br><code>#B8792E</code><br><small>5.03:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#110904">
+	<span class="chip" style="background:#1C140C;color:#EFE6DE">accent-ink<br><code>#110904</code><br><small>1.08:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#6FA9E5">
+	<span class="chip" style="background:#1C140C;color:#EFE6DE">accent-2<br><code>#6FA9E5</code><br><small>7.35:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#7FAD74">
+	<span class="chip" style="background:#1C140C;color:#EFE6DE">ok<br><code>#7FAD74</code><br><small>7.04:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#BD9857">
+	<span class="chip" style="background:#1C140C;color:#EFE6DE">warn<br><code>#BD9857</code><br><small>6.75:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#D38781">
+	<span class="chip" style="background:#1C140C;color:#EFE6DE">danger<br><code>#D38781</code><br><small>6.54:1 on surface</small></span>
+</div>
+<div class="swatch" style="background:#70A3D7">
+	<span class="chip" style="background:#1C140C;color:#EFE6DE">info<br><code>#70A3D7</code><br><small>6.85:1 on surface</small></span>
+</div></div>
+	<div class="gradient" style="background:linear-gradient(135deg, #612800, #713361, #356697)"></div>
+	<p style="font-family:'Cormorant Garamond', system-ui;font-size:1.6rem;margin:.5rem 0 0">Display: Cormorant Garamond</p>
+	<p style="font-family:'Source Serif 4', system-ui">Body: Source Serif 4. The quick brown fox jumps over the lazy dog.</p>
+	<p style="font-family:'JetBrains Mono', ui-monospace, monospace;background:#292016;padding:.5rem;border-radius:6px">Mono: JetBrains Mono · const x = 42;</p>
+	<table><thead><tr><th>fg</th><th>bg</th><th>level</th><th>ratio</th></tr></thead><tbody><tr><td>ink</td><td>surface</td><td>AA</td><td>14.76:1</td></tr><tr><td>ink</td><td>surface-raised</td><td>AA</td><td>12.99:1</td></tr><tr><td>ink-muted</td><td>surface</td><td>AA</td><td>7.27:1</td></tr><tr><td>accent</td><td>surface</td><td>AA</td><td>5.03:1</td></tr><tr><td>accent-ink</td><td>accent</td><td>AA</td><td>5.46:1</td></tr><tr><td>ok</td><td>surface</td><td>AA-large</td><td>7.04:1</td></tr><tr><td>warn</td><td>surface</td><td>AA-large</td><td>6.75:1</td></tr><tr><td>danger</td><td>surface</td><td>AA-large</td><td>6.54:1</td></tr><tr><td>info</td><td>surface</td><td>AA-large</td><td>6.85:1</td></tr></tbody></table>
+</section>
+</article>

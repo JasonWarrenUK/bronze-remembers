@@ -1,0 +1,262 @@
+{
+	"$schema": "clod-theme/core@1",
+	"family": "ash",
+	"version": 1,
+	"rationale": {
+		"mood": "Deserters at a dead fire: cold grey linen, soot, dried blood, nothing polished.",
+		"inspiration": "Camp ash, unwashed wool, rust on a chipped spearhead.",
+		"anchor_reason": "A cool grey carries none of the Palace's warmth, so an outlaw is visibly someone the bronze world has dropped; it still separates from the Sea's teal by having no green in it.",
+		"rule_bent": "The anchor's chroma is below the rule's floor, so the status and accent-2 colours are raised in chroma instead of matching it, or the palette would be monochrome. Originality warning against tide (0.045) lifted by Jason on 2026-09-27: these are sprite palettes for a game, a different category from app UI themes, and tide and ash are intentional siblings.",
+		"rejected": [
+			{
+				"palette": "Desaturated bronze",
+				"why": "Outlaws looked like tired heroes rather than a different allegiance."
+			},
+			{
+				"palette": "Black and red",
+				"why": "Too villainous for people who are mostly hungry."
+			}
+		]
+	},
+	"anchor": {
+		"name": "cold ash",
+		"hex": "#6A6E80",
+		"oklch": [
+			0.541,
+			0.028,
+			275.5
+		]
+	},
+	"palette": {
+		"ink": {
+			"light": "#181A24",
+			"dark": "#E5E7F2",
+			"role": "primary text"
+		},
+		"ink-muted": {
+			"light": "#515463",
+			"dark": "#A1A4B1",
+			"role": "secondary text, captions, meta"
+		},
+		"surface": {
+			"light": "#F2F5FF",
+			"dark": "#13151F",
+			"role": "page background"
+		},
+		"surface-raised": {
+			"light": "#E7EAF9",
+			"dark": "#1E212C",
+			"role": "cards, panels, code blocks"
+		},
+		"line": {
+			"light": "#CACDDB",
+			"dark": "#30323D",
+			"role": "borders, rules, dividers"
+		},
+		"accent": {
+			"light": "#6A6E80",
+			"dark": "#7981A8",
+			"role": "links, primary actions, highlights"
+		},
+		"accent-ink": {
+			"light": "#F6F8FF",
+			"dark": "#090A14",
+			"role": "text placed on accent"
+		},
+		"accent-2": {
+			"light": "#7F5756",
+			"dark": "#C49897",
+			"role": "secondary emphasis, gradient partner"
+		},
+		"ok": {
+			"light": "#63795E",
+			"dark": "#8FA68A",
+			"role": "success, done, passing"
+		},
+		"warn": {
+			"light": "#806F52",
+			"dark": "#AE9C7D",
+			"role": "caution, pending, stale"
+		},
+		"danger": {
+			"light": "#8C6763",
+			"dark": "#BB938F",
+			"role": "error, blocked, destructive"
+		},
+		"info": {
+			"light": "#5C748D",
+			"dark": "#88A1BC",
+			"role": "neutral notice, in progress"
+		}
+	},
+	"gradient": {
+		"light": [
+			"#7C84AB",
+			"#B193B0",
+			"#D5ACAB"
+		],
+		"dark": [
+			"#32385A",
+			"#5D435C",
+			"#7D5858"
+		]
+	},
+	"typography": {
+		"display": {
+			"family": "Cormorant Garamond",
+			"fallback": "system-ui, sans-serif",
+			"weight": 700
+		},
+		"body": {
+			"family": "Source Serif 4",
+			"fallback": "system-ui, sans-serif",
+			"weight": 400
+		},
+		"mono": {
+			"family": "JetBrains Mono",
+			"fallback": "ui-monospace, monospace",
+			"weight": 400
+		},
+		"scale": {
+			"base_px": 16,
+			"ratio": 1.25,
+			"line_height": 1.5
+		}
+	},
+	"shape": {
+		"radius_px": {
+			"sm": 2,
+			"md": 4,
+			"lg": 8
+		},
+		"shadow": {
+			"blur_px": 12,
+			"offset_y_px": 4,
+			"opacity": 0.25
+		},
+		"space_px": {
+			"unit": 8
+		}
+	},
+	"contrast": {
+		"light": [
+			{
+				"fg": "ink",
+				"bg": "surface",
+				"level": "AA",
+				"ratio": 15.91
+			},
+			{
+				"fg": "ink",
+				"bg": "surface-raised",
+				"level": "AA",
+				"ratio": 14.47
+			},
+			{
+				"fg": "ink-muted",
+				"bg": "surface",
+				"level": "AA",
+				"ratio": 6.89
+			},
+			{
+				"fg": "accent",
+				"bg": "surface",
+				"level": "AA",
+				"ratio": 4.64
+			},
+			{
+				"fg": "accent-ink",
+				"bg": "accent",
+				"level": "AA",
+				"ratio": 4.76
+			},
+			{
+				"fg": "ok",
+				"bg": "surface",
+				"level": "AA-large",
+				"ratio": 4.36
+			},
+			{
+				"fg": "warn",
+				"bg": "surface",
+				"level": "AA-large",
+				"ratio": 4.47
+			},
+			{
+				"fg": "danger",
+				"bg": "surface",
+				"level": "AA-large",
+				"ratio": 4.55
+			},
+			{
+				"fg": "info",
+				"bg": "surface",
+				"level": "AA-large",
+				"ratio": 4.44
+			}
+		],
+		"dark": [
+			{
+				"fg": "ink",
+				"bg": "surface",
+				"level": "AA",
+				"ratio": 14.76
+			},
+			{
+				"fg": "ink",
+				"bg": "surface-raised",
+				"level": "AA",
+				"ratio": 13.02
+			},
+			{
+				"fg": "ink-muted",
+				"bg": "surface",
+				"level": "AA",
+				"ratio": 7.33
+			},
+			{
+				"fg": "accent",
+				"bg": "surface",
+				"level": "AA",
+				"ratio": 4.78
+			},
+			{
+				"fg": "accent-ink",
+				"bg": "accent",
+				"level": "AA",
+				"ratio": 5.18
+			},
+			{
+				"fg": "ok",
+				"bg": "surface",
+				"level": "AA-large",
+				"ratio": 6.92
+			},
+			{
+				"fg": "warn",
+				"bg": "surface",
+				"level": "AA-large",
+				"ratio": 6.8
+			},
+			{
+				"fg": "danger",
+				"bg": "surface",
+				"level": "AA-large",
+				"ratio": 6.65
+			},
+			{
+				"fg": "info",
+				"bg": "surface",
+				"level": "AA-large",
+				"ratio": 6.82
+			}
+		]
+	},
+	"provenance": {
+		"seed": "Mood words and the slice art pass outlaw colour map (grey linen #8f8a80, dull bronze #8c7a4a).",
+		"derived_from": null,
+		"created": "2026-09-27",
+		"updated": "2026-09-27",
+		"tool": "theme-factory@1"
+	}
+}
