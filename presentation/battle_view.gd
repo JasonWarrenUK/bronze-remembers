@@ -10,7 +10,7 @@ const TILE_TEX := {
 	SimGrid.Tile.RUBBLE: "res://art/tiles/rubble.png",
 }
 const STEP_TIME := 0.11
-const HIT_STOP := 0.06
+const HIT_STOP := 0.11
 
 var battle: SimBattle
 var palette: Dictionary = {}
@@ -29,6 +29,8 @@ var selected_cells: Dictionary = {}
 var audio: Dictionary = {}
 var sfx_player: AudioStreamPlayer
 var shake_amount: float = 0.0
+var shake_dir: Vector2 = Vector2.ZERO
+var edge: ColorRect
 var log_lines: Array[String] = []
 var auto: bool = false
 
@@ -132,16 +134,40 @@ func _add_unit(u: SimUnit) -> void:
 
 # ---------------------------------------------------------------- UI
 
+var font: Font
+var theme_ui: Theme
+
+
 func _build_ui() -> void:
 	ui = CanvasLayer.new()
 	add_child(ui)
+	font = load("res://fonts/Silkscreen-Regular.ttf")
+	theme_ui = Theme.new()
+	theme_ui.default_font = font
+	theme_ui.default_font_size = 8
+	var button_style := StyleBoxFlat.new()
+	button_style.bg_color = palette["surface_raised"]
+	button_style.border_color = palette["accent"]
+	button_style.set_border_width_all(1)
+	button_style.set_content_margin_all(3)
+	theme_ui.set_stylebox("normal", "Button", button_style)
+	var hover := button_style.duplicate()
+	hover.bg_color = palette["line"]
+	theme_ui.set_stylebox("hover", "Button", hover)
+	var disabled := button_style.duplicate()
+	disabled.border_color = palette["line"]
+	theme_ui.set_stylebox("disabled", "Button", disabled)
+	theme_ui.set_color("font_color", "Button", palette["ink"])
+	theme_ui.set_color("font_disabled_color", "Button", palette["ink_muted"])
 	var panel := PanelContainer.new()
+	panel.theme = theme_ui
 	panel.position = Vector2(336, 0)
 	panel.size = Vector2(304, 360)
 	var style := StyleBoxFlat.new()
-	style.bg_color = palette["surface"]
-	style.border_color = palette["line"]
-	style.set_border_width_all(1)
+	style.bg_color = palette["surface_raised"]
+	style.border_color = palette["accent_2"]
+	style.set_border_width_all(2)
+	style.set_content_margin_all(6)
 	panel.add_theme_stylebox_override("panel", style)
 	ui.add_child(panel)
 	var col := VBoxContainer.new()
@@ -164,6 +190,7 @@ func _build_ui() -> void:
 	row.add_child(end_button)
 	log_label = _rich(col, 96)
 	result_panel = PanelContainer.new()
+	result_panel.theme = theme_ui
 	result_panel.position = Vector2(60, 100)
 	result_panel.size = Vector2(240, 140)
 	result_panel.add_theme_stylebox_override("panel", style)
@@ -232,7 +259,7 @@ func _refresh_ui() -> void:
 			b.pressed.connect(_on_ability_pressed.bind(key))
 			ability_bar.add_child(b)
 	var lg := ""
-	for line in log_lines.slice(maxi(0, log_lines.size() - 6)):
+	for line in log_lines.slice(maxi(0, log_lines.size() - 5)):
 		lg += line + "\n"
 	log_label.text = lg
 
@@ -490,27 +517,33 @@ func _play_hit(ev: Dictionary) -> void:
 		if dir == Vector2i.ZERO:
 			dir = Vector2i(0, 1)
 		var sv: UnitView = views[source.id]
-		await sv.play_attack(dir, 0.14)
+		await sv.play_attack(dir, 0.22)
 	# Hit-stop: the world pauses for a few frames on contact.
 	var damage: int = ev["damage"]
 	if DebugApi.user_args.has("trace"):
 		print("TRACE hit frame=%d target=%s damage=%d" % [Engine.get_process_frames(), target.name, damage])
 	var wet: bool = target.family == "sea" or (source != null and source.family == "sea")
 	sfx("hit_wet" if wet else ("hit_bronze" if damage >= 3 else "hit_thud"), randf_range(0.95, 1.05))
-	_spawn_particles(tv.position, dir, damage, palette["sea_accent"] if wet else palette["danger"])
+	_spawn_particles(tv.position, dir, damage, palette["sea_ink"] if wet else palette["surface"])
 	_show_damage_number(tv.position, damage)
-	shake_amount = 2.0 + damage * 1.5
-	Engine.time_scale = 0.05
-	await get_tree().create_timer(HIT_STOP * 0.05, true, false, true).timeout
+	shake_dir = Vector2(dir.x, dir.y)
+	shake_amount = 3.0 + damage * 2.0
+	Engine.time_scale = 0.02
+	await get_tree().create_timer(HIT_STOP * 0.02, true, false, true).timeout
 	Engine.time_scale = 1.0
-	await tv.play_hit(dir, damage, ev["hp"], palette["flash_sea"] if wet else palette["flash_hit"])
+	if target.side == "hero":
+		_edge_flash(palette["danger"])
+	if source != null:
+		var sv2: UnitView = views[source.id]
+		sv2.recover(0.16)
+	await tv.play_hit(dir, damage, ev["hp"], palette["flash_sea"] if wet else palette["flash_hit"], palette["surface"])
 
 
 func _spawn_particles(at: Vector2, dir: Vector2i, damage: int, colour: Color) -> void:
 	var p := CPUParticles2D.new()
 	p.position = at + Vector2(0, -4)
-	p.amount = 6 + damage * 4
-	p.lifetime = 0.35
+	p.amount = 8 + damage * 5
+	p.lifetime = 0.4
 	p.one_shot = true
 	p.explosiveness = 1.0
 	p.direction = Vector2(dir.x, dir.y)
@@ -518,8 +551,8 @@ func _spawn_particles(at: Vector2, dir: Vector2i, damage: int, colour: Color) ->
 	p.initial_velocity_min = 40.0
 	p.initial_velocity_max = 90.0
 	p.gravity = Vector2(0, 220)
-	p.scale_amount_min = 1.0
-	p.scale_amount_max = 2.0
+	p.scale_amount_min = 2.0
+	p.scale_amount_max = 3.5
 	p.color = colour
 	p.emitting = true
 	fx_layer.add_child(p)
@@ -528,8 +561,10 @@ func _spawn_particles(at: Vector2, dir: Vector2i, damage: int, colour: Color) ->
 
 func _show_damage_number(at: Vector2, damage: int) -> void:
 	var l := Label.new()
+	l.theme = theme_ui
+	l.add_theme_font_size_override("font_size", 16)
 	l.text = str(damage)
-	l.position = at + Vector2(-4, -26)
+	l.position = at + Vector2(-6, -30)
 	l.add_theme_color_override("font_color", palette["ink"])
 	l.add_theme_color_override("font_outline_color", palette["surface"])
 	l.add_theme_constant_override("outline_size", 3)
@@ -542,10 +577,23 @@ func _show_damage_number(at: Vector2, damage: int) -> void:
 
 func _process(delta: float) -> void:
 	if shake_amount > 0.0:
-		camera.offset = Vector2(randf_range(-shake_amount, shake_amount), randf_range(-shake_amount, shake_amount))
-		shake_amount = maxf(0.0, shake_amount - delta * 30.0)
+		var along := shake_dir * randf_range(-shake_amount, shake_amount)
+		var across := Vector2(-shake_dir.y, shake_dir.x) * randf_range(-shake_amount * 0.4, shake_amount * 0.4)
+		camera.offset = along + across
+		shake_amount = maxf(0.0, shake_amount - delta * 40.0)
 	else:
 		camera.offset = Vector2.ZERO
+
+
+func _edge_flash(colour: Color) -> void:
+	if edge == null:
+		edge = ColorRect.new()
+		edge.size = Vector2(336, 360)
+		edge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		ui.add_child(edge)
+	edge.color = Color(colour, 0.35)
+	var tw := create_tween()
+	tw.tween_property(edge, "color:a", 0.0, 0.25)
 
 
 func _show_result() -> void:

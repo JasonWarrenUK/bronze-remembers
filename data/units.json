@@ -1,19 +1,121 @@
 {
 	"heroes": {
-		"spear":  { "name": "Spear",  "hp": 8, "speed": 4, "move": 3, "basic": "thrust", "abilities": ["brace", "sweep"] },
-		"sling":  { "name": "Sling",  "hp": 6, "speed": 5, "move": 3, "basic": "loose",  "abilities": ["skip_shot", "harry"] },
-		"shield": { "name": "Shield", "hp": 10, "speed": 2, "move": 2, "basic": "strike", "abilities": ["wall", "taunt"] }
+		"spear": {
+			"name": "Spear",
+			"hp": 8,
+			"speed": 4,
+			"move": 3,
+			"basic": "thrust",
+			"abilities": [
+				"brace",
+				"sweep"
+			]
+		},
+		"sling": {
+			"name": "Sling",
+			"hp": 6,
+			"speed": 5,
+			"move": 3,
+			"basic": "loose",
+			"abilities": [
+				"skip_shot",
+				"harry"
+			]
+		},
+		"shield": {
+			"name": "Shield",
+			"hp": 10,
+			"speed": 2,
+			"move": 2,
+			"basic": "strike",
+			"abilities": [
+				"wall",
+				"taunt"
+			]
+		}
 	},
 	"enemies": {
-		"outlaw_spear":   { "name": "Outlaw spear",   "family": "levies", "hp": 6, "move": 3, "attack": 2, "range": [1, 2], "deck": "outlaw_spear" },
-		"outlaw_slinger": { "name": "Outlaw slinger", "family": "levies", "hp": 4, "move": 3, "attack": 2, "range": [2, 5], "deck": "outlaw_slinger" },
-		"officer":        { "name": "Deserter officer", "family": "levies", "hp": 9, "move": 3, "attack": 3, "range": [1, 2], "deck": "officer", "named": true },
-		"jointed":        { "name": "Jointed",  "family": "sea", "hp": 5, "move": 4, "attack": 2, "range": [1, 1], "deck": "jointed" },
-		"drowned":        { "name": "Drowned",  "family": "sea", "hp": 8, "move": 2, "attack": 3, "range": [1, 1], "deck": "drowned" },
-		"tidecaller":     { "name": "Tide-caller", "family": "sea", "hp": 12, "move": 2, "attack": 2, "range": [1, 3], "deck": "tidecaller", "named": true }
+		"outlaw_spear": {
+			"name": "Outlaw spear",
+			"family": "levies",
+			"hp": 5,
+			"move": 4,
+			"attack": 2,
+			"range": [
+				1,
+				2
+			],
+			"deck": "outlaw_spear"
+		},
+		"outlaw_slinger": {
+			"name": "Outlaw slinger",
+			"family": "levies",
+			"hp": 4,
+			"move": 4,
+			"attack": 2,
+			"range": [
+				2,
+				5
+			],
+			"deck": "outlaw_slinger"
+		},
+		"officer": {
+			"name": "Deserter officer",
+			"family": "levies",
+			"hp": 9,
+			"move": 3,
+			"attack": 3,
+			"range": [
+				1,
+				2
+			],
+			"deck": "officer",
+			"named": true
+		},
+		"jointed": {
+			"name": "Jointed",
+			"family": "sea",
+			"hp": 5,
+			"move": 4,
+			"attack": 2,
+			"range": [
+				1,
+				1
+			],
+			"deck": "jointed"
+		},
+		"drowned": {
+			"name": "Drowned",
+			"family": "sea",
+			"hp": 7,
+			"move": 2,
+			"attack": 3,
+			"range": [
+				1,
+				1
+			],
+			"deck": "drowned"
+		},
+		"tidecaller": {
+			"name": "Tide-caller",
+			"family": "sea",
+			"hp": 12,
+			"move": 2,
+			"attack": 2,
+			"range": [
+				1,
+				3
+			],
+			"deck": "tidecaller",
+			"named": true
+		}
 	},
 	"families": {
-		"levies": { "focus": "closest" },
-		"sea":    { "focus": "nearest_water" }
+		"levies": {
+			"focus": "closest"
+		},
+		"sea": {
+			"focus": "nearest_water"
+		}
 	}
 }

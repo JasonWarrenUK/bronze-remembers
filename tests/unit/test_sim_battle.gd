@@ -40,7 +40,7 @@ func test_hero_move_and_thrust() -> void:
 		b.end_turn()
 	assert_true(b.hero_move(h, Vector2i(2, 1)), "move within 3")
 	assert_true(b.hero_act(h, "thrust", Vector2i(4, 1)), "thrust reach 2 in line")
-	assert_eq(e.hp, 4)
+	assert_eq(e.hp, 2, "outlaw spear 5 hp minus thrust 3")
 	assert_false(b.hero_act(h, "thrust", Vector2i(4, 1)), "one action per turn")
 
 

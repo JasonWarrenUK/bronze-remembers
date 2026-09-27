@@ -109,29 +109,49 @@ func play_forced_move(to_cell: Array, time: float) -> void:
 	await tw.finished
 
 
+## Wind-up then lunge; returns at the apex so the hit lands on contact. Call recover() after.
 func play_attack(dir: Vector2i, lunge_time: float) -> void:
 	facing = SpriteSheets.facing_name(dir)
+	_update_weapon()
 	sprite.play("attack_" + facing)
-	var lunge := Vector2(dir.x, dir.y) * 8.0
+	var back := Vector2(dir.x, dir.y) * -3.0
+	var lunge := Vector2(dir.x, dir.y) * 12.0
 	var tw := create_tween()
-	tw.tween_property(sprite, "position", Vector2(0, -4) + lunge, lunge_time * 0.4).set_ease(Tween.EASE_OUT)
-	tw.tween_property(sprite, "position", Vector2(0, -4), lunge_time * 0.6).set_ease(Tween.EASE_IN_OUT)
+	tw.tween_property(sprite, "position", Vector2(0, -4) + back, lunge_time * 0.45).set_ease(Tween.EASE_OUT)
+	tw.tween_property(sprite, "position", Vector2(0, -4) + lunge, lunge_time * 0.25).set_ease(Tween.EASE_IN)
+	if weapon != null:
+		var swing := 0.35 if dir.x >= 0 else -0.35
+		tw.parallel().tween_property(weapon, "rotation", swing, lunge_time * 0.25)
+	await tw.finished
+
+
+func recover(time: float) -> void:
+	var tw := create_tween()
+	tw.tween_property(sprite, "position", Vector2(0, -4), time).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	if weapon != null:
+		tw.parallel().tween_property(weapon, "rotation", 0.0, time)
 	await tw.finished
 	sprite.play("idle_" + facing)
 
 
 ## The hit: flash, knockback and recoil, squash. Camera shake and hit-stop are the field's job.
-func play_hit(from_dir: Vector2i, damage: int, hp: int, flash_colour: Color) -> void:
+## Dark silhouette on the contact frame, then the flash, a big recoil with rebound, squash and settle.
+func play_hit(from_dir: Vector2i, damage: int, hp: int, flash_colour: Color, silhouette: Color) -> void:
 	set_hp(hp)
-	var recoil := Vector2(from_dir.x, from_dir.y) * (3.0 + 1.5 * damage)
+	var d := Vector2(from_dir.x, from_dir.y)
+	var recoil := d * (8.0 + 2.0 * damage)
+	sprite.modulate = silhouette
+	sprite.scale = Vector2(1.25, 0.75)
+	await get_tree().process_frame
 	sprite.modulate = flash_colour
-	sprite.scale = Vector2(1.15, 0.85)
 	var tw := create_tween()
 	tw.set_parallel(true)
-	tw.tween_property(sprite, "position", Vector2(0, -4) + recoil, 0.05)
-	tw.tween_property(sprite, "modulate", Color.WHITE, 0.18)
-	tw.tween_property(sprite, "scale", Vector2.ONE, 0.16).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tw.chain().tween_property(sprite, "position", Vector2(0, -4), 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.tween_property(sprite, "position", Vector2(0, -4) + recoil, 0.06).set_ease(Tween.EASE_OUT)
+	tw.tween_property(sprite, "scale", Vector2(0.85, 1.15), 0.06)
+	tw.chain().tween_property(sprite, "position", Vector2(0, -4) - d * 2.0, 0.10).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	tw.parallel().tween_property(sprite, "modulate", Color.WHITE, 0.14)
+	tw.parallel().tween_property(sprite, "scale", Vector2.ONE, 0.14).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.chain().tween_property(sprite, "position", Vector2(0, -4), 0.08)
 	await tw.finished
 
 
