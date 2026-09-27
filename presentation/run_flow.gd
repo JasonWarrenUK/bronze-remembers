@@ -47,6 +47,9 @@ func _show_map() -> void:
 	if battle_view != null:
 		battle_view.queue_free()
 		battle_view = null
+	if run.state != "ongoing":
+		_show_result()
+		return
 	map = MapView.new()
 	add_child(map)
 	map.setup(run, palette, font, theme_ui)
@@ -107,7 +110,13 @@ func _on_battle_finished(b: SimBattle) -> void:
 	_show_map()
 
 
+var result_shown: bool = false
+
+
 func _show_result() -> void:
+	if result_shown:
+		return
+	result_shown = true
 	if map != null:
 		map.queue_free()
 		map = null
