@@ -33,6 +33,7 @@ var shake_dir: Vector2 = Vector2.ZERO
 var edge: ColorRect
 var log_lines: Array[String] = []
 var auto: bool = false
+var on_finished: Callable = Callable()
 
 # UI nodes
 var queue_label: RichTextLabel
@@ -408,6 +409,8 @@ func _playback() -> void:
 		views[id].set_active(cur != null and cur.id == id)
 	if battle.state != "ongoing":
 		_show_result()
+		if on_finished.is_valid():
+			on_finished.call(battle)
 	elif cur != null and cur.side == "hero":
 		_show_move_range(cur)
 		if auto:

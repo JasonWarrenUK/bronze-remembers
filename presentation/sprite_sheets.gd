@@ -36,6 +36,17 @@ static func _add(frames: SpriteFrames, name: String, tex: Texture2D, cells: Arra
 		frames.add_frame(name, atlas)
 
 
+## A single 16x16 texture shown at 2x for objects on the field.
+static func build_static(path: String) -> SpriteFrames:
+	var tex: Texture2D = load(path)
+	var frames := SpriteFrames.new()
+	frames.remove_animation("default")
+	for name in ["idle_down", "idle_left", "idle_right", "idle_up", "walk_down", "walk_left", "walk_right", "walk_up", "attack_down", "attack_left", "attack_right", "attack_up", "downed"]:
+		frames.add_animation(name)
+		frames.add_frame(name, tex)
+	return frames
+
+
 static func facing_name(dir: Vector2i) -> String:
 	if dir == Vector2i(0, -1):
 		return "up"

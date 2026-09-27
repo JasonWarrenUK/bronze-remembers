@@ -7,6 +7,7 @@ const SHEETS := {
 	"spear": "res://art/sheets/spear-mapped.png", "sling": "res://art/sheets/sling-mapped.png", "shield": "res://art/sheets/shield-mapped.png",
 	"outlaw_spear": "res://art/sheets/outlaw-spear-mapped.png", "outlaw_slinger": "res://art/sheets/outlaw-slinger-mapped.png", "officer": "res://art/sheets/officer-mapped.png",
 	"jointed": "res://art/sheets/jointed-mapped.png", "drowned": "res://art/sheets/drowned-mapped.png", "tidecaller": "res://art/sheets/tidecaller-mapped.png",
+	"jointed_bronzed": "res://art/sheets/jointed-mapped.png", "tablets": "res://art/tiles/rubble.png",
 }
 
 var unit_id: int
@@ -33,7 +34,10 @@ func setup(u: SimUnit, palette: Dictionary) -> void:
 	ring.visible = false
 	add_child(ring)
 	sprite = AnimatedSprite2D.new()
-	sprite.sprite_frames = SpriteSheets.build(SHEETS[u.kind])
+	if u.inert:
+		sprite.sprite_frames = SpriteSheets.build_static(SHEETS[u.kind])
+	else:
+		sprite.sprite_frames = SpriteSheets.build(SHEETS[u.kind])
 	sprite.centered = true
 	sprite.position = Vector2(0, -4)
 	sprite.play("idle_down")

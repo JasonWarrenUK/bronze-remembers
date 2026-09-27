@@ -17,10 +17,10 @@
 
 ## Presentation
 
-- [ ] 8. Map scene: region, roads, nodes, squad marker, travel with days, fog
-- [ ] 9. Node screens: city (writ conscription, market), scribal (testimony), rest, Smiths (fitting), drowned town, event
-- [ ] 10. Battle handoff: map to battle scene and back with results applied
-- [ ] 11. Run result and Chronicle stub screen; save and load from the launcher
+- [x] 8. Map scene: region, roads, nodes, squad marker, travel with days, fog
+- [x] 9. Node screens: city (writ conscription, market), scribal (testimony), rest, Smiths (fitting), drowned town, event
+- [x] 10. Battle handoff: map to battle scene and back with results applied
+- [x] 11. Run result and Chronicle stub screen; save from the map, load with --load (launcher button later)
 
 ## Art
 
