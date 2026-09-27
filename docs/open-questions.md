@@ -10,13 +10,13 @@
 | # | Question | Section | Raised |
 |---|---|---|---|
 | 1 | Wards: frequency, how they travel, whether they fight. Deferred by Jason as rare | 2 | 2026-09-26 |
-| 2 | Ambition list: only five examples exist. Need the full set and how each generates its final node | 3 | 2026-09-26 |
+| 2 | Ambition list: first run's ambition answered 2026-09-27 (`design.md` section 15); full set still open | 3 | 2026-09-26 |
 | 3 | Institution end states: two or three per institution, none authored yet | 5 | 2026-09-27 |
 | 4 | Seat recipes: the dozens of authored recipes and which unlock later | 7 | 2026-09-27 |
 | 5 | Trait pools per origin and the non-injury trait list | 8 | 2026-09-27 |
 | 6 | Class list, promotion trees, multiclass prerequisites and the Register unlock tree | 1, 8 | 2026-09-26 |
-| 7 | Graft catalogue: types per source, ability, cost, sprite layer | 1 | 2026-09-26 |
-| 8 | Scar and quirk catalogue with trade-offs | 1 | 2026-09-26 |
+| 7 | Graft catalogue: bronze (four) answered 2026-09-27, section 15; Sea joints and Temple marks open | 1 | 2026-09-26 |
+| 8 | Scar catalogue: seven answered 2026-09-27, section 15; quirks open | 1 | 2026-09-26 |
 | 9 | Fixation list and resolution rules | 1 | 2026-09-26 |
 | 10 | Bond types, how they form, what each unlocks | 1 | 2026-09-26 |
 | 11 | Grudges: what a grudge does mechanically when its scene arrives | 2 | 2026-09-26 |

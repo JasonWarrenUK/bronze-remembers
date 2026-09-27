@@ -479,3 +479,42 @@ The slice builds Spear, Sling and Shield. Gear is never a weapon: class identity
 | Bronze bracers | Parry: the next adjacent attack against you this round deals half | 2 |
 
 The slice ships greaves, corselet and bracers.
+
+## 15. First run: the ambition
+
+Agreed 2026-09-27. The first run ships one ambition, **Carry the archive out**, three chapters:
+
+| Chapter | Milestone node | Battle objective |
+|---|---|---|
+| 1 | Reach the scribal city and take the tablets under writ | Kill all: the city's outlaw problem, the price of the tablets |
+| 2 | Escort the tablets through outlaw roads to the river crossing | Protect the object: the tablets on the field |
+| 3 | Reach the harbour before the tide takes it | Survive the waves until the ship is ready |
+
+A chapter milestone is reaching a node (often a city, not always) and then fulfilling a battle objective at a landmark on that node's road; the battle is the chapter's climax. The run ends with a result screen (outcome, downings, deeds testified and unrecorded) plus a Chronicle stub: a short generated paragraph in the setting's voice. The Chronicle proper arrives in phase 4.
+
+### Bronze grafts for the first run
+
+A severe injury names a location from the attacker and the overkill. The hero cannot fight until fitted at a Smiths' node, where the Smiths offer one or two types for that location, filtered by origin and class, and name the mould debt. The player picks or refuses; refusing means the hero leaves the run.
+
+**Why refuse: the meta cost of bronze.** Every graft fitted steps the Smiths' arc toward their hostile branch and, through them, feeds the Sea track: a Register that grafts freely arms the thing that ends it. And the remade are outside kin: a grafted hero loses guest-right at their origin city and kin nodes, and each graft nudges Custom down. The hearth does not feed bronze. Refusing keeps the Smiths weaker and the hearth open, at the price of a hero.
+
+| Graft | Replaces on the sprite | Ability | Cost |
+|---|---|---|---|
+| Bronze arm | Arm | Basic attack becomes Cast Blow: damage 4, adjacent only. Cannot use Sling | Speed minus 1; the Smiths hold the mould |
+| Bronze leg | Leg | Adds Stamp: end your move to Bind every adjacent enemy for a turn | Cannot enter water or tide, ever |
+| Bronze jaw | Jaw | Adds Unyielding: Dread and Wound cannot be applied | Cannot testify or speak for the squad in events; Tongue mismatch with every recruit |
+| Bronze ribs | Torso | Permanent Stand: cannot be pushed, pulled or dragged | Max HP minus 2; each further downing draws one step harsher |
+
+### Scars for the first run
+
+A downing that draws scar picks one by damage source and location. Every scar is a trade-off.
+
+| Scar | Trade-off |
+|---|---|
+| Crushed hand | Reach minus 1 on line attacks; a free Parry each round |
+| Torn ear | Cannot be Bound; Dread lasts one turn longer |
+| Broken nose | Speed plus 1; max HP minus 1 |
+| Salt-scarred lungs (sea-thing) | Immune to tide exposure; move minus 1 |
+| Lamed | Move minus 1; ends every move facing the nearest enemy, so Brace and Sweep point right |
+| Shield-shoulder | Adjacent allies take 1 less from the front; this hero takes 1 more from behind |
+| Bitten (sea-thing) | Wound lasts one turn longer; plus 1 damage to sea-things |
