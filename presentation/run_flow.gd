@@ -76,6 +76,11 @@ func _on_action(action: String, payload: Dictionary) -> void:
 			run.fit_graft(run.squad[payload["hero"]], payload["graft"])
 		"refuse":
 			run.refuse_graft(run.squad[payload["hero"]])
+		"choose":
+			run.choose(payload["option"])
+			if run.pending_fight != "":
+				_start_battle(run.road_battle(), false)
+				return
 		"save":
 			run.save(SAVE_PATH)
 			run._log("Saved.")
@@ -104,8 +109,6 @@ func _start_battle(b: SimBattle, milestone: bool) -> void:
 
 func _on_battle_finished(b: SimBattle) -> void:
 	var report := run.apply_battle(b, pending_milestone)
-	if not pending_milestone:
-		run.node()["cleared"] = true
 	await get_tree().create_timer(1.2 if auto else 2.5).timeout
 	_show_map()
 
@@ -167,11 +170,14 @@ func _auto_step() -> void:
 			map.refresh()
 			call_deferred("_auto_step")
 			return
+	if not run.pending_event.is_empty():
+		run.choose(0)
+		map.refresh()
+	if run.pending_fight != "":
+		_start_battle(run.road_battle(), false)
+		return
 	if run.milestone_reached:
 		_start_battle(run.milestone_battle(), true)
-		return
-	if n["kind"] == "battle" and not n.get("cleared", false):
-		_start_battle(run.road_battle(), false)
 		return
 	if n["kind"] == "rest" or n["kind"] == "city":
 		run.rest()

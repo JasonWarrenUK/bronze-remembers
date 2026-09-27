@@ -16,7 +16,12 @@ var at: String                      # node id
 var visited: Dictionary = {}
 var squad: Array = []               # hero records
 var deeds: Array = []               # {text, significance, day, node, recorded}
-var writ: Dictionary = {"issued_by": "kessuwat", "reports_due": [], "outlaw": false}
+var writ: Dictionary = {"issued_by": "kessuwat", "report_due": 6, "outlaw": false, "reports": 0}
+var season: Dictionary = {}
+var flooded: bool = false
+var revealed: Dictionary = {}       # node ids revealed by events
+var pending_event: Dictionary = {}  # event awaiting a choice at this node
+var pending_fight: String = ""      # family of a fight forced by an event or a landmark
 var tablets: bool = false
 var log: Array = []
 var state: String = "ongoing"       # ongoing | won | lost
@@ -29,6 +34,8 @@ func _init(seed_: int = 1, ambition_key: String = "archive") -> void:
 	rng = SimRng.new(seed_)
 	world = WorldGen.generate(seed_)
 	ambition = SimData.load_json("ambitions")[ambition_key]
+	season = SimData.load_json("world")["season"]
+	writ["report_due"] = int(season["report_every"])
 	at = "kessuwat"
 	visited[at] = true
 	_log("Mustered at %s under writ. The archive at Tarhuna is named." % world["nodes"][at]["name"])
@@ -85,15 +92,87 @@ func travel_to(id: String) -> bool:
 				h["alive"] = false
 				_log("%s died on the road of an untreated wound." % h["name"])
 	_log("Day %d: reached %s." % [day, node()["name"]])
-	if node()["kind"] == "city" and writ["reports_due"].size() > 0:
-		writ["reports_due"] = []
-		_log("Report made at %s." % node()["name"])
-	for r in writ["reports_due"]:
-		if r["day"] < day:
-			writ["outlaw"] = true
-			_log("A report went unmade. The squad is outlaw to the Palace.")
+	var n := node()
+	# The writ: a report is owed at a walled city by the due day.
+	if n["kind"] == "city" and n["flags"].get("walled", false) and not writ["outlaw"]:
+		writ["reports"] += 1
+		writ["report_due"] = day + int(season["report_every"])
+		_log("Report made at %s. The next is owed by day %d." % [n["name"], writ["report_due"]])
+	elif day > int(writ["report_due"]) and not writ["outlaw"]:
+		writ["outlaw"] = true
+		_log("A report went unmade. The squad is outlaw to the Palace: the gates are shut to it.")
+	# The season: the tide floods the Drowned Mile, the ship sails.
+	if not flooded and day >= int(season["tide_floods"]):
+		flooded = true
+		_log("Word comes up the road: the tide has taken the Drowned Mile.")
+	if day > int(season["ship_sails"]) and state == "ongoing":
+		state = "lost"
+		_log("The ship has sailed from Lower Ugra. The archive stays.")
+		return true
+	# Landmarks host their own kind of fight; events wait for a choice.
+	pending_fight = ""
+	pending_event = {}
 	_check_milestone()
+	if n["kind"] == "landmark" and not n.get("cleared", false) and not milestone_reached:
+		var fam: String = SimData.load_json("world")["landmark_fights"].get(n.get("landmark", ""), "none")
+		if fam != "none":
+			pending_fight = fam
+	if n["kind"] == "drowned_town" and flooded and not n.get("cleared", false):
+		pending_fight = "sea"
+	if n["kind"] == "battle" and not n.get("cleared", false):
+		pending_fight = "levies"
+	if n["kind"] == "event" and not n.get("cleared", false):
+		pending_event = _draw_event()
 	return true
+
+
+func _draw_event() -> Dictionary:
+	var events: Dictionary = SimData.load_json("events")
+	var keys: Array = events.keys()
+	var key: String = keys[rng.range_int(0, keys.size() - 1)]
+	var e: Dictionary = events[key].duplicate(true)
+	e["key"] = key
+	return e
+
+
+## Resolves the pending event with option index. May set pending_fight.
+func choose(option: int) -> Dictionary:
+	if pending_event.is_empty():
+		return {}
+	var opt: Dictionary = pending_event["options"][option]
+	var fx: Dictionary = opt["effects"]
+	var n := node()
+	n["cleared"] = true
+	_log("%s: %s." % [pending_event["name"], opt["label"]])
+	if fx.has("days"):
+		day += int(fx["days"])
+	if fx.has("heal"):
+		for h in fighters():
+			h["hp"] = mini(h["max_hp"], h["hp"] + int(fx["heal"]))
+	if fx.has("deed"):
+		_deed(fx["deed"][0], int(fx["deed"][1]), {"deeds": []})
+	if fx.has("report_extend"):
+		writ["report_due"] = int(writ["report_due"]) + int(fx["report_extend"])
+	if fx.has("reveal"):
+		var count := 0
+		for id in world["nodes"]:
+			if not visited.has(id) and not revealed.has(id) and count < int(fx["reveal"]):
+				revealed[id] = true
+				count += 1
+	if fx.has("tablet_carried"):
+		_deed("Carried a stranger's tablet to the scribes", 1, {"deeds": []})
+	if fx.has("fit_on_road"):
+		for h in squad:
+			if h["alive"] and h["injury"].get("severity", "") == "severe":
+				var grafts: Dictionary = SimData.load_json("grafts")
+				for key in grafts:
+					if grafts[key]["location"] == h["injury"]["location"] and not grafts[key].get("forbids_class", []).has(h["kind"]):
+						fit_graft(h, key)
+						break
+	if fx.has("fight"):
+		pending_fight = fx["fight"]
+	pending_event = {}
+	return fx
 
 
 func _check_milestone() -> void:
@@ -112,9 +191,7 @@ func milestone_battle() -> SimBattle:
 
 ## A road battle at a battle node.
 func road_battle() -> SimBattle:
-	var families := ["levies"]
-	if node().get("landmark", "") == "tide_road" or node()["kind"] == "drowned_town":
-		families = ["sea"]
+	var families := [pending_fight if pending_fight != "" else "levies"]
 	return Encounters.build(self, node(), {"type": "kill_all"}, families, false, true)
 
 
@@ -173,6 +250,9 @@ func apply_battle(b: SimBattle, milestone: bool) -> Dictionary:
 			tablets = false
 			_log("The tablets are lost to the water.")
 			state = "lost"
+	if not milestone:
+		node()["cleared"] = true
+		pending_fight = ""
 	if fighters().is_empty():
 		state = "lost"
 		_log("Nobody left standing.")
@@ -201,8 +281,12 @@ func _scribal_within(days: int) -> bool:
 
 
 ## Channel 2: visiting a scribal node records every queued deed.
+func gates_shut() -> bool:
+	return writ["outlaw"] and node()["kind"] == "city" and node()["flags"].get("walled", false)
+
+
 func testify() -> int:
-	if not node()["flags"].get("scribal", false):
+	if not node()["flags"].get("scribal", false) or gates_shut():
 		return 0
 	var n := 0
 	for d in deeds:
@@ -245,7 +329,7 @@ func _pick_location(by: String, overkill: int) -> String:
 
 ## Grafts the Smiths will offer this hero here: one or two for the injury's location.
 func graft_offers(h: Dictionary) -> Array:
-	if node()["flags"].get("smiths", false) == false or h["injury"].get("severity", "") != "severe":
+	if node()["flags"].get("smiths", false) == false or h["injury"].get("severity", "") != "severe" or gates_shut():
 		return []
 	var out: Array = []
 	var grafts: Dictionary = SimData.load_json("grafts")
@@ -273,10 +357,18 @@ func refuse_graft(h: Dictionary) -> void:
 func rest() -> void:
 	if node()["kind"] != "rest" and node()["kind"] != "city":
 		return
-	for h in fighters():
-		h["hp"] = h["max_hp"]
+	if gates_shut():
+		_log("The gates of %s are shut to outlaws. A night outside heals little." % node()["name"])
+		for h in fighters():
+			h["hp"] = mini(h["max_hp"], h["hp"] + 2)
+	else:
+		for h in fighters():
+			h["hp"] = h["max_hp"]
 	day += 1
-	_log("Rested a day at %s." % node()["name"])
+	_log("Rested a day at %s. Day %d of %d." % [node()["name"], day, int(season["days"])])
+	if day > int(season["ship_sails"]) and state == "ongoing":
+		state = "lost"
+		_log("The ship has sailed from Lower Ugra. The archive stays.")
 
 
 # ---------------------------------------------------------------- save, load, chronicle
@@ -285,8 +377,17 @@ func to_dict() -> Dictionary:
 	return {
 		"seed": seed, "rng_state": rng.state(), "chapter": chapter, "day": day, "at": at, "visited": visited,
 		"squad": squad, "deeds": deeds, "writ": writ, "tablets": tablets, "log": log, "state": state,
-		"milestone_reached": milestone_reached,
+		"milestone_reached": milestone_reached, "flooded": flooded, "revealed": revealed, "pending_fight": pending_fight,
+		"cleared": _cleared_ids(),
 	}
+
+
+func _cleared_ids() -> Array:
+	var out: Array = []
+	for id in world["nodes"]:
+		if world["nodes"][id].get("cleared", false):
+			out.append(id)
+	return out
 
 
 func save(path: String) -> bool:
@@ -316,6 +417,11 @@ static func load_from(path: String) -> Run:
 	r.log = d["log"]
 	r.state = d["state"]
 	r.milestone_reached = d["milestone_reached"]
+	r.flooded = d.get("flooded", false)
+	r.revealed = d.get("revealed", {})
+	r.pending_fight = d.get("pending_fight", "")
+	for id in d.get("cleared", []):
+		r.world["nodes"][id]["cleared"] = true
 	return r
 
 

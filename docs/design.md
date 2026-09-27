@@ -518,3 +518,15 @@ A downing that draws scar picks one by damage source and location. Every scar is
 | Lamed | Move minus 1; ends every move facing the nearest enemy, so Brace and Sweep point right |
 | Shield-shoulder | Adjacent allies take 1 less from the front; this hero takes 1 more from behind |
 | Bitten (sea-thing) | Wound lasts one turn longer; plus 1 damage to sea-things |
+
+### Pressures on the road (added 2026-09-27 after the first playthrough read as free)
+
+Numbers are first-run defaults for tuning in play.
+
+| Pressure | Rule |
+|---|---|
+| The writ's report | A report is owed at a walled city every six days. Missed, the squad is outlaw: walled cities shut their gates, so no full rest, no testimony and no Smiths inside walls until a report is made at an unwalled city or by a judgement event |
+| The season | The run has 24 days. The ship at Lower Ugra sails on day 24, and the run is lost after that. The Drowned Mile floods on day 18: after it, Kinza-under-water hosts a sea fight |
+| Landmarks fight | A ford or a pass hosts levies, a marsh or tide road hosts sea-things, a tomb hosts nothing. The fight cannot be walked past. A landmark that is also a chapter milestone hosts only the milestone fight |
+| Events hold the squad | An event node presents a two-way choice before travel continues: fix the cart (a day, healing, a deed) or walk on; go up to the smoke under the writ (a fight, a deed) or keep to the road; read the tablet (reveal two nodes) or carry it; judge the goat (report deadline extended) or take the hearth's thanks (healing); let the road smith cast (a graft now, the Smiths' arc steps) or send him on |
+| Rest costs | A day, counted against the season and the report |

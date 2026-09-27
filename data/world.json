@@ -164,5 +164,18 @@
 		],
 		"at": 1,
 		"name": "Kinza-under-water"
+	},
+	"season": {
+		"days": 24,
+		"ship_sails": 24,
+		"tide_floods": 18,
+		"report_every": 6
+	},
+	"landmark_fights": {
+		"ford": "levies",
+		"pass": "levies",
+		"marsh": "sea",
+		"tide_road": "sea",
+		"tomb": "none"
 	}
 }

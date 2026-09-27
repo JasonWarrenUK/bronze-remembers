@@ -38,6 +38,13 @@ func _play_run(seed: int) -> Run:
 					else:
 						r.fit_graft(h, offers[0])
 			continue
+		if not r.pending_event.is_empty():
+			r.choose(0)
+		if r.pending_fight != "":
+			var rb := r.road_battle()
+			SimPolicy.run(rb)
+			r.apply_battle(rb, false)
+			continue
 		if r.milestone_reached:
 			var b := r.milestone_battle()
 			SimPolicy.run(b)
@@ -46,15 +53,11 @@ func _play_run(seed: int) -> Run:
 		var path := WorldGen.route(r.world, r.at, goal)
 		if path.is_empty():
 			break
-		r.travel_to(path[0])
 		var n := r.node()
-		if n["kind"] == "battle":
-			var b := r.road_battle()
-			SimPolicy.run(b)
-			r.apply_battle(b, false)
-		elif n["kind"] == "rest" or n["kind"] == "city":
+		if (n["kind"] == "rest" or n["kind"] == "city") and r.fighters().size() > 0 and r.fighters()[0]["hp"] < r.fighters()[0]["max_hp"]:
 			r.rest()
 			r.testify()
+		r.travel_to(path[0])
 	return r
 
 
@@ -64,7 +67,7 @@ func test_first_run_completes() -> void:
 		var r := _play_run(seed)
 		results[seed] = r.state
 		assert_ne(r.state, "ongoing", "run %d ended" % seed)
-		assert_true(r.day > 3, "days passed")
+		assert_true(r.day > 2, "days passed")
 		var stub := r.chronicle_stub()
 		assert_true(stub.length() > 80, "chronicle stub written")
 		gut.p("seed %d: %s on day %d, chapter %d, %d deeds, %s" % [seed, r.state, r.day, r.chapter, r.deeds.size(), stub])

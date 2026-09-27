@@ -60,6 +60,8 @@ func refresh() -> void:
 		c.queue_free()
 	var seen := run.visited
 	var adjacent := {}
+	for id in run.revealed:
+		adjacent[id] = true
 	for n in run.options():
 		adjacent[n["id"]] = true
 	for e in run.world["edges"]:
@@ -163,7 +165,9 @@ func _build_ui() -> void:
 func _refresh_ui() -> void:
 	var n := run.node()
 	var ch: Dictionary = run.ambition["chapters"][mini(run.chapter, run.ambition["chapters"].size()) - 1]
-	info.text = "[b]Day %d[/b]  chapter %d\n%s\n[color=#%s]%s[/color]\n\n%s" % [run.day, run.chapter, n["name"], palette["ink_muted"].to_html(false), n["kind"], ch["title"]]
+	var writ_line := "Outlaw: the gates are shut" if run.writ["outlaw"] else "Report owed by day %d" % int(run.writ["report_due"])
+	var season_line := "Ship sails day %d%s" % [int(run.season["ship_sails"]), ", the Mile is flooded" if run.flooded else ""]
+	info.text = "[b]Day %d of %d[/b]  chapter %d\n%s\n[color=#%s]%s\n%s\n%s[/color]\n%s" % [run.day, int(run.season["days"]), run.chapter, n["name"], palette["ink_muted"].to_html(false), n["kind"], writ_line, season_line, ch["title"]]
 	var sq := ""
 	for h in run.squad:
 		var status := ""
@@ -180,12 +184,25 @@ func _refresh_ui() -> void:
 	if run.state != "ongoing":
 		_button("Read the tablets", func(): action_requested.emit("result", {}))
 		return
+	# Pending events and fights hold the squad: no travel until resolved.
+	if not run.pending_event.is_empty():
+		var ev: Dictionary = run.pending_event
+		var t := RichTextLabel.new()
+		t.bbcode_enabled = true
+		t.fit_content = true
+		t.custom_minimum_size = Vector2(228, 40)
+		t.add_theme_color_override("default_color", palette["ink"])
+		t.text = "[b]%s[/b]\n%s" % [ev["name"], ev["text"]]
+		actions.add_child(t)
+		for i in range(ev["options"].size()):
+			_button(ev["options"][i]["label"], func(): action_requested.emit("choose", {"option": i}))
+		return
+	if run.pending_fight != "":
+		_button("Fight: %s hold the %s" % ["sea-things" if run.pending_fight == "sea" else "outlaws", n["kind"]], func(): action_requested.emit("road_battle", {}))
+		return
 	if run.milestone_reached:
 		_button("Face the chapter: " + ch["title"], func(): action_requested.emit("milestone", {}))
 	match n["kind"]:
-		"battle":
-			if not run.node().get("cleared", false):
-				_button("Fight", func(): action_requested.emit("road_battle", {}))
 		"rest":
 			_button("Rest a day", func(): action_requested.emit("rest", {}))
 		"city":
