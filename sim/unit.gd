@@ -27,6 +27,21 @@ var downed: bool = false
 var overkill: int = 0
 var downed_by: String = ""
 var ink: int = 0
+var inert: bool = false            # objects on the field: never act, can be attacked
+var scars: Array = []
+var grafts: Array = []
+var immune: Array = []             # condition names that cannot be applied
+var longer: Dictionary = {}        # condition -> extra turns
+var reach_delta: int = 0
+var no_water: bool = false
+var free_parry: bool = false
+var face_nearest: bool = false
+var shield_shoulder: bool = false
+var bonus_vs: Dictionary = {}      # family -> extra damage
+var permanent_stand: bool = false
+var downing_severity: int = 0
+var tide_immune: bool = false
+var mute: bool = false
 
 
 static func hero(id_: int, kind_: String, pos_: Vector2i, gear_key: String = "") -> SimUnit:
@@ -46,6 +61,61 @@ static func hero(id_: int, kind_: String, pos_: Vector2i, gear_key: String = "")
 	if gear_key != "":
 		u.gear_ability = SimData.gear()[gear_key]["ability"]
 	return u
+
+
+static func object(id_: int, kind_: String, pos_: Vector2i) -> SimUnit:
+	var d: Dictionary = SimData.units()["enemies"][kind_]
+	var u := SimUnit.new()
+	u.id = id_
+	u.side = "hero"
+	u.kind = kind_
+	u.name = d["name"]
+	u.pos = pos_
+	u.max_hp = d["hp"]
+	u.hp = u.max_hp
+	u.family = d["family"]
+	u.inert = true
+	return u
+
+
+## Applies a scar's modifiers from data/scars.json.
+func apply_scar(key: String) -> void:
+	var d: Dictionary = SimData.load_json("scars")[key]
+	scars.append(key)
+	speed += int(d.get("speed", 0))
+	move += int(d.get("move", 0))
+	max_hp += int(d.get("max_hp", 0))
+	hp = mini(hp, max_hp)
+	reach_delta += int(d.get("reach", 0))
+	for c in d.get("immune", []):
+		immune.append(c)
+	for c in d.get("longer", {}):
+		longer[c] = longer.get(c, 0) + int(d["longer"][c])
+	free_parry = free_parry or d.get("free_parry", false)
+	face_nearest = face_nearest or d.get("face_nearest", false)
+	shield_shoulder = shield_shoulder or d.get("shield_shoulder", false)
+	tide_immune = tide_immune or d.get("tide_immune", false)
+	for f in d.get("bonus_vs", {}):
+		bonus_vs[f] = bonus_vs.get(f, 0) + int(d["bonus_vs"][f])
+
+
+## Applies a graft from data/grafts.json.
+func apply_graft(key: String) -> void:
+	var d: Dictionary = SimData.load_json("grafts")[key]
+	grafts.append(key)
+	speed += int(d.get("speed", 0))
+	max_hp += int(d.get("max_hp", 0))
+	hp = mini(hp, max_hp)
+	if d.has("basic"):
+		basic = d["basic"]
+	if d.has("adds"):
+		abilities.append(d["adds"])
+	for c in d.get("immune", []):
+		immune.append(c)
+	no_water = no_water or d.get("no_water", false)
+	permanent_stand = permanent_stand or d.get("stand", false)
+	downing_severity += int(d.get("downing_severity", 0))
+	mute = mute or d.get("mute", false)
 
 
 static func enemy(id_: int, kind_: String, pos_: Vector2i) -> SimUnit:
@@ -97,7 +167,7 @@ func tick_conditions() -> void:
 
 func to_dict() -> Dictionary:
 	return {
-		"id": id, "side": side, "kind": kind, "name": name,
+		"id": id, "side": side, "kind": kind, "name": name, "inert": inert, "scars": scars.duplicate(), "grafts": grafts.duplicate(),
 		"pos": [pos.x, pos.y], "hp": hp, "max_hp": max_hp, "speed": speed,
 		"downed": downed, "conditions": conditions.duplicate(), "cooldowns": cooldowns.duplicate(),
 		"flags": flags.keys(),

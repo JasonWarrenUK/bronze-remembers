@@ -40,6 +40,13 @@ func add_hero(kind: String, pos: Vector2i, gear: String = "") -> SimUnit:
 	return u
 
 
+func add_object(kind: String, pos: Vector2i) -> SimUnit:
+	var u := SimUnit.object(_next_id, kind, pos)
+	_next_id += 1
+	units.append(u)
+	return u
+
+
 func add_enemy(kind: String, pos: Vector2i) -> SimUnit:
 	var u := SimUnit.enemy(_next_id, kind, pos)
 	_next_id += 1
@@ -50,7 +57,7 @@ func add_enemy(kind: String, pos: Vector2i) -> SimUnit:
 
 func _ensure_deck(kind: String, u: SimUnit) -> void:
 	var key := u.deck
-	if deck_state.has(key):
+	if key == "" or deck_state.has(key):
 		return
 	var cards_data: Array = SimData.decks()[key].duplicate(true)
 	deck_state[key] = {"draw": _shuffled(cards_data), "discard": []}
@@ -91,7 +98,16 @@ func unit_at(p: Vector2i) -> SimUnit:
 func heroes(alive_only: bool = true) -> Array[SimUnit]:
 	var out: Array[SimUnit] = []
 	for u in units:
-		if u.side == "hero" and (not alive_only or not u.downed):
+		if u.side == "hero" and not u.inert and (not alive_only or not u.downed):
+			out.append(u)
+	return out
+
+
+## Everything on the hero side an enemy may attack, objects included.
+func targets() -> Array[SimUnit]:
+	var out: Array[SimUnit] = []
+	for u in units:
+		if u.side == "hero" and not u.downed:
 			out.append(u)
 	return out
 
@@ -141,6 +157,12 @@ func movable_tiles(u: SimUnit) -> Dictionary:
 	var points := u.move
 	if turn.get("stride", false) and u.side == "hero":
 		points += 1
+	if u.no_water:
+		for y in grid.height:
+			for x in grid.width:
+				var p := Vector2i(x, y)
+				if grid.is_water(p):
+					blocked[p] = true
 	return grid.reachable(u.pos, points, blocked, slow_tiles())
 
 
@@ -164,8 +186,12 @@ func start_round() -> void:
 	# Build the queue.
 	queue.clear()
 	for u in units:
-		if u.downed:
+		if u.downed or u.inert:
 			continue
+		if u.free_parry:
+			u.flags["parry"] = true
+		if u.permanent_stand:
+			u.flags["stand"] = true
 		var init: int
 		if u.side == "hero":
 			init = HERO_INIT_BASE - u.speed * 20
@@ -279,6 +305,17 @@ func _check_state() -> void:
 			var target := unit_by_id(objective["unit"])
 			if target != null and target.downed:
 				state = "won"
+		"protect":
+			for u in units:
+				if u.inert and u.downed:
+					state = "lost"
+					emit("battle_end", {"result": "lost", "reason": "object_destroyed"})
+					return
+			if round > objective["turns"]:
+				state = "won"
+		"survive":
+			if round > objective["turns"]:
+				state = "won"
 	if state == "won":
 		emit("battle_end", {"result": "won"})
 
@@ -297,6 +334,18 @@ func hero_move(u: SimUnit, to: Vector2i) -> bool:
 	var route := grid.path(from, to, blocked, slow_tiles())
 	_relocate(u, to, route)
 	turn["moved"] = true
+	if u.face_nearest:
+		var nearest: SimUnit = null
+		var best := 999
+		for e in enemies():
+			var d := SimGrid.distance(u.pos, e.pos)
+			if d < best:
+				best = d
+				nearest = e
+		if nearest != null:
+			u.facing = (nearest.pos - u.pos).sign()
+			if u.facing.x != 0 and u.facing.y != 0:
+				u.facing = Vector2i(u.facing.x, 0)
 	_check_brace_overwatch(u)
 	_exposure(u)
 	return true
@@ -347,6 +396,12 @@ func hero_act(u: SimUnit, key: String, target: Vector2i) -> bool:
 		"parry":
 			u.flags["parry"] = true
 			ok = true
+		"stamp":
+			for q in grid.neighbours(u.pos):
+				var t := unit_at(q)
+				if t != null and t.side == "enemy":
+					_apply_condition(t, "bound", 1, u)
+			ok = true
 		"arc":
 			var hit_any := false
 			for p in SimGrid.front_arc(u.pos, u.facing):
@@ -373,12 +428,14 @@ func _hero_attack(u: SimUnit, a: Dictionary, key: String, target: Vector2i) -> b
 		return false
 	var d := SimGrid.distance(u.pos, target)
 	var r: Array = a["range"]
-	if d < r[0] or d > r[1]:
+	var max_r: int = r[1] + (u.reach_delta if a.get("line", false) else 0)
+	if d < r[0] or d > max_r:
 		return false
 	if a.get("line", false) and not grid.in_line(u.pos, target):
 		return false
 	u.facing = (target - u.pos).sign() if d == 1 or grid.in_line(u.pos, target) else u.facing
-	_damage(t, a["damage"], u, key)
+	var dmg: int = a["damage"] + int(u.bonus_vs.get(t.family, 0))
+	_damage(t, dmg, u, key)
 	if a.has("splash"):
 		for q in grid.neighbours(target):
 			var s := unit_at(q)
@@ -415,6 +472,14 @@ func _damage(t: SimUnit, amount: int, source: SimUnit, cause: String) -> void:
 	var dealt := amount
 	if t.flags.has("shield_line") or t.flags.has("swell") or t.flags.has("hold_road"):
 		dealt = maxi(0, dealt - 1)
+	if source != null and t.side == "hero":
+		var from_dir := (source.pos - t.pos).sign()
+		for ally in heroes():
+			if ally != t and ally.shield_shoulder and SimGrid.distance(ally.pos, t.pos) == 1 and from_dir != -t.facing:
+				dealt = maxi(0, dealt - 1)
+				break
+		if t.shield_shoulder and from_dir == -t.facing:
+			dealt += 1
 	if t.flags.has("parry") and source != null and SimGrid.distance(source.pos, t.pos) == 1:
 		dealt = int(ceil(dealt / 2.0))
 		t.flags.erase("parry")
@@ -429,8 +494,12 @@ func _damage(t: SimUnit, amount: int, source: SimUnit, cause: String) -> void:
 
 
 func _apply_condition(t: SimUnit, cond: String, turns: int, source: SimUnit) -> void:
-	if t.downed:
+	if t.downed or t.inert:
 		return
+	if t.immune.has(cond):
+		emit("condition_resisted", {"unit": t.id, "condition": cond})
+		return
+	turns += int(t.longer.get(cond, 0))
 	t.conditions[cond] = maxi(t.conditions.get(cond, 0), turns)
 	emit("condition", {"unit": t.id, "condition": cond, "turns": turns, "by": source.id if source != null else -1})
 
@@ -494,7 +563,7 @@ func _nearest_water(from: Vector2i) -> Vector2i:
 
 
 func _exposure(u: SimUnit) -> void:
-	if u.side == "hero" and grid.get_tile(u.pos) == SimGrid.Tile.TIDE:
+	if u.side == "hero" and not u.tide_immune and grid.get_tile(u.pos) == SimGrid.Tile.TIDE:
 		u.flags["exposed"] = true
 		emit("exposure", {"unit": u.id, "tile": "tide"})
 
@@ -514,7 +583,7 @@ func _check_brace_overwatch(mover: SimUnit) -> void:
 # ---------------------------------------------------------------- enemy AI
 
 func _profile_focus(e: SimUnit, card: Dictionary) -> SimUnit:
-	var candidates := heroes()
+	var candidates := targets()
 	if candidates.is_empty():
 		return null
 	# Taunt overrides the profile within radius.
@@ -606,7 +675,7 @@ func _enemy_turn(e: SimUnit) -> void:
 		"flee":
 			var f := _profile_focus(e, card)
 			if f != null:
-				_move_away(e, f.pos, e.move + card.get("move", 0))
+				_move_away(e, f.pos, mini(3, e.move + int(card.get("move", 0))))
 			return
 	var focus := _profile_focus(e, card)
 	if focus == null:
@@ -769,7 +838,7 @@ func resolve_downings() -> Array[Dictionary]:
 		var enemy_data: Dictionary = SimData.units()["enemies"].get(h.downed_by, {})
 		if not enemy_data.is_empty():
 			strength = enemy_data["attack"] + (2 if enemy_data.get("named", false) else 0)
-		var severity: int = h.overkill + strength
+		var severity: int = h.overkill + strength + h.downing_severity
 		var weights := {"scar": maxf(1.0, 8.0 - severity), "severe": float(severity), "dead": maxf(0.0, severity - 4.0)}
 		var outcome: String = rng.weighted(weights)
 		out.append({"unit": h.id, "outcome": outcome, "overkill": h.overkill, "by": h.downed_by})

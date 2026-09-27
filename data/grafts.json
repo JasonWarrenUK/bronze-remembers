@@ -1,0 +1,6 @@
+{
+	"bronze_arm":  { "name": "Bronze arm",  "location": "arm",   "source": "smiths", "basic": "cast_blow", "speed": -1, "forbids_class": ["sling"], "text": "The Smiths cast the arm in bronze from the mould of the one it replaced." },
+	"bronze_leg":  { "name": "Bronze leg",  "location": "leg",   "source": "smiths", "adds": "stamp", "no_water": true, "text": "A bronze leg does not float. It never will." },
+	"bronze_jaw":  { "name": "Bronze jaw",  "location": "jaw",   "source": "smiths", "immune": ["dread", "wound"], "mute": true, "text": "The jaw is cast shut around what it used to say." },
+	"bronze_ribs": { "name": "Bronze ribs", "location": "torso", "source": "smiths", "stand": true, "max_hp": -2, "downing_severity": 2, "text": "A cage of bronze where the ribs were. Nothing moves it; nothing in it breathes easily." }
+}

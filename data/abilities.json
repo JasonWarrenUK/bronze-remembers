@@ -93,5 +93,20 @@
 		"kind": "gear",
 		"cooldown": 2,
 		"effect": "parry"
+	},
+	"cast_blow": {
+		"name": "Cast blow",
+		"kind": "basic",
+		"damage": 4,
+		"range": [
+			1,
+			1
+		]
+	},
+	"stamp": {
+		"name": "Stamp",
+		"kind": "class",
+		"cooldown": 3,
+		"effect": "stamp"
 	}
 }

@@ -7,13 +7,13 @@
 
 ## Meta sim (headless, tested)
 
-- [ ] 1. Data: region (cities, roads, landmarks), node types, grafts, scars, ambition milestones
-- [ ] 2. World generation: one region, roads with fixed landmarks and generated fill, day costs, tracks at Whole with one drowned-town node
-- [ ] 3. Run state: squad, days, writ and reports, deeds and testimony (three channels), injuries with the road-kills timer, the tablets object, save and load
-- [ ] 4. Encounters: node to SimBattle config by family and chapter, grafted variant in chapter 3
-- [ ] 5. Injury loop: downing draw applied to heroes, scars as unit modifiers, severe injury and Smiths' fitting with the four bronze grafts, refusal
-- [ ] 6. Chapters: three milestones for Carry the archive out, chapter transitions, run result and Chronicle stub
-- [ ] 7. Journey test: a full run through the meta sim with a policy
+- [x] 1. Data: region (cities, roads, landmarks), node types, grafts, scars, ambition milestones
+- [x] 2. World generation: one region, roads with fixed landmarks and generated fill, day costs, tracks at Whole with one drowned-town node
+- [x] 3. Run state: squad, days, writ and reports, deeds and testimony (three channels), injuries with the road-kills timer, the tablets object, save and load
+- [x] 4. Encounters: node to SimBattle config by family and chapter, grafted variant in chapter 3
+- [x] 5. Injury loop: downing draw applied to heroes, scars as unit modifiers, severe injury and Smiths' fitting with the four bronze grafts, refusal
+- [x] 6. Chapters: three milestones for Carry the archive out, chapter transitions, run result and Chronicle stub
+- [x] 7. Journey test: a full run through the meta sim with a policy
 
 ## Presentation
 

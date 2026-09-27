@@ -1,0 +1,168 @@
+{
+	"region": "Kessuwat",
+	"note": "One city-region for the first run. Positions are map coordinates on a 20x12 world grid.",
+	"cities": {
+		"kessuwat": {
+			"name": "Kessuwat",
+			"pos": [
+				3,
+				3
+			],
+			"capital": true,
+			"walled": true,
+			"smiths": true,
+			"temple": true,
+			"band": "river"
+		},
+		"tarhuna": {
+			"name": "Tarhuna",
+			"pos": [
+				8,
+				2
+			],
+			"scribal": true,
+			"walled": true,
+			"band": "river"
+		},
+		"ashkelu": {
+			"name": "Ashkelu",
+			"pos": [
+				13,
+				5
+			],
+			"walled": true,
+			"temple": true,
+			"band": "river"
+		},
+		"pallanta": {
+			"name": "Pallanta",
+			"pos": [
+				9,
+				8
+			],
+			"smiths": true,
+			"band": "upland"
+		},
+		"ugarit_lo": {
+			"name": "Lower Ugra",
+			"pos": [
+				16,
+				9
+			],
+			"harbour": true,
+			"walled": false,
+			"band": "coast"
+		},
+		"zalpa": {
+			"name": "Zalpa",
+			"pos": [
+				4,
+				9
+			],
+			"band": "coast",
+			"harbour": true
+		}
+	},
+	"roads": [
+		{
+			"a": "kessuwat",
+			"b": "tarhuna",
+			"days": 3,
+			"landmarks": [
+				{
+					"name": "The Kings' Ford",
+					"kind": "ford",
+					"at": 1
+				}
+			]
+		},
+		{
+			"a": "tarhuna",
+			"b": "ashkelu",
+			"days": 3,
+			"landmarks": [
+				{
+					"name": "Tomb of the Sun-Kings",
+					"kind": "tomb",
+					"at": 2
+				}
+			]
+		},
+		{
+			"a": "kessuwat",
+			"b": "pallanta",
+			"days": 3,
+			"landmarks": [
+				{
+					"name": "The Tin Steps",
+					"kind": "pass",
+					"at": 2
+				}
+			]
+		},
+		{
+			"a": "pallanta",
+			"b": "ashkelu",
+			"days": 3,
+			"landmarks": [
+				{
+					"name": "The Salt Crossing",
+					"kind": "ford",
+					"at": 1
+				}
+			]
+		},
+		{
+			"a": "ashkelu",
+			"b": "ugarit_lo",
+			"days": 3,
+			"landmarks": [
+				{
+					"name": "The Drowned Mile",
+					"kind": "tide_road",
+					"at": 2
+				}
+			]
+		},
+		{
+			"a": "kessuwat",
+			"b": "zalpa",
+			"days": 3,
+			"landmarks": [
+				{
+					"name": "Reed Gate",
+					"kind": "marsh",
+					"at": 2
+				}
+			]
+		},
+		{
+			"a": "zalpa",
+			"b": "pallanta",
+			"days": 3,
+			"landmarks": [
+				{
+					"name": "The Goat Path",
+					"kind": "pass",
+					"at": 1
+				}
+			]
+		}
+	],
+	"fill_weights": {
+		"Whole": {
+			"rest": 4,
+			"event": 4,
+			"battle": 2,
+			"market": 1
+		}
+	},
+	"drowned_town": {
+		"road": [
+			"ashkelu",
+			"ugarit_lo"
+		],
+		"at": 1,
+		"name": "Kinza-under-water"
+	}
+}

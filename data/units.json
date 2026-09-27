@@ -108,6 +108,32 @@
 			],
 			"deck": "tidecaller",
 			"named": true
+		},
+		"jointed_bronzed": {
+			"name": "Bronzed jointed",
+			"family": "sea",
+			"hp": 7,
+			"move": 4,
+			"attack": 3,
+			"range": [
+				1,
+				1
+			],
+			"deck": "jointed",
+			"grafted": true
+		},
+		"tablets": {
+			"name": "The tablets",
+			"family": "object",
+			"hp": 6,
+			"move": 0,
+			"attack": 0,
+			"range": [
+				0,
+				0
+			],
+			"deck": "",
+			"inert": true
 		}
 	},
 	"families": {
@@ -116,6 +142,9 @@
 		},
 		"sea": {
 			"focus": "nearest_water"
+		},
+		"object": {
+			"focus": "none"
 		}
 	}
 }
