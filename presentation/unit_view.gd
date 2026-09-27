@@ -17,6 +17,9 @@ var hp_bar: ColorRect
 var hp_fill: ColorRect
 var max_hp: int = 1
 var ring: Polygon2D
+var weapon: Sprite2D
+var weapon_class: String = ""
+const OVERLAY_CLASSES := ["spear", "sling", "shield"]
 
 
 func setup(u: SimUnit, palette: Dictionary) -> void:
@@ -35,6 +38,13 @@ func setup(u: SimUnit, palette: Dictionary) -> void:
 	sprite.position = Vector2(0, -4)
 	sprite.play("idle_down")
 	add_child(sprite)
+	if OVERLAY_CLASSES.has(u.kind):
+		weapon_class = u.kind
+		weapon = Sprite2D.new()
+		weapon.centered = true
+		weapon.position = Vector2(0, -4)
+		add_child(weapon)
+		_update_weapon()
 	hp_bar = ColorRect.new()
 	hp_bar.size = Vector2(24, 3)
 	hp_bar.position = Vector2(-12, 12)
@@ -63,6 +73,16 @@ func set_active(on: bool) -> void:
 func face(dir: Vector2i) -> void:
 	facing = SpriteSheets.facing_name(dir)
 	sprite.play("idle_" + facing)
+	_update_weapon()
+
+
+func _update_weapon() -> void:
+	if weapon == null:
+		return
+	weapon.texture = load("res://art/overlays/%s-%s.png" % [weapon_class, facing])
+	# Behind the body when facing up, in front otherwise.
+	weapon.z_index = -1 if facing == "up" else 1
+	weapon.position = sprite.position
 
 
 ## Walks a path of cells; awaits completion.
@@ -115,8 +135,19 @@ func play_hit(from_dir: Vector2i, damage: int, hp: int, flash_colour: Color) -> 
 	await tw.finished
 
 
+func _process(_delta: float) -> void:
+	if weapon != null:
+		weapon.position = sprite.position
+		weapon.scale = sprite.scale
+		weapon.modulate = sprite.modulate
+		if weapon.texture == null or not weapon.texture.resource_path.ends_with("%s-%s.png" % [weapon_class, facing]):
+			_update_weapon()
+
+
 func play_downed() -> void:
 	sprite.play("downed")
+	if weapon != null:
+		weapon.visible = false
 	hp_bar.visible = false
 	hp_fill.visible = false
 	ring.visible = false

@@ -493,6 +493,8 @@ func _play_hit(ev: Dictionary) -> void:
 		await sv.play_attack(dir, 0.14)
 	# Hit-stop: the world pauses for a few frames on contact.
 	var damage: int = ev["damage"]
+	if DebugApi.user_args.has("trace"):
+		print("TRACE hit frame=%d target=%s damage=%d" % [Engine.get_process_frames(), target.name, damage])
 	var wet: bool = target.family == "sea" or (source != null and source.family == "sea")
 	sfx("hit_wet" if wet else ("hit_bronze" if damage >= 3 else "hit_thud"), randf_range(0.95, 1.05))
 	_spawn_particles(tv.position, dir, damage, palette["sea_accent"] if wet else palette["danger"])

@@ -20,14 +20,14 @@
 
 ## Presentation
 
-- [ ] 11. Battle scene: tiles, unit sprites from mapped sheets, camera, deployment zone
-- [ ] 12. Input: select, move preview, ability targeting, confirm, delay, end turn
-- [ ] 13. Initiative queue and enemy card panel (revealed at round start)
-- [ ] 14. The hit: hit-stop, shake, flash, knockback tween, particles, sound
-- [ ] 15. Result screen with the downing draws and deeds
+- [x] 11. Battle scene: tiles, unit sprites from mapped sheets, camera, deployment zone
+- [x] 12. Input: select, move preview, ability targeting, confirm, delay, end turn
+- [x] 13. Initiative queue and enemy card panel (revealed at round start)
+- [x] 14. The hit: hit-stop, shake, flash, knockback tween, particles, sound
+- [x] 15. Result screen with the downing draws and deeds
 
 ## Art
 
-- [ ] 16. Weapon and shield overlays per class and facing; Jointed second elbow
-- [ ] 17. Tile set: floor, wall, water, tide, rubble in bronze and tide palettes
+- [x] 16. Weapon and shield overlays per class and facing (drawn by rule); Jointed second elbow still to do
+- [x] 17. Tile set: placeholder floor, wall, water, tide, rubble from theme ramps (generated art later)
 - [ ] 18. Index-based colour map in the Aseprite step
