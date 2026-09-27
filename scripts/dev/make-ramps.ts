@@ -42,3 +42,24 @@ for (const family of process.argv.slice(2)) {
 	writeFileSync(`art/palettes/${family}.hex`, all.map((h) => h.slice(1).toLowerCase()).join('\n') + '\n');
 	console.log(`${family}: ${all.length} colours -> art/palettes/${family}.hex`);
 }
+
+// UI palette for the battle scene, from the bronze core's dark variant plus the tide core.
+{
+	const bronze = JSON.parse(readFileSync('.claude/themes/bronze.json', 'utf8')).palette;
+	const tide = JSON.parse(readFileSync('.claude/themes/tide.json', 'utf8')).palette;
+	const ash = JSON.parse(readFileSync('.claude/themes/ash.json', 'utf8')).palette;
+	const ui = {
+		note: 'Emitted by scripts/dev/make-ramps.ts from the theme cores. Do not edit by hand.',
+		surface: bronze.surface.dark, surface_raised: bronze['surface-raised'].dark, line: bronze.line.dark,
+		ink: bronze.ink.dark, ink_muted: bronze['ink-muted'].dark,
+		accent: bronze.accent.dark, accent_ink: bronze['accent-ink'].dark, accent_2: bronze['accent-2'].dark,
+		ok: bronze.ok.dark, warn: bronze.warn.dark, danger: bronze.danger.dark, info: bronze.info.dark,
+		hero_ring: bronze.accent.dark, enemy_ring: ash.accent.dark,
+		hero_hp: bronze.ok.dark, enemy_hp: bronze.danger.dark, bar_back: bronze.line.dark,
+		move_highlight: bronze.info.dark, attack_highlight: bronze.danger.dark, hold_highlight: bronze.warn.dark,
+		flash_hit: bronze.ink.dark, flash_sea: tide.accent.dark,
+		sea_accent: tide.accent.dark, sea_ink: tide.ink.dark,
+	};
+	writeFileSync('data/palette.json', JSON.stringify(ui, null, '\t') + '\n');
+	console.log('data/palette.json written');
+}
