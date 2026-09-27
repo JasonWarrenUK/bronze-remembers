@@ -1,0 +1,13 @@
+# Godot
+.godot/
+*.import
+export_presets.cfg
+.DS_Store
+
+# Art pipeline outputs (regenerable)
+art/raw/
+art/review/
+*.metadata.json
+
+# Test output
+tests/results/

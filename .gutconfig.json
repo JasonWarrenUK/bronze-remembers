@@ -1,0 +1,8 @@
+{
+	"dirs": ["res://tests/unit", "res://tests/journey"],
+	"prefix": "test_",
+	"suffix": ".gd",
+	"include_subdirs": true,
+	"should_exit": true,
+	"junit_xml_file": "tests/results/junit.xml"
+}
