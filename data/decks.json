@@ -1,0 +1,58 @@
+{
+	"outlaw_spear": [
+		{ "name": "Rush",        "init": 15, "move": 2,  "attack": -1 },
+		{ "name": "Brace",       "init": 20, "no_move": true, "special": "brace" },
+		{ "name": "Thrust deep", "init": 35, "attack": 1, "only_range": 2 },
+		{ "name": "Shield line", "init": 40, "move": -1, "special": "shield_line" },
+		{ "name": "Sweep",       "init": 50, "special": "arc" },
+		{ "name": "Advance",     "init": 60, "move": 1 },
+		{ "name": "Close ranks", "init": 70, "special": "close_ranks", "shuffle": true },
+		{ "name": "Hold",        "init": 80, "no_move": true, "special": "unpushable", "shuffle": true }
+	],
+	"outlaw_slinger": [
+		{ "name": "Pot shot",  "init": 15, "move": 1, "attack": -1 },
+		{ "name": "Scatter",   "init": 25, "move": 2, "no_attack": true, "special": "flee" },
+		{ "name": "Fall back", "init": 30, "special": "attack_then_retreat" },
+		{ "name": "Loose",     "init": 45 },
+		{ "name": "Skip",      "init": 55, "special": "splash" },
+		{ "name": "Harry",     "init": 60, "special": "push" },
+		{ "name": "Aim",       "init": 85, "no_move": true, "no_attack": true, "special": "aim", "shuffle": true },
+		{ "name": "Reload",    "init": 95, "no_move": true, "no_attack": true, "shuffle": true }
+	],
+	"officer": [
+		{ "name": "Rally",          "init": 30, "special": "rally" },
+		{ "name": "Order the line", "init": 40, "special": "order_brace" },
+		{ "name": "Cut down",       "init": 45, "attack": 2 },
+		{ "name": "Fall back",      "init": 65, "no_attack": true, "special": "flee" },
+		{ "name": "Hold the road",  "init": 75, "no_move": true, "special": "hold_road" },
+		{ "name": "Press",          "init": 55, "special": "press" }
+	],
+	"jointed": [
+		{ "name": "Surge",      "init": 10,  "move": 2, "special": "drag" },
+		{ "name": "Pull under", "init": 20,  "attack": 2, "only_bound": true },
+		{ "name": "Skitter",    "init": 30,  "move": 2, "no_attack": true },
+		{ "name": "Lurch",      "init": 40,  "move": 1, "attack": 1 },
+		{ "name": "Clutch",     "init": 50,  "attack": 1, "special": "bound" },
+		{ "name": "Rend",       "init": 65,  "special": "wound" },
+		{ "name": "Twist",      "init": 75,  "no_move": true, "special": "arc", "shuffle": true },
+		{ "name": "Recede",     "init": 100, "no_attack": true, "special": "recede", "shuffle": true }
+	],
+	"drowned": [
+		{ "name": "Drown",       "init": 25,  "attack": 2, "only_in_water": true },
+		{ "name": "Sink",        "init": 30,  "no_move": true, "special": "sink" },
+		{ "name": "Grasp",       "init": 45,  "special": "bound" },
+		{ "name": "Shamble",     "init": 60,  "move": 1 },
+		{ "name": "Rising tide", "init": 70,  "no_attack": true, "special": "rising_tide", "shuffle": true },
+		{ "name": "Swell",       "init": 80,  "no_move": true, "special": "swell" },
+		{ "name": "Wail",        "init": 90,  "no_attack": true, "special": "dread", "radius": 2 },
+		{ "name": "Surface",     "init": 100, "no_attack": true, "special": "surface", "shuffle": true }
+	],
+	"tidecaller": [
+		{ "name": "Call",     "init": 35, "no_attack": true, "special": "call_tide" },
+		{ "name": "Chorus",   "init": 50, "no_attack": true, "special": "dread", "radius": 3 },
+		{ "name": "Lash",     "init": 40, "special": "drag" },
+		{ "name": "Submerge", "init": 70, "no_attack": true, "special": "sink_self" },
+		{ "name": "Rise",     "init": 60, "no_attack": true, "special": "rise" },
+		{ "name": "Wake",     "init": 55, "no_attack": true, "special": "wake" }
+	]
+}

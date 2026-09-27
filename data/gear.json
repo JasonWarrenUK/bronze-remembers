@@ -1,0 +1,5 @@
+{
+	"greaves":  { "name": "Bronze greaves", "ability": "stride" },
+	"corselet": { "name": "Scale corselet", "ability": "stand" },
+	"bracers":  { "name": "Bronze bracers", "ability": "parry" }
+}

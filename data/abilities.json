@@ -1,0 +1,14 @@
+{
+	"thrust":    { "name": "Thrust",    "kind": "basic", "damage": 2, "range": [1, 2], "line": true },
+	"loose":     { "name": "Loose",     "kind": "basic", "damage": 2, "range": [2, 5], "ignore_cover_from": 3 },
+	"strike":    { "name": "Strike",    "kind": "basic", "damage": 2, "range": [1, 1] },
+	"brace":     { "name": "Brace",     "kind": "class", "cooldown": 2, "effect": "brace" },
+	"sweep":     { "name": "Sweep",     "kind": "class", "cooldown": 3, "damage": 2, "effect": "arc" },
+	"skip_shot": { "name": "Skip shot", "kind": "class", "cooldown": 3, "damage": 2, "splash": 1, "range": [2, 5] },
+	"harry":     { "name": "Harry",     "kind": "class", "cooldown": 2, "damage": 2, "range": [2, 5], "push": 1 },
+	"wall":      { "name": "Wall",      "kind": "class", "cooldown": 2, "effect": "wall" },
+	"taunt":     { "name": "Taunt",     "kind": "class", "cooldown": 3, "effect": "taunt", "radius": 2 },
+	"stride":    { "name": "Stride",    "kind": "gear",  "cooldown": 2, "effect": "stride" },
+	"stand":     { "name": "Stand",     "kind": "gear",  "cooldown": 4, "effect": "stand" },
+	"parry":     { "name": "Parry",     "kind": "gear",  "cooldown": 2, "effect": "parry" }
+}
