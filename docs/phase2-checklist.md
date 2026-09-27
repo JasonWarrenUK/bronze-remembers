@@ -24,5 +24,5 @@
 
 ## Art
 
-- [ ] 12. Graft overlays on the sprite (arm, leg, jaw, ribs) and scar marks
-- [ ] 13. Map tiles and node icons in the bronze palette
+- [x] 12. Graft overlays on the sprite (arm, leg, jaw, ribs), rule-drawn; scar marks later
+- [x] 13. Map bands, walled-city and harbour icons; generated map art later

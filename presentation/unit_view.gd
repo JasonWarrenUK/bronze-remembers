@@ -20,6 +20,7 @@ var max_hp: int = 1
 var ring: Polygon2D
 var weapon: Sprite2D
 var weapon_class: String = ""
+var graft_sprites: Dictionary = {}   # graft key -> Sprite2D
 const OVERLAY_CLASSES := ["spear", "sling", "shield"]
 
 
@@ -42,6 +43,13 @@ func setup(u: SimUnit, palette: Dictionary) -> void:
 	sprite.position = Vector2(0, -4)
 	sprite.play("idle_down")
 	add_child(sprite)
+	for g in u.grafts:
+		var gs := Sprite2D.new()
+		gs.centered = true
+		gs.position = Vector2(0, -4)
+		gs.z_index = 2
+		add_child(gs)
+		graft_sprites[g] = gs
 	if OVERLAY_CLASSES.has(u.kind):
 		weapon_class = u.kind
 		weapon = Sprite2D.new()
@@ -81,6 +89,10 @@ func face(dir: Vector2i) -> void:
 
 
 func _update_weapon() -> void:
+	for g in graft_sprites:
+		var path := "res://art/overlays/graft-%s-%s.png" % [g, facing]
+		graft_sprites[g].texture = load(path) if ResourceLoader.exists(path) else null
+		graft_sprites[g].position = sprite.position
 	if weapon == null:
 		return
 	weapon.texture = load("res://art/overlays/%s-%s.png" % [weapon_class, facing])
@@ -160,6 +172,10 @@ func play_hit(from_dir: Vector2i, damage: int, hp: int, flash_colour: Color, sil
 
 
 func _process(_delta: float) -> void:
+	for g in graft_sprites:
+		graft_sprites[g].position = sprite.position
+		graft_sprites[g].scale = sprite.scale
+		graft_sprites[g].modulate = sprite.modulate
 	if weapon != null:
 		weapon.position = sprite.position
 		weapon.scale = sprite.scale
@@ -172,6 +188,8 @@ func play_downed() -> void:
 	sprite.play("downed")
 	if weapon != null:
 		weapon.visible = false
+	for g in graft_sprites:
+		graft_sprites[g].visible = false
 	hp_bar.visible = false
 	hp_fill.visible = false
 	ring.visible = false

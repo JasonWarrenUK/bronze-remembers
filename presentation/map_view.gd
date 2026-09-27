@@ -28,6 +28,14 @@ func setup(r: Run, pal: Dictionary, fnt: Font, thm: Theme) -> void:
 	palette = pal
 	font = fnt
 	theme_ui = thm
+	var bands := Node2D.new()
+	add_child(bands)
+	for band in [["upland", 6, 8, palette["line"]], ["coast", 8, 12, palette["sea_accent"]]]:
+		var r := ColorRect.new()
+		r.position = ORIGIN + Vector2(-20, band[1] * SCALE - 15)
+		r.size = Vector2(400, (band[2] - band[1]) * SCALE + 30)
+		r.color = Color(band[3], 0.12)
+		bands.add_child(r)
 	roads_layer = Node2D.new()
 	add_child(roads_layer)
 	nodes_layer = Node2D.new()
@@ -78,6 +86,20 @@ func refresh() -> void:
 		dot.position = node_pos(id)
 		dot.color = _node_colour(n, seen.has(id))
 		nodes_layer.add_child(dot)
+		if n["kind"] == "city" and n["flags"].get("walled", false):
+			var wall := Line2D.new()
+			wall.points = PackedVector2Array([Vector2(-10, -10), Vector2(10, -10), Vector2(10, 10), Vector2(-10, 10), Vector2(-10, -10)])
+			wall.width = 1.5
+			wall.default_color = Color(palette["ink_muted"], 0.8 if seen.has(id) else 0.4)
+			wall.position = node_pos(id)
+			nodes_layer.add_child(wall)
+		if n["kind"] == "city" and n["flags"].get("harbour", false):
+			var anchor := Line2D.new()
+			anchor.points = PackedVector2Array([Vector2(-6, 14), Vector2(6, 14)])
+			anchor.width = 2.0
+			anchor.default_color = palette["sea_accent"]
+			anchor.position = node_pos(id)
+			nodes_layer.add_child(anchor)
 		if n["kind"] == "city" or n["kind"] == "landmark" or n["kind"] == "drowned_town" or adjacent.has(id):
 			var l := Label.new()
 			l.theme = theme_ui
