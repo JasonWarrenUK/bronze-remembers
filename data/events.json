@@ -3,40 +3,149 @@
 		"name": "A stopped cart",
 		"text": "A grain cart with a broken axle, a Tin Road driver swearing at it in three tongues. He has no writ and no friends here.",
 		"options": [
-			{ "label": "Fix it and share the grain", "effects": { "days": 1, "heal": 3, "deed": ["Kept a Tin Road cart moving", 1] } },
-			{ "label": "Walk on", "effects": {} }
+			{
+				"label": "Fix it and share the grain",
+				"effects": {
+					"days": 1,
+					"heal": 3,
+					"deed": [
+						"Kept a Tin Road cart moving",
+						1
+					]
+				}
+			},
+			{
+				"label": "Walk on",
+				"effects": {}
+			}
 		]
 	},
 	"smoke_ridge": {
 		"name": "Smoke on the ridge",
 		"text": "A hamlet burning above the road. Whoever did it is still up there; you can see spears.",
 		"options": [
-			{ "label": "Go up under the writ", "effects": { "fight": "levies", "deed": ["Answered the smoke at the ridge", 2] } },
-			{ "label": "Keep to the road", "effects": { "custom": -1 } }
+			{
+				"label": "Go up under the writ",
+				"effects": {
+					"fight": "levies",
+					"deed": [
+						"Answered the smoke at the ridge",
+						2
+					]
+				}
+			},
+			{
+				"label": "Keep to the road",
+				"effects": {
+					"custom": -1
+				}
+			}
 		]
 	},
 	"tablet_post": {
 		"name": "A tablet nailed to a post",
 		"text": "A clay tablet, cracked, nailed up where the road forks. Someone wanted it read.",
 		"options": [
-			{ "label": "Read it", "effects": { "reveal": 2, "deed": ["Read the tablet at the fork", 1] } },
-			{ "label": "Take it for the scribes", "effects": { "tablet_carried": true } }
+			{
+				"label": "Read it",
+				"effects": {
+					"reveal": 2,
+					"deed": [
+						"Read the tablet at the fork",
+						1
+					]
+				}
+			},
+			{
+				"label": "Take it for the scribes",
+				"effects": {
+					"tablet_carried": true
+				}
+			}
 		]
 	},
 	"goat_dispute": {
 		"name": "Two men arguing over a goat",
 		"text": "Two herders, one goat, one rope. Both of them want the levy to judge it, because the levy carries a writ.",
 		"options": [
-			{ "label": "Judge it under the writ", "effects": { "report_extend": 2, "deed": ["Judged the goat at the road", 1] } },
-			{ "label": "Not the Palace's goat", "effects": { "heal": 2 } }
+			{
+				"label": "Judge it under the writ",
+				"effects": {
+					"report_extend": 2,
+					"deed": [
+						"Judged the goat at the road",
+						1
+					]
+				}
+			},
+			{
+				"label": "Not the Palace's goat",
+				"effects": {
+					"heal": 2
+				}
+			}
 		]
 	},
 	"wandering_smith": {
 		"name": "A smith on the road",
 		"text": "A Smiths' guild journeyman with a hand-cart of moulds, going the other way. He will cast, for a price paid later.",
 		"options": [
-			{ "label": "Let him fit whoever needs it", "effects": { "fit_on_road": true, "smiths_step": 1 } },
-			{ "label": "Send him on", "effects": {} }
+			{
+				"label": "Let him fit whoever needs it",
+				"effects": {
+					"fit_on_road": true,
+					"smiths_step": 1
+				}
+			},
+			{
+				"label": "Send him on",
+				"effects": {}
+			}
+		]
+	},
+	"emeritus_levy": {
+		"name": "The old general's levy",
+		"text": "{emeritus}, unseated and bitter, has raised a levy of their own on this road. They want the seat back, or the squad's bronze.",
+		"options": [
+			{
+				"label": "Fight them",
+				"effects": {
+					"fight": "levies",
+					"deed": [
+						"Broke {emeritus}'s levy",
+						3
+					]
+				}
+			},
+			{
+				"label": "Give a day and a hearing",
+				"effects": {
+					"days": 1,
+					"grudge_settled": true
+				}
+			}
+		]
+	},
+	"emeritus_deal": {
+		"name": "The old holder's offer",
+		"text": "{emeritus} waits at the gate with a proposal: carry a tablet to the scribes that says the seat was taken by writ, not by deed.",
+		"options": [
+			{
+				"label": "Carry the lie",
+				"effects": {
+					"lie": 1,
+					"deed": [
+						"Carried {emeritus}'s tablet",
+						1
+					]
+				}
+			},
+			{
+				"label": "Refuse",
+				"effects": {
+					"grudge_kept": true
+				}
+			}
 		]
 	}
 }

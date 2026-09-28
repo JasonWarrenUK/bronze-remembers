@@ -246,6 +246,11 @@ func _refresh_ui() -> void:
 						for g in run.graft_offers(h):
 							_button("Fit %s: %s" % [h["name"], SimData.load_json("grafts")[g]["name"]], func(): action_requested.emit("fit", {"hero": i, "graft": g}))
 						_button("%s refuses the bronze" % h["name"], func(): action_requested.emit("refuse", {"hero": i}))
+	if run.stages["law"] >= 3:
+		for i in range(run.squad.size()):
+			var hf: Dictionary = run.squad[i]
+			if hf["alive"] and not hf["left"] and int(hf["sorcery_tier"]) >= 1 and int(hf["clay"]) >= 1:
+				_button("%s forges a report" % hf["name"], func(): action_requested.emit("forge", {"hero": i}))
 	for opt in run.options():
 		var target: Dictionary = run.world["nodes"][opt["id"]]
 		var name: String = target["name"] if (run.visited.has(opt["id"]) or target["kind"] == "city") else "the road (%s)" % target["kind"]

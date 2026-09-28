@@ -67,7 +67,9 @@ func _start_run(picks: Array, spent: int, reg: Register) -> void:
 			rec["memory"]["used"] = 0
 		rec["sorcery_tier"] = int(h.get("sorcery_tier", -1))
 		rec["false_lines"] = int(h.get("false_lines", 0))
+		rec["origin"] = h.get("origin", "kessuwat")
 		roster.append(h["id"])
+	run.emeriti = reg.emeriti_for_run()
 	run.scaling = Register.scaling(spent)
 	run.apply_world(reg.world)
 	run.wanderers = reg.wanderers.duplicate(true)

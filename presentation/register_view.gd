@@ -132,6 +132,11 @@ func refresh() -> void:
 		text += "gen %d: %s, day %d\n" % [c["generation"], c["state"], c["day"]]
 	side.text = text
 	side_box.add_child(side)
+	if not reg.fallen and reg.mercenaries_available() > 0:
+		var hire := Button.new()
+		hire.text = "Hire a foreign spear (%d abroad)" % reg.mercenaries_available()
+		hire.pressed.connect(func(): reg.new_mercenary(); reg.save(); refresh())
+		side_box.add_child(hire)
 	if not reg.fallen:
 		for key in reg.ambitions_available():
 			var amb := Button.new()

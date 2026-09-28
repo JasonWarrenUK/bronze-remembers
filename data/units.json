@@ -160,5 +160,26 @@
 		"object": {
 			"focus": "none"
 		}
+	},
+	"origins": {
+		"levy": {
+			"classes": [
+				"spear",
+				"sling",
+				"shield"
+			],
+			"city": "kessuwat"
+		},
+		"mercenary": {
+			"classes": [
+				"spear",
+				"sling",
+				"shield",
+				"bow",
+				"knife"
+			],
+			"city": "abroad",
+			"tongue": "foreign"
+		}
 	}
 }

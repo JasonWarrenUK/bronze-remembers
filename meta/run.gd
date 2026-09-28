@@ -30,6 +30,7 @@ var wanderer_here: Dictionary = {}  # a wanderer met at this node
 var wanderer_ally: Dictionary = {}  # a wanderer fighting the next battle
 var wanderer_deaths: Array = []
 var favours: Array = []             # {wanderer, node, done}
+var emeriti: Array = []             # {name, seat, appearances} unseated holders with a grudge
 var tablets: bool = false
 var log: Array = []
 var state: String = "ongoing"       # ongoing | won | lost
@@ -225,6 +226,19 @@ func travel_to(id: String) -> bool:
 	if n["kind"] == "event" and not n.get("cleared", false):
 		pending_event = _draw_event()
 	wanderer_here = {}
+	if n["kind"] == "city" and not emeriti.is_empty() and pending_event.is_empty() and rng.range_int(1, 2) == 1:
+		var em: Dictionary = emeriti[0]
+		if em["appearances"] < 2:
+			em["appearances"] += 1
+			var key := "emeritus_levy" if em["appearances"] == 1 else "emeritus_deal"
+			var e: Dictionary = SimData.load_json("events")[key].duplicate(true)
+			e["key"] = key
+			e["text"] = e["text"].replace("{emeritus}", em["name"])
+			for opt in e["options"]:
+				if opt["effects"].has("deed"):
+					opt["effects"]["deed"][0] = opt["effects"]["deed"][0].replace("{emeritus}", em["name"])
+			pending_event = e
+			_log("%s, who held %s, is at the gate of %s." % [em["name"], em["seat"], n["name"]])
 	if (n["kind"] == "rest" or n["kind"] == "city") and not wanderers.is_empty() and rng.range_int(1, 3) == 1:
 		for w in wanderers:
 			if not w["dead"] and w["appearances"] < 3:
@@ -321,6 +335,11 @@ func choose(option: int) -> Dictionary:
 					if grafts[key]["location"] == h["injury"]["location"] and not grafts[key].get("forbids_class", []).has(h["kind"]):
 						fit_graft(h, key)
 						break
+	if fx.has("lie"):
+		tally["lies"] += int(fx["lie"])
+	if fx.has("grudge_settled") and not emeriti.is_empty():
+		_log("%s is heard out. The grudge is not gone, but it sleeps." % emeriti[0]["name"])
+		emeriti.pop_front()
 	if fx.has("fight"):
 		pending_fight = fx["fight"]
 	pending_event = {}
@@ -753,6 +772,20 @@ func substitute(h: Dictionary, stand_in: Dictionary) -> bool:
 	return true
 
 
+## Writ forgery: at Law Lost, a sorcerer writes the report the Palace no longer takes. A false line, a lie, and the clock resets.
+func forge_report(h: Dictionary) -> bool:
+	if stages["law"] < 3 or int(h.get("sorcery_tier", -1)) < 1 or int(h.get("clay", 0)) < 1:
+		return false
+	h["clay"] -= 1
+	h["false_lines"] = int(h.get("false_lines", 0)) + 1
+	tally["lies"] += 1
+	writ["outlaw"] = false
+	writ["report_due"] = day + int(season["report_every"])
+	_log("%s forges the Sun's seal on a report nobody will read. The gates open anyway." % h["name"])
+	_deed("%s forged a writ" % h["name"], 2, {"deeds": []}, ["forged"])
+	return true
+
+
 ## Scribal cities: apprentice a hero (four days, sorcery tier 0, or one tier up) and buy clay (a day, two tablets each).
 func apprentice(h: Dictionary) -> bool:
 	if not node()["flags"].get("scribal", false) or gates_shut() or h.get("mute", false):
@@ -806,7 +839,7 @@ func to_dict() -> Dictionary:
 		"seed": seed, "rng_state": rng.state(), "chapter": chapter, "day": day, "at": at, "visited": visited,
 		"squad": squad, "deeds": deeds, "writ": writ, "tablets": tablets, "log": log, "state": state,
 		"milestone_reached": milestone_reached, "flooded": flooded, "revealed": revealed, "pending_fight": pending_fight,
-		"cleared": _cleared_ids(), "pair_scores": pair_scores, "scaling": scaling, "wanderers": wanderers, "stages": stages, "weather": weather, "tally": tally, "season": season,
+		"cleared": _cleared_ids(), "pair_scores": pair_scores, "scaling": scaling, "wanderers": wanderers, "stages": stages, "weather": weather, "tally": tally, "season": season, "emeriti": emeriti,
 		"wanderer_deaths": wanderer_deaths, "favours": favours, "elder_cities": elder_cities,
 	}
 
@@ -858,6 +891,7 @@ static func load_from(path: String) -> Run:
 	r.favours = d.get("favours", [])
 	r.elder_cities = d.get("elder_cities", {})
 	r.stages = d.get("stages", r.stages)
+	r.emeriti = d.get("emeriti", [])
 	r.weather = d.get("weather", [])
 	r.tally = d.get("tally", r.tally)
 	r.season = d.get("season", r.season)

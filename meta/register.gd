@@ -85,6 +85,36 @@ func gates_open_cities() -> Dictionary:
 	return out
 
 
+func emeriti_for_run() -> Array:
+	var out: Array = []
+	for h in heroes:
+		if h["status"] == "emeritus":
+			out.append({"name": h["name"], "seat": h.get("seat", "a seat"), "appearances": 0})
+	return out
+
+
+## The world abroad: other empires falling raise mercenary availability until a final collapse removes them.
+## Rises with the Tongue stage and the generation, falls to nothing once Tongue is Gone.
+func mercenaries_available() -> int:
+	if not has_unlock("reed_recruits"):
+		return 0
+	var tongue := world.stage_num("tongue")
+	if tongue >= 4:
+		return 0
+	return mini(3, tongue + generation / 4)
+
+
+func new_mercenary() -> Dictionary:
+	var classes: Array = SimData.units()["origins"]["mercenary"]["classes"]
+	var kind: String = classes[(next_id * 3) % classes.size()]
+	if not SimData.units()["heroes"].has(kind):
+		kind = "spear"
+	var names := ["Ahhiyawa", "Sherden", "Lukka", "Peleset", "Denyen", "Tjeker"]
+	var m := new_hero(kind, names[next_id % names.size()] + str(next_id), "mercenary", "", 1)
+	m["traits"].append("Foreign spear")
+	return m
+
+
 func narrator() -> String:
 	for s in seats:
 		if s["holder"] != -1 and s.get("effects", {}).get("narrator", false):
@@ -398,7 +428,7 @@ func _has_sea_scar(h: Dictionary) -> bool:
 
 
 func _origin_band(h: Dictionary) -> String:
-	return SimData.load_json("world")["cities"].get(h["origin"], {}).get("band", "river")
+	return SimData.load_json("world")["cities"].get(h["origin"], {}).get("band", "coast" if h["origin"] == "mercenary" else "river")
 
 
 func _world_met(cond: Dictionary, recipe_id: String) -> bool:
