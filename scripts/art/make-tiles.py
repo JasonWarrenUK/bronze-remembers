@@ -27,4 +27,9 @@ tile(out/"wall.png",   b["leather"][0], b["outline"], 3, 0.15, edge=b["outline"]
 tile(out/"water.png",  t["metal"][0], t["metal"][1], 4, 0.14)
 tile(out/"tide.png",   t["metal"][1], t["cloth"][1], 5, 0.25)
 tile(out/"deploy.png", b["metal"][2], b["metal"][1], 6, 0.20)
+# Stage variants
+tile(out/"floor-cold.png",  b["cloth"][0], b["outline"], 7, 0.18)                     # Custom Broken: hearths dark
+tile(out/"floor-weed.png",  b["cloth"][1], t["metal"][1], 8, 0.16)                    # Sea Broken: weed on the stones
+tile(out/"wall-broken.png", b["leather"][0], b["cloth"][0], 9, 0.28, edge=b["outline"]) # Law Lost: unmanned, crumbling
+tile(out/"rubble-bones.png", b["leather"][1], b["highlight"], 10, 0.22)               # Custom Lost: unburied
 print("tiles:", sorted(p.name for p in out.glob("*.png")))

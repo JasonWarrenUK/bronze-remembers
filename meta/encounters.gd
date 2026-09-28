@@ -19,6 +19,8 @@ static func build(run: Run, node: Dictionary, objective: Dictionary, families: A
 		u.clay = int(h.get("clay", 0))
 		u.sorcery_tier = maxi(u.sorcery_tier, int(h.get("sorcery_tier", -1)))
 		u.false_lines = int(h.get("false_lines", 0))
+		u.misfires = run.sorcery_misfires_here(h)
+		u.mismatched = bool(h.get("mismatched", false))
 		if not h.get("memory", {}).is_empty():
 			u.memory = h["memory"].duplicate()
 			u.possessed = bool(h["memory"].get("possessed", false))

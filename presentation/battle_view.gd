@@ -125,9 +125,25 @@ func present(b: SimBattle) -> void:
 	await _playback()
 
 
+func _tile_texture(t: int) -> Texture2D:
+	var path: String = TILE_TEX[t]
+	var custom: int = int(weather_stages.get("custom", 0))
+	var sea: int = int(weather_stages.get("sea", 0))
+	var law: int = int(weather_stages.get("law", 0))
+	if t == SimGrid.Tile.FLOOR and sea >= 2:
+		path = "res://art/tiles/floor-weed.png"
+	elif t == SimGrid.Tile.FLOOR and custom >= 2:
+		path = "res://art/tiles/floor-cold.png"
+	elif t == SimGrid.Tile.WALL and law >= 3:
+		path = "res://art/tiles/wall-broken.png"
+	elif t == SimGrid.Tile.RUBBLE and custom >= 3:
+		path = "res://art/tiles/rubble-bones.png"
+	return load(path)
+
+
 func _place_tile(p: Vector2i) -> void:
 	var s := Sprite2D.new()
-	s.texture = load(TILE_TEX[battle.grid.get_tile(p)])
+	s.texture = _tile_texture(battle.grid.get_tile(p))
 	s.centered = false
 	s.scale = Vector2(2, 2)
 	s.position = Vector2(p.x * CELL, p.y * CELL)
@@ -137,7 +153,7 @@ func _place_tile(p: Vector2i) -> void:
 
 func _refresh_tile(p: Vector2i) -> void:
 	var s: Sprite2D = tiles.get_node("tile_%d_%d" % [p.x, p.y])
-	s.texture = load(TILE_TEX[battle.grid.get_tile(p)])
+	s.texture = _tile_texture(battle.grid.get_tile(p))
 
 
 func _add_unit(u: SimUnit) -> void:

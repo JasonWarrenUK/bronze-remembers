@@ -72,6 +72,53 @@ func apply_world(w: WorldState) -> void:
 	# Custom: guest-right shrinks; rest at ordinary hearths heals less past Strained.
 	# Rite: Temple healing costs more; handled where healing is bought.
 	_log("The weather: " + " ".join(weather))
+	apply_tongue()
+
+
+## Tongue: recruits from another band of the country arrive mismatched from Strained on; bonds form slower until they are understood.
+func apply_tongue() -> void:
+	if stages["tongue"] < 1:
+		return
+	var home_band: String = SimData.load_json("world")["cities"]["kessuwat"]["band"]
+	for h in squad:
+		var band: String = SimData.load_json("world")["cities"].get(h.get("origin", "kessuwat"), {}).get("band", home_band)
+		if band != home_band or h.get("origin", "") == "mercenary":
+			h["mismatched"] = true
+			_log("%s speaks the coast tongue. Orders will be slow until the squad learns it." % h["name"])
+
+
+## Garbled text: from Tongue Broken on, letters and event texts lose words for a squad with no reader.
+func garble(text: String) -> String:
+	if stages["tongue"] < 2 or _has_reader():
+		return text
+	var words := text.split(" ")
+	var out: Array = []
+	for i in range(words.size()):
+		if (i * 7 + seed) % (5 - mini(stages["tongue"] - 2, 2)) == 0 and words[i].length() > 3:
+			out.append("[..]")
+		else:
+			out.append(words[i])
+	return " ".join(out)
+
+
+func _has_reader() -> bool:
+	for h in fighters():
+		if int(h.get("sorcery_tier", -1)) >= 0 or h.get("origin", "") == "mercenary":
+			return true
+	return false
+
+
+## Away from the sorcerer's own band of the country, at Tongue Broken on, a writing can misfire: the field's script is not theirs.
+func sorcery_misfires_here(h: Dictionary) -> bool:
+	if stages["tongue"] < 2:
+		return false
+	var here: String = node().get("flags", {}).get("band", "")
+	if here == "":
+		var road: Array = node().get("road", [])
+		if road.size() == 2:
+			here = SimData.load_json("world")["cities"][road[0]]["band"]
+	var home: String = SimData.load_json("world")["cities"].get(h.get("origin", "kessuwat"), {}).get("band", "river")
+	return here != "" and here != home
 
 
 ## What this run did, for the institutions.
@@ -85,7 +132,7 @@ func dealings() -> Dictionary:
 
 func add_hero(kind: String, name: String, gear: String = "") -> Dictionary:
 	var d: Dictionary = SimData.units()["heroes"][kind]
-	var h := {"kind": kind, "name": name, "gear": gear, "hp": d["hp"], "max_hp": d["hp"], "alive": true, "left": false, "scars": [], "grafts": [], "injury": {}, "deeds": 0, "ink": 0, "called": false, "clay": 0, "sorcery_tier": -1, "memory": {}, "false_lines": 0}
+	var h := {"kind": kind, "name": name, "gear": gear, "hp": d["hp"], "max_hp": d["hp"], "alive": true, "left": false, "scars": [], "grafts": [], "injury": {}, "deeds": 0, "ink": 0, "called": false, "clay": 0, "sorcery_tier": -1, "memory": {}, "false_lines": 0, "origin": "kessuwat", "mismatched": false}
 	squad.append(h)
 	return h
 
@@ -438,8 +485,18 @@ func _score_pairs(b: SimBattle) -> void:
 				if (victim == ua.id and avenger == ub.id) or (victim == ub.id and avenger == ua.id):
 					score += 2
 			if score > 0:
-				var key := "%d:%d" % [mini(idx_of[ids[x]], idx_of[ids[y]]), maxi(idx_of[ids[x]], idx_of[ids[y]])]
-				pair_scores[key] = int(pair_scores.get(key, 0)) + score
+				var ia: int = idx_of[ids[x]]
+				var ib: int = idx_of[ids[y]]
+				var key := "%d:%d" % [mini(ia, ib), maxi(ia, ib)]
+				var current := int(pair_scores.get(key, 0))
+				if (squad[ia].get("mismatched", false) or squad[ib].get("mismatched", false)) and current < 3:
+					score = maxi(1, score / 2)
+				pair_scores[key] = current + score
+				if pair_scores[key] >= 3:
+					for idx in [ia, ib]:
+						if squad[idx].get("mismatched", false):
+							squad[idx]["mismatched"] = false
+							_log("%s is understood now." % squad[idx]["name"])
 
 
 func _deed(text: String, significance: int, report: Dictionary, tags: Array = []) -> void:

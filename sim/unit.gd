@@ -48,6 +48,8 @@ var false_lines: int = 0
 var memory: Dictionary = {}        # bronze memory: {ancestor, ability, charges, used, full}
 var possessed: bool = false
 var contests: bool = false         # enemy officers, priests and scribes strike written lies
+var misfires: bool = false         # sorcery away from home at Tongue Broken: the field's script is not theirs
+var mismatched: bool = false       # a recruit not yet understood: acts last on ties
 
 
 static func hero(id_: int, kind_: String, pos_: Vector2i, gear_key: String = "") -> SimUnit:

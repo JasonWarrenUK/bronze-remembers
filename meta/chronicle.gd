@@ -11,8 +11,24 @@ const OPENINGS := [
 const GAP := "[a line here is broken and cannot be read]"
 
 
+## From Tongue Lost on, the scribes respell names: a vowel slips, a consonant doubles.
+static func drift(name: String, stage: int, seed: int) -> String:
+	if stage < 3:
+		return name
+	var vowels := "aeiu"
+	var out := ""
+	for i in range(name.length()):
+		var ch := name[i]
+		if vowels.contains(ch.to_lower()) and (i + seed) % 3 == 0:
+			out += vowels[(vowels.find(ch.to_lower()) + 1) % vowels.length()]
+		else:
+			out += ch
+	return out
+
+
 static func for_run(run: Run, narrator: String = "") -> String:
 	var seed := run.seed
+	var tongue: int = int(run.stages.get("tongue", 0))
 	var lines: Array[String] = []
 	var raiser: String = run.world["nodes"][run.writ["issued_by"]]["name"]
 	lines.append(OPENINGS[seed % OPENINGS.size()] % raiser)
@@ -22,7 +38,7 @@ static func for_run(run: Run, narrator: String = "") -> String:
 		lines.append(run.weather[0] + " " + run.weather[4])
 	var names: Array = []
 	for h in run.squad:
-		names.append(h["name"])
+		names.append(drift(h["name"], tongue, seed))
 	lines.append("They were %s." % _join(names))
 	var wrote_any := false
 	for d in run.deeds:

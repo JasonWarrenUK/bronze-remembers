@@ -198,7 +198,7 @@ func _refresh_ui() -> void:
 		t.fit_content = true
 		t.custom_minimum_size = Vector2(228, 40)
 		t.add_theme_color_override("default_color", palette["ink"])
-		t.text = "[b]%s[/b]\n%s" % [ev["name"], ev["text"]]
+		t.text = "[b]%s[/b]\n%s" % [ev["name"], run.garble(ev["text"])]
 		actions.add_child(t)
 		for i in range(ev["options"].size()):
 			_button(ev["options"][i]["label"], func(): action_requested.emit("choose", {"option": i}))

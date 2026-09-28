@@ -202,7 +202,7 @@ func start_round() -> void:
 			init = cards[u.kind]["init"]
 		if u.has("dread"):
 			init += 1000
-		queue.append({"id": u.id, "init": init, "ink": u.ink})
+		queue.append({"id": u.id, "init": init + (1 if u.mismatched else 0), "ink": u.ink})
 	queue.sort_custom(func(a, b): return a["init"] < b["init"] or (a["init"] == b["init"] and a["ink"] > b["ink"]))
 	queue_index = 0
 	_spawn_waves()
@@ -497,6 +497,9 @@ func _write(u: SimUnit, key: String, a: Dictionary, target: Vector2i) -> bool:
 	u.clay -= int(a.get("clay", 1))
 	u.false_lines += 1
 	turn["acted"] = true
+	if u.misfires and (u.clay + round) % 2 == 0:
+		emit("misfire", {"unit": u.id, "ability": key})
+		return true
 	for e in enemies():
 		if e.contests and SimGrid.distance(e.pos, u.pos) <= 3:
 			emit("contested", {"unit": u.id, "by": e.id, "ability": key})

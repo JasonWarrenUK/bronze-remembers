@@ -43,6 +43,13 @@ func setup(u: SimUnit, palette: Dictionary) -> void:
 	sprite.position = Vector2(0, -4)
 	sprite.play("idle_down")
 	add_child(sprite)
+	for sc in u.scars:
+		var ss := Sprite2D.new()
+		ss.centered = true
+		ss.position = Vector2(0, -4)
+		ss.z_index = 2
+		add_child(ss)
+		graft_sprites["scar:" + sc] = ss
 	for g in u.grafts:
 		var gs := Sprite2D.new()
 		gs.centered = true
@@ -90,7 +97,7 @@ func face(dir: Vector2i) -> void:
 
 func _update_weapon() -> void:
 	for g in graft_sprites:
-		var path := "res://art/overlays/graft-%s-%s.png" % [g, facing]
+		var path := ("res://art/overlays/scar-%s-%s.png" % [g.substr(5), facing]) if g.begins_with("scar:") else ("res://art/overlays/graft-%s-%s.png" % [g, facing])
 		graft_sprites[g].texture = load(path) if ResourceLoader.exists(path) else null
 		graft_sprites[g].position = sprite.position
 	if weapon == null:
