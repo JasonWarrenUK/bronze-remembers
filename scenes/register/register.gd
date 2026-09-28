@@ -21,7 +21,16 @@ func _ready() -> void:
 	view.setup(reg, palette, theme_ui)
 	view.run_requested.connect(_start_run.bind(reg))
 	if DebugApi.user_args.has("auto"):
-		call_deferred("_start_run", [], 0, reg)
+		# Auto picks the highest-tier playable heroes the budget allows, so recordings show the Register at work.
+		var picks: Array = []
+		var spent := 0
+		var pool := reg.playable()
+		pool.sort_custom(func(a, b): return a["tier"] > b["tier"])
+		for h in pool:
+			if picks.size() < 3 and spent + Register.tier_cost(h["tier"]) <= reg.budget():
+				picks.append(h)
+				spent += Register.tier_cost(h["tier"])
+		call_deferred("_start_run", picks, spent, reg)
 
 
 func _palette() -> Dictionary:
