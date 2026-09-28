@@ -40,8 +40,9 @@ func _init(seed_: int = 1, ambition_key: String = "archive") -> void:
 	seed = seed_
 	rng = SimRng.new(seed_)
 	world = WorldGen.generate(seed_)
-	ambition = SimData.load_json("ambitions")[ambition_key]
-	season = SimData.load_json("world")["season"]
+	ambition = SimData.load_json("ambitions")[ambition_key].duplicate(true)
+	ambition["key"] = ambition_key
+	season = SimData.load_json("world")["season"].duplicate()
 	writ["report_due"] = int(season["report_every"])
 	at = "kessuwat"
 	visited[at] = true
@@ -50,6 +51,33 @@ func _init(seed_: int = 1, ambition_key: String = "archive") -> void:
 
 func _log(text: String) -> void:
 	log.append({"day": day, "text": text})
+
+
+## Applies the world's stages at run start: the writ's range, the season's tide, what the road holds.
+func apply_world(w: WorldState) -> void:
+	for t in WorldState.TRACKS:
+		stages[t] = w.stage_num(t)
+	weather = w.weather()
+	# Law: reports come due faster as the writ's range shrinks; at Lost the Palace issues nothing.
+	var every: int = int(season["report_every"]) - stages["law"]
+	season["report_every"] = maxi(2, every)
+	writ["report_due"] = season["report_every"]
+	if stages["law"] >= 3:
+		writ["report_due"] = 999
+		writ["raiser"] = "a city that still answers"
+	# Sea: the tide floods earlier and the ship leaves sooner.
+	season["tide_floods"] = maxi(6, int(season["tide_floods"]) - 3 * stages["sea"])
+	season["ship_sails"] = maxi(12, int(season["ship_sails"]) - 2 * stages["sea"])
+	# Custom: guest-right shrinks; rest at ordinary hearths heals less past Strained.
+	# Rite: Temple healing costs more; handled where healing is bought.
+	_log("The weather: " + " ".join(weather))
+
+
+## What this run did, for the institutions.
+func dealings() -> Dictionary:
+	var d := tally.duplicate(true)
+	d["ambition"] = ambition.get("key", "")
+	return d
 
 
 # ---------------------------------------------------------------- squad
@@ -93,6 +121,21 @@ func travel_to(id: String) -> bool:
 	for h in fighters():
 		h["hp"] = mini(h["max_hp"], h["hp"] + 2 * days)
 	for h in squad:
+		if h.has("mould_debt") and h["alive"]:
+			h["mould_debt"]["days"] -= days
+			if at == h["mould_debt"]["owed_at"]:
+				tally["moulds_honoured"] += 1
+				h.erase("mould_debt")
+				_log("%s returns to the Smiths and the mould is honoured." % h["name"])
+			elif h["mould_debt"]["days"] <= 0:
+				tally["moulds_defaulted"] += 1
+				if node().get("flags", {}).get("band", "") == "coast":
+					tally["coastal_callbacks"] += 1
+				_log("%s did not return to the Smiths. The bronze is called back: the %s fails." % [h["name"], SimData.load_json("grafts")[h["mould_debt"]["graft"]]["name"]])
+				h["grafts"].erase(h["mould_debt"]["graft"])
+				h["injury"] = {"severity": "severe", "location": SimData.load_json("grafts")[h["mould_debt"]["graft"]]["location"], "days_left": ROAD_KILLS_DAYS, "by": "smiths"}
+				h.erase("mould_debt")
+	for h in squad:
 		if h["injury"].get("severity", "") == "severe" and h["alive"]:
 			h["injury"]["days_left"] = h["injury"].get("days_left", ROAD_KILLS_DAYS) - days
 			if h["injury"]["days_left"] <= 0:
@@ -103,10 +146,12 @@ func travel_to(id: String) -> bool:
 	# The writ: a report is owed at a walled city by the due day.
 	if n["kind"] == "city" and n["flags"].get("walled", false) and not writ["outlaw"]:
 		writ["reports"] += 1
+		tally["reports_kept"] += 1
 		writ["report_due"] = day + int(season["report_every"])
 		_log("Report made at %s. The next is owed by day %d." % [n["name"], writ["report_due"]])
 	elif day > int(writ["report_due"]) and not writ["outlaw"]:
 		writ["outlaw"] = true
+		tally["reports_defaulted"] += 1
 		_log("A report went unmade. The squad is outlaw to the Palace: the gates are shut to it.")
 	# The season: the tide floods the Drowned Mile, the ship sails.
 	if not flooded and day >= int(season["tide_floods"]):
@@ -296,6 +341,8 @@ func apply_battle(b: SimBattle, milestone: bool) -> Dictionary:
 			_deed(ch["title"], 4, report)
 			if ch.get("on_complete", "") == "take_tablets":
 				tablets = true
+			if chapter == ambition["chapters"].size():
+				tally["archive_won"] += 1
 				_log("The tablets of Tarhuna are under seal in the squad's keeping.")
 			chapter += 1
 			milestone_reached = false
@@ -307,6 +354,7 @@ func apply_battle(b: SimBattle, milestone: bool) -> Dictionary:
 	else:
 		if milestone and ambition["chapters"][chapter - 1]["objective"]["type"] == "protect":
 			tablets = false
+			tally["archive_lost"] += 1
 			_log("The tablets are lost to the water.")
 			state = "lost"
 	if not milestone:
@@ -360,6 +408,7 @@ func _deed(text: String, significance: int, report: Dictionary) -> void:
 	# Channel 1: the deed travels to a scribal node within reach.
 	if _scribal_within(significance * TESTIMONY_RANGE_BASE):
 		d["recorded"] = true
+		tally["truth"] += 1
 
 
 func _scribal_within(days: int) -> bool:
@@ -376,6 +425,9 @@ func _scribal_within(days: int) -> bool:
 
 ## Channel 2: visiting a scribal node records every queued deed.
 var elder_cities: Dictionary = {}   # cities whose Elder seat is held: gates never shut
+var stages: Dictionary = {"law": 0, "rite": 0, "custom": 0, "tongue": 0, "sea": 0}   # track stage numbers at run start
+var weather: Array = []             # the Chronicle's weather lines for this run
+var tally: Dictionary = {"reports_kept": 0, "reports_defaulted": 0, "faith": 0, "sin": 0, "truth": 0, "lies": 0, "grafts_fitted": 0, "moulds_honoured": 0, "moulds_defaulted": 0, "archive_won": 0, "archive_lost": 0, "coastal_callbacks": 0, "nudges": {}}
 
 
 func gates_shut() -> bool:
@@ -389,6 +441,7 @@ func testify() -> int:
 	for d in deeds:
 		if not d["recorded"]:
 			d["recorded"] = true
+			tally["truth"] += 1
 			n += 1
 	if n > 0:
 		_log("%d deeds testified at %s." % [n, node()["name"]])
@@ -437,6 +490,8 @@ func graft_offers(h: Dictionary) -> Array:
 
 
 func fit_graft(h: Dictionary, key: String) -> void:
+	tally["grafts_fitted"] += 1
+	h["mould_debt"] = {"owed_at": node()["city"] if node().has("city") else at, "days": 8, "graft": key}
 	h["grafts"].append(key)
 	h["injury"] = {}
 	h["hp"] = h["max_hp"]
@@ -458,6 +513,10 @@ func rest() -> void:
 		_log("The gates of %s are shut to outlaws. A night outside heals little." % node()["name"])
 		for h in fighters():
 			h["hp"] = mini(h["max_hp"], h["hp"] + 2)
+	elif node()["kind"] == "rest" and stages["custom"] >= 2:
+		_log("No guest-right here now. A cold night.")
+		for h in fighters():
+			h["hp"] = mini(h["max_hp"], h["hp"] + 3)
 	else:
 		for h in fighters():
 			h["hp"] = h["max_hp"]
@@ -475,7 +534,7 @@ func to_dict() -> Dictionary:
 		"seed": seed, "rng_state": rng.state(), "chapter": chapter, "day": day, "at": at, "visited": visited,
 		"squad": squad, "deeds": deeds, "writ": writ, "tablets": tablets, "log": log, "state": state,
 		"milestone_reached": milestone_reached, "flooded": flooded, "revealed": revealed, "pending_fight": pending_fight,
-		"cleared": _cleared_ids(), "pair_scores": pair_scores, "scaling": scaling, "wanderers": wanderers,
+		"cleared": _cleared_ids(), "pair_scores": pair_scores, "scaling": scaling, "wanderers": wanderers, "stages": stages, "weather": weather, "tally": tally, "season": season,
 		"wanderer_deaths": wanderer_deaths, "favours": favours, "elder_cities": elder_cities,
 	}
 
@@ -526,6 +585,10 @@ static func load_from(path: String) -> Run:
 	r.wanderer_deaths = d.get("wanderer_deaths", [])
 	r.favours = d.get("favours", [])
 	r.elder_cities = d.get("elder_cities", {})
+	r.stages = d.get("stages", r.stages)
+	r.weather = d.get("weather", [])
+	r.tally = d.get("tally", r.tally)
+	r.season = d.get("season", r.season)
 	return r
 
 

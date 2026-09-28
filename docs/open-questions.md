@@ -11,17 +11,17 @@
 |---|---|---|---|
 | 1 | Wards: frequency, how they travel, whether they fight. Deferred by Jason as rare | 2 | 2026-09-26 |
 | 2 | Ambition list: first run's ambition answered 2026-09-27 (`design.md` section 15); full set still open | 3 | 2026-09-26 |
-| 3 | Institution end states: two or three per institution, none authored yet | 5 | 2026-09-27 |
+| 3 | Institution end states answered 2026-09-28, section 17; transitions being authored | 5 | 2026-09-27 |
 | 4 | Seat recipes: the dozens of authored recipes and which unlock later | 7 | 2026-09-27 |
 | 5 | Trait pools per origin and the non-injury trait list | 8 | 2026-09-27 |
 | 6 | Class list, promotion trees, multiclass prerequisites and the Register unlock tree | 1, 8 | 2026-09-26 |
 | 7 | Graft catalogue: bronze (four) answered 2026-09-27, section 15; Sea joints and Temple marks open | 1 | 2026-09-26 |
 | 8 | Scar catalogue: seven answered 2026-09-27, section 15; quirks open | 1 | 2026-09-26 |
-| 9 | Fixation list and resolution rules | 1 | 2026-09-26 |
+| 9 | ~~Fixations~~ Rules answered 2026-09-28, section 17; the list grows with events | 1 | 2026-09-26 |
 | 10 | Bond types, how they form, what each unlocks | 1 | 2026-09-26 |
 | 11 | Grudges: what a grudge does mechanically when its scene arrives | 2 | 2026-09-26 |
-| 12 | Chronicle: generation method, length, voice, what Testimony gaps look like on the page | 3, 5 | 2026-09-26 |
-| 13 | Tick curves per track: actual numbers and thresholds | 10 | 2026-09-27 |
+| 12 | ~~Chronicle method~~ Templated in the Scribes' voice, 2026-09-28; templates to write | 3, 5 | 2026-09-26 |
+| 13 | ~~Tick curves~~ First numbers 2026-09-28, section 17; tune in play | 10 | 2026-09-27 |
 | 14 | Testimony reach: what significance means and how far a deed travels to a scribe | 5 | 2026-09-27 |
 | 15 | Mercenaries and the world abroad: the hidden model of other empires falling | 8 | 2026-09-27 |
 | 16 | Substitution rites: rules for moving a death, cost in ink, failure at Broken Rite | 9 | 2026-09-27 |

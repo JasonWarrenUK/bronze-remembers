@@ -17,6 +17,8 @@ var seats: Array = []             # {kind: "elder", city, holder, since}
 var fallen: bool = false
 var next_id: int = 1
 var chronicle: Array = []         # one entry per run
+var world: WorldState = WorldState.new()
+var unlocks: Dictionary = {}      # carried into the next Register
 
 
 static func tier_cost(tier: int) -> int:
@@ -136,7 +138,12 @@ func enter_from_run(run: Run, roster: Array) -> Dictionary:
 	for w in run.wanderer_deaths:
 		report["wanderer_deaths"].append(w)
 	chronicle.append({"generation": generation, "state": run.state, "day": run.day, "text": run.chronicle_stub()})
-	if generation >= FALL_GENERATIONS:
+	world.record_run(run.dealings())
+	for s in seats:
+		if s["holder"] != -1 and s.get("holds", "") != "":
+			world.holds[s["holds"]] = true
+	report["world"] = world.tick_generation()
+	if world.fallen():
 		fallen = true
 	return report
 
@@ -225,6 +232,14 @@ func elder_seat(city: String) -> Dictionary:
 	return s
 
 
+## A fallen Register begins again: unlocks carry, nothing else.
+static func begin_anew(old: Register) -> Register:
+	var r := Register.new()
+	r.unlocks = old.unlocks.duplicate()
+	r.unlocks["registers_fallen"] = int(r.unlocks.get("registers_fallen", 0)) + 1
+	return r
+
+
 ## Retires a hero into the Elder seat of their origin city if it is empty.
 func retire_to_seat(h: Dictionary) -> bool:
 	var s := elder_seat(h["origin"])
@@ -246,7 +261,7 @@ func seat_holds(city: String) -> bool:
 # ---------------------------------------------------------------- save and load
 
 func to_dict() -> Dictionary:
-	return {"generation": generation, "heroes": heroes, "wanderers": wanderers, "seats": seats, "fallen": fallen, "next_id": next_id, "chronicle": chronicle}
+	return {"generation": generation, "heroes": heroes, "wanderers": wanderers, "seats": seats, "fallen": fallen, "next_id": next_id, "chronicle": chronicle, "world": world.to_dict(), "unlocks": unlocks}
 
 
 func save(path: String = PATH) -> bool:
@@ -271,6 +286,8 @@ static func load_from(path: String = PATH) -> Register:
 	r.fallen = d["fallen"]
 	r.next_id = int(d["next_id"])
 	r.chronicle = d.get("chronicle", [])
+	r.world = WorldState.from_dict(d.get("world", {}))
+	r.unlocks = d.get("unlocks", {})
 	for h in r.heroes:
 		h["id"] = int(h["id"])
 		h["tier"] = int(h["tier"])

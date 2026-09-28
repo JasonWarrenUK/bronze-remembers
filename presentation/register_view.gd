@@ -63,7 +63,7 @@ func spent() -> int:
 
 func refresh() -> void:
 	var fallen_line := "  [color=#%s]THE REGISTER HAS FALLEN[/color]" % palette["danger"].to_html(false) if reg.fallen else ""
-	status.text = "[b]The Register[/b]  generation %d of %d%s\nBudget %d, spent %d, %d picked" % [reg.generation, Register.FALL_GENERATIONS, fallen_line, reg.budget(), spent(), picks.size()]
+	status.text = "[b]The Register[/b]  generation %d, %d tracks gone%s\nBudget %d, spent %d, %d picked" % [reg.generation, reg.world.gone_count(), fallen_line, reg.budget(), spent(), picks.size()]
 	for c in roster_box.get_children():
 		c.queue_free()
 	for h in reg.heroes:
@@ -115,6 +115,13 @@ func refresh() -> void:
 		text += "%s%s\n" % [w["name"], " (dead)" if w["dead"] else " (%d)" % w["appearances"]]
 	if reg.wanderers.is_empty():
 		text += "nobody\n"
+	text += "\n[b]The weather[/b]\n"
+	for line in reg.world.weather():
+		text += line + "\n"
+	text += "\n[b]Institutions[/b]\n"
+	for key in reg.world.institutions:
+		var inst: Dictionary = reg.world.institutions[key]
+		text += "%s: %s%s\n" % [key, inst["state"], (" %d" % inst["step"]) if inst["step"] > 0 else ""]
 	text += "\n[b]Chronicle[/b]\n"
 	for c in reg.chronicle.slice(maxi(0, reg.chronicle.size() - 3)):
 		text += "gen %d: %s, day %d\n" % [c["generation"], c["state"], c["day"]]
@@ -128,7 +135,7 @@ func refresh() -> void:
 	else:
 		var anew := Button.new()
 		anew.text = "Begin a new Register"
-		anew.pressed.connect(func(): reg = Register.new(); reg.save(); refresh())
+		anew.pressed.connect(func(): reg = Register.begin_anew(reg); reg.save(); refresh())
 		side_box.add_child(anew)
 	var save := Button.new()
 	save.text = "Save Register"

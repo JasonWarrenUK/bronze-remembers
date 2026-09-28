@@ -58,6 +58,7 @@ func _start_run(picks: Array, spent: int, reg: Register) -> void:
 		rec["grafts"] = h["grafts"].duplicate()
 		roster.append(h["id"])
 	run.scaling = Register.scaling(spent)
+	run.apply_world(reg.world)
 	run.wanderers = reg.wanderers.duplicate(true)
 	for s in reg.seats:
 		if s["holder"] != -1:

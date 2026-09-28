@@ -543,3 +543,42 @@ Agreed 2026-09-28.
 - **Tier cost curve.** Tier 1 costs 1, tier 2 costs 2, and each tier after costs the sum of the two before (3, 5, 8, 13). Tier 0 is free.
 - **First Register's seat pool.** One civic pool: Elder of an origin city, one per city, tenure three generations. Effect: that city's gates never shut to the squad and the tier budget rises by one while the seat is held.
 - **The fall, stand-in.** Until the tracks move (phase 4), a Register falls after eight generations.
+
+## 17. Full loop decisions
+
+Agreed 2026-09-28.
+
+**Institution end states.** Three per institution: one where it holds, one where it changes into something else, one where it is gone.
+
+| Institution | Holds | Changes | Gone |
+|---|---|---|---|
+| Palace | Restored: writs honoured wide, Law held a generation per step | Usurped: a general (a Palace seat holder or the Smiths) rules; writs work but answer to someone else | Dissolved: Law Gone, the last-writ seat is all that is left |
+| Temple | Reformed: ink lighter, healing wider, substitution reliable | Cult: the Temple is the cult; ink no longer compels, rites still work | Burned: an ambition or the Sea takes it; Rite drops two stages |
+| Scribes | Archive kept: testimony travels further, maps honest | Sold: records for sale; false is the default information failure | Scattered: Tongue Gone; dialects everywhere, no testimony beyond the squad |
+| Smiths | Guild: serve the Palace, moulds fair | Warlords: rise as Law falls, sell to anyone, grafts cheaper and cruder | Armourers of the Sea: cast for the things; the Sea track accelerates every generation |
+
+**Arc model.** A pure state machine per institution: named states with authored transitions, no dial. Transitions fire on dealings (obligations kept or defaulted), ambitions, retiree seats, grafts fitted (Smiths) and track stages.
+
+**Chronicle.** Templated sentences in the Scribes' voice. Each recorded deed, downing, retirement and arc step has sentence templates with slots; unrecorded deeds leave a visible gap line; the narrator is the Scribes, or a retiree holding a Chronicle seat. Deterministic and testable.
+
+**Pace.** A Register lasts twelve to fifteen generations before three tracks reach Gone. Tracks decay at different speeds, and gameplay changes the speeds. Each track is a hidden 0 to 100 score with a stage line every 20 points. Base points per generation, first numbers for tuning:
+
+| Track | Whole to Broken | After Broken | Shape |
+|---|---|---|---|
+| Law | 9 | 5 | Goes first and fast, then the wreckage settles |
+| Rite | 7 | 7 | Steady erosion |
+| Custom | 5 | 9 | Holds while there is law, then unravels |
+| Tongue | 3 | 12 | Barely moves until it breaks, then collapses |
+| Sea | 8 | 8 | Steady climb, plus 4 per generation while the Smiths are Armourers of the Sea |
+
+Gameplay modifiers, per generation unless stated: a Restored Palace subtracts 4 from Law; a Reformed Temple subtracts 3 from Rite; an Archive-kept Scribes subtracts 3 from Tongue; a Guild Smiths subtracts 2 from Sea; a Dissolved, Burned or Scattered institution sets its track to Gone; a seat holding a track sets that track's tick to 0 for the generation; each graft fitted adds 1 to Sea and 1 to Custom at run end; each report kept subtracts 1 from Law and each default adds 2; events nudge 3 to 8 as authored; a completed ambition of the right kind drops a track one stage.
+
+**Palace arc (state machine).** Standing at the start. To Restored step 1 when two consecutive runs keep every report and an ambition serves the Palace; steps advance one per generation while reports are kept, and a Palace-seat retiree advances a step at once. To Usurped step 1 when a general's seat is taken by a retiree with a Smiths' graft, or the Smiths reach Warlords while Law is Broken; steps advance while Law keeps falling. To Dissolved when Law reaches Gone, or an ambition dissolves it. From Usurped or Restored the Palace falls back to Standing after two runs of the opposite dealings. The other three institutions do not follow this pattern: each has its own mechanic.
+
+**Fixations.** An event or a downing plants a fixation on a hero: a grudge against a family, a heresy, a debt to collect, a fear of water, a hunger for bronze. It sits for three fights. If a matching deed happens meanwhile (killing that family's named unit, entering the Temple, paying the debt, crossing the tide, taking a graft) it resolves into a trait and a testified deed, and the hero gains a tier point. If not, it curdles into a scar-like trait.
+
+**Scribes arc: the ledger of truth.** Every recorded deed adds a line; every lie written by tablet sorcery and every bribe to record a falsehood subtracts one. Archive kept when the ledger has more truth than lies for two generations and the archive ambition has succeeded once; steps while it holds. Sold when lies outnumber truth for two generations, or a Scribe seat is taken by a hero with false lines; at Sold step 3 every map is a claim. Scattered when Tongue reaches Gone, or the archive is lost to water twice.
+
+**Smiths arc: the count of moulds.** Every graft fitted is a mould the Smiths hold; every mould debt honoured keeps them a Guild; every default calls bronze back and is a mark against you. Guild while Law is at least Broken and defaults are fewer than moulds honoured. Warlords when Law falls to Lost with at least four moulds held in the Register: customers and no king; steps while Law keeps falling. Armourers of the Sea when a Sea-grafted hero is fitted with bronze, or bronze is called back from a defaulter at a coastal node twice, or the Sea reaches the Smiths' city.
+
+**Temple arc: the plague prayer.** The Temple asks the gods what sin brought the plague, and the oracle's answer is read off the squad's dealings with ink. Kept faith: an ink call answered, healing bought with lines, a burial rite at a Temple, a tithe paid. Sin: an ink call ignored, a substitution rite performed, a tithe refused, a priest killed. Each generation the oracle names the greater. Two answers of faith: Reformed, stepping while faith holds. Two answers of sin: Cult, stepping while sin holds; at Cult step 3 the ink stops compelling because the cult wants bodies, not obedience. Burned by the drown-the-Temple ambition, or by the cult itself after Cult step 3 plus one more generation of sin.

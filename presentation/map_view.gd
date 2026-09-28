@@ -167,6 +167,8 @@ func _refresh_ui() -> void:
 	var ch: Dictionary = run.ambition["chapters"][mini(run.chapter, run.ambition["chapters"].size()) - 1]
 	var writ_line := "Outlaw: the gates are shut" if run.writ["outlaw"] else "Report owed by day %d" % int(run.writ["report_due"])
 	var season_line := "Ship sails day %d%s" % [int(run.season["ship_sails"]), ", the Mile is flooded" if run.flooded else ""]
+	if not run.weather.is_empty():
+		season_line += "\n" + run.weather[0]
 	info.text = "[b]Day %d of %d[/b]  chapter %d\n%s\n[color=#%s]%s\n%s\n%s[/color]\n%s" % [run.day, int(run.season["days"]), run.chapter, n["name"], palette["ink_muted"].to_html(false), n["kind"], writ_line, season_line, ch["title"]]
 	var sq := ""
 	for h in run.squad:
