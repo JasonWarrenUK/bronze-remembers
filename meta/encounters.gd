@@ -61,6 +61,14 @@ static func build(run: Run, node: Dictionary, objective: Dictionary, families: A
 		var wave_kind := "jointed" if families.has("sea") else "outlaw_spear"
 		b.waves = [{"round": 3, "units": [{"kind": wave_kind, "pos": [8, 8]}, {"kind": wave_kind, "pos": [9, 6]}]}]
 	b.objective = objective.duplicate()
+	if b.objective["type"] == "kill_named":
+		for e in b.enemies():
+			if e.named:
+				b.objective["unit"] = e.id
+		if not b.objective.has("unit"):
+			var priest := b.add_enemy("officer", Vector2i(8, 5))
+			priest.name = "The high priest's captain"
+			b.objective["unit"] = priest.id
 	return b
 
 

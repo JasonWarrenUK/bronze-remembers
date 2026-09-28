@@ -73,5 +73,151 @@
 				"text": "Hold the ford for the Muster season. They will come back with more."
 			}
 		]
+	},
+	"ships": {
+		"name": "Get one named hero to the ships",
+		"named": true,
+		"chapters": [
+			{
+				"title": "The river road",
+				"node": "ashkelu",
+				"objective": {
+					"type": "kill_all"
+				},
+				"families": [
+					"levies"
+				],
+				"text": "The writ names a hero and a harbour. Reach Ashkelu with them alive."
+			},
+			{
+				"title": "The Drowned Mile",
+				"node": "landmark:The Drowned Mile",
+				"objective": {
+					"type": "survive",
+					"turns": 6
+				},
+				"families": [
+					"sea"
+				],
+				"text": "The tide road. Hold until the way is clear."
+			},
+			{
+				"title": "Lower Ugra",
+				"node": "ugarit_lo",
+				"objective": {
+					"type": "hold",
+					"tile": [
+						8,
+						4
+					],
+					"turns": 4
+				},
+				"families": [
+					"sea"
+				],
+				"grafted_variant": true,
+				"on_complete": "named_boards",
+				"text": "The quay. The named one boards, whoever else is standing."
+			}
+		]
+	},
+	"drown": {
+		"name": "Drown the Temple",
+		"chapters": [
+			{
+				"title": "Ashkelu's temple",
+				"node": "ashkelu",
+				"objective": {
+					"type": "kill_named"
+				},
+				"families": [
+					"levies"
+				],
+				"text": "The Temple at Ashkelu holds the ink of half the levy. The writ, quietly, wants it gone."
+			},
+			{
+				"title": "The Salt Crossing",
+				"node": "landmark:The Salt Crossing",
+				"objective": {
+					"type": "kill_all"
+				},
+				"families": [
+					"levies"
+				],
+				"text": "The priests have hired spears. They are waiting at the crossing."
+			},
+			{
+				"title": "The drowning",
+				"node": "ashkelu",
+				"objective": {
+					"type": "survive",
+					"turns": 7
+				},
+				"families": [
+					"sea"
+				],
+				"grafted_variant": true,
+				"on_complete": "drown_temple",
+				"text": "Open the sluices under the Temple and hold the doors until the Sea has it."
+			}
+		]
+	},
+	"found": {
+		"name": "Found a city in the ruins",
+		"chapters": [
+			{
+				"title": "The Tin Steps",
+				"node": "landmark:The Tin Steps",
+				"objective": {
+					"type": "kill_all"
+				},
+				"families": [
+					"levies"
+				],
+				"text": "Beyond the pass there is a ruin the tablets still list as a city."
+			},
+			{
+				"title": "Clearing the ruin",
+				"node": "pallanta",
+				"objective": {
+					"type": "kill_all"
+				},
+				"families": [
+					"sea"
+				],
+				"text": "Something has been sleeping in the cisterns."
+			},
+			{
+				"title": "The settlers",
+				"node": "landmark:The Goat Path",
+				"objective": {
+					"type": "protect",
+					"turns": 6
+				},
+				"families": [
+					"levies"
+				],
+				"text": "Bring the settlers up the goat path with their carts."
+			},
+			{
+				"title": "The first winter",
+				"node": "pallanta",
+				"objective": {
+					"type": "hold",
+					"tile": [
+						5,
+						5
+					],
+					"turns": 6
+				},
+				"families": [
+					"levies",
+					"sea"
+				],
+				"grafted_variant": true,
+				"on_complete": "found_city",
+				"text": "Hold the walls through the first winter. If they stand, it is a city."
+			}
+		]
 	}
 }

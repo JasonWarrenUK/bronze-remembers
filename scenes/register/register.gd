@@ -48,7 +48,7 @@ var chosen_ambition: String = "archive"
 
 func _start_run(picks: Array, spent: int, reg: Register) -> void:
 	var seed: int = int(DebugApi.user_args.get("seed", 100 + reg.generation))
-	var run := Run.new(seed, chosen_ambition if reg.ambitions_available().has(chosen_ambition) else "archive")
+	var run := Run.new(seed, chosen_ambition if reg.ambitions_available().has(chosen_ambition) else "archive", reg.founded_cities)
 	run.narrator = reg.narrator()
 	var kinds := ["spear", "sling", "shield"]
 	var gear := ["greaves", "bracers", "corselet"]
@@ -70,6 +70,8 @@ func _start_run(picks: Array, spent: int, reg: Register) -> void:
 		rec["origin"] = h.get("origin", "kessuwat")
 		roster.append(h["id"])
 	run.emeriti = reg.emeriti_for_run()
+	if run.ambition.get("named", false) and run.squad.size() > 0:
+		run.named_hero = run.squad[0]["name"]
 	run.scaling = Register.scaling(spent)
 	run.apply_world(reg.world)
 	run.wanderers = reg.wanderers.duplicate(true)

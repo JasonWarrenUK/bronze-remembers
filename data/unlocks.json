@@ -1,11 +1,87 @@
 {
 	"note": "Deed-gated unlocks. The Register shows the next one not yet earned.",
-	"order": ["bow_class", "knife_class", "hold_ford_ambition", "wandering_smith", "reed_recruits"],
+	"order": [
+		"bow_class",
+		"knife_class",
+		"hold_ford_ambition",
+		"wandering_smith",
+		"reed_recruits",
+		"ships_ambition",
+		"drown_ambition",
+		"found_ambition"
+	],
 	"unlocks": {
-		"bow_class":          { "name": "The Bow",             "deed": "held:The Kings' Ford", "count": 1, "grants": { "class": "bow" },       "text": "Hold the Kings' Ford once: the guard's composite bows come to the levy." },
-		"knife_class":        { "name": "The Knife",           "deed": "kill_named:levies",    "count": 1, "grants": { "class": "knife" },     "text": "Kill a deserter officer: the debt-slaves' nets and knives are yours." },
-		"hold_ford_ambition": { "name": "Hold the ford road",  "deed": "archive_won",          "count": 1, "grants": { "ambition": "ford" },   "text": "Carry the archive out once: a shorter, harder writ." },
-		"wandering_smith":    { "name": "The smith on the road", "deed": "mould_honoured",     "count": 2, "grants": { "event": "wandering_smith" }, "text": "Honour two moulds: the guild sends journeymen down the roads." },
-		"reed_recruits":      { "name": "Recruits from the reed country", "deed": "survived:The Drowned Mile", "count": 2, "grants": { "origin": "mercenary" }, "text": "Survive the Drowned Mile twice: foreign spears come up the coast." }
+		"bow_class": {
+			"name": "The Bow",
+			"deed": "held:The Kings' Ford",
+			"count": 1,
+			"grants": {
+				"class": "bow"
+			},
+			"text": "Hold the Kings' Ford once: the guard's composite bows come to the levy."
+		},
+		"knife_class": {
+			"name": "The Knife",
+			"deed": "kill_named:levies",
+			"count": 1,
+			"grants": {
+				"class": "knife"
+			},
+			"text": "Kill a deserter officer: the debt-slaves' nets and knives are yours."
+		},
+		"hold_ford_ambition": {
+			"name": "Hold the ford road",
+			"deed": "archive_won",
+			"count": 1,
+			"grants": {
+				"ambition": "ford"
+			},
+			"text": "Carry the archive out once: a shorter, harder writ."
+		},
+		"wandering_smith": {
+			"name": "The smith on the road",
+			"deed": "mould_honoured",
+			"count": 2,
+			"grants": {
+				"event": "wandering_smith"
+			},
+			"text": "Honour two moulds: the guild sends journeymen down the roads."
+		},
+		"reed_recruits": {
+			"name": "Recruits from the reed country",
+			"deed": "survived:The Drowned Mile",
+			"count": 2,
+			"grants": {
+				"origin": "mercenary"
+			},
+			"text": "Survive the Drowned Mile twice: foreign spears come up the coast."
+		},
+		"ships_ambition": {
+			"name": "Get one named hero to the ships",
+			"deed": "survived:",
+			"count": 2,
+			"grants": {
+				"ambition": "ships"
+			},
+			"text": "Survive two sieges: the harbourmasters will take a named passenger."
+		},
+		"drown_ambition": {
+			"name": "Drown the Temple",
+			"deed": "burned_ink",
+			"count": 1,
+			"grants": {
+				"ambition": "drown"
+			},
+			"text": "Burn the ink once: the writ finds a use for someone who hates the Temple."
+		},
+		"found_ambition": {
+			"name": "Found a city in the ruins",
+			"deed": "held:",
+			"count": 6,
+			"grants": {
+				"ambition": "found"
+			},
+			"text": "Hold six roads: the Palace lists a ruin as yours to raise."
+		}
 	}
 }

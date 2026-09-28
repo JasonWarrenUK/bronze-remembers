@@ -19,6 +19,7 @@ var next_id: int = 1
 var chronicle: Array = []         # one entry per run
 var world: WorldState = WorldState.new()
 var unlocks: Dictionary = {}      # carried into the next Register
+var founded_cities: Array = []    # world memory: cities raised by ambitions
 
 
 static func tier_cost(tier: int) -> int:
@@ -124,8 +125,11 @@ func narrator() -> String:
 
 func ambitions_available() -> Array:
 	var out: Array = ["archive"]
-	if has_unlock("hold_ford_ambition"):
-		out.append("ford")
+	for pair in [["hold_ford_ambition", "ford"], ["ships_ambition", "ships"], ["drown_ambition", "drown"], ["found_ambition", "found"]]:
+		if has_unlock(pair[0]):
+			out.append(pair[1])
+	if world.institutions["temple"]["state"] == "Burned":
+		out.erase("drown")
 	return out
 
 
@@ -222,7 +226,10 @@ func enter_from_run(run: Run, roster: Array) -> Dictionary:
 	for w in run.wanderer_deaths:
 		report["wanderer_deaths"].append(w)
 	chronicle.append({"generation": generation, "state": run.state, "day": run.day, "text": run.chronicle_stub()})
-	world.record_run(run.dealings())
+	var dealings := run.dealings()
+	if not dealings.get("founded_city", {}).is_empty():
+		founded_cities.append(dealings["founded_city"])
+	world.record_run(dealings)
 	for s in seats:
 		if s["holder"] != -1 and s.get("holds", "") != "" and int(s.get("contested_until", 0)) <= generation:
 			world.holds[s["holds"]] = true
@@ -529,7 +536,7 @@ func seat_holds(city: String) -> bool:
 # ---------------------------------------------------------------- save and load
 
 func to_dict() -> Dictionary:
-	return {"generation": generation, "heroes": heroes, "wanderers": wanderers, "seats": seats, "fallen": fallen, "next_id": next_id, "chronicle": chronicle, "world": world.to_dict(), "unlocks": unlocks}
+	return {"generation": generation, "heroes": heroes, "wanderers": wanderers, "seats": seats, "fallen": fallen, "next_id": next_id, "chronicle": chronicle, "world": world.to_dict(), "unlocks": unlocks, "founded_cities": founded_cities}
 
 
 func save(path: String = PATH) -> bool:
@@ -556,6 +563,7 @@ static func load_from(path: String = PATH) -> Register:
 	r.chronicle = d.get("chronicle", [])
 	r.world = WorldState.from_dict(d.get("world", {}))
 	r.unlocks = d.get("unlocks", {})
+	r.founded_cities = d.get("founded_cities", [])
 	for h in r.heroes:
 		h["id"] = int(h["id"])
 		h["tier"] = int(h["tier"])

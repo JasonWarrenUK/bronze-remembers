@@ -8,9 +8,12 @@ extends RefCounted
 ## Edges: {a, b, days} between consecutive nodes on a road.
 
 
-static func generate(seed: int, stage: String = "Whole") -> Dictionary:
+static func generate(seed: int, stage: String = "Whole", founded: Array = []) -> Dictionary:
 	var rng := SimRng.new(seed)
-	var data: Dictionary = SimData.load_json("world")
+	var data: Dictionary = SimData.load_json("world").duplicate(true)
+	for f in founded:
+		data["cities"][f["id"]] = {"name": f["name"], "pos": f["pos"], "walled": f.get("walled", true), "band": f.get("band", "upland"), "founded_by": f.get("founder", "")}
+		data["roads"].append({"a": "pallanta", "b": f["id"], "days": 2, "landmarks": []})
 	var nodes: Dictionary = {}
 	var edges: Array = []
 	for cid in data["cities"]:

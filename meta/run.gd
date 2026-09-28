@@ -38,10 +38,10 @@ var milestone_reached: bool = false
 var pending_fitting: Array = []     # hero indices waiting at a Smiths' node
 
 
-func _init(seed_: int = 1, ambition_key: String = "archive") -> void:
+func _init(seed_: int = 1, ambition_key: String = "archive", founded: Array = []) -> void:
 	seed = seed_
 	rng = SimRng.new(seed_)
-	world = WorldGen.generate(seed_)
+	world = WorldGen.generate(seed_, "Whole", founded)
 	ambition = SimData.load_json("ambitions")[ambition_key].duplicate(true)
 	ambition["key"] = ambition_key
 	season = SimData.load_json("world")["season"].duplicate()
@@ -125,7 +125,8 @@ func sorcery_misfires_here(h: Dictionary) -> bool:
 ## What this run did, for the institutions.
 func dealings() -> Dictionary:
 	var d := tally.duplicate(true)
-	d["ambition"] = ambition.get("key", "")
+	d["ambition"] = tally.get("ambition_done", "")
+	d["founded_city"] = founded_city
 	return d
 
 
@@ -443,8 +444,23 @@ func apply_battle(b: SimBattle, milestone: bool) -> Dictionary:
 		if milestone:
 			var ch: Dictionary = ambition["chapters"][chapter - 1]
 			_deed(ch["title"], 4, report)
-			if ch.get("on_complete", "") == "take_tablets":
-				tablets = true
+			match ch.get("on_complete", ""):
+				"take_tablets":
+					tablets = true
+				"named_boards":
+					var named := _hero_named(named_hero)
+					if named.is_empty() or not named["alive"] or named.get("left", false):
+						state = "lost"
+						_log("The ship sails, and %s is not on it." % (named_hero if named_hero != "" else "the named one"))
+						return report
+					_deed("%s boarded at Lower Ugra" % named_hero, 5, report, ["boarded"])
+				"drown_temple":
+					tally["ambition_done"] = "drown_temple"
+					_deed("Drowned the Temple at Ashkelu", 6, report, ["drowned_temple"])
+				"found_city":
+					founded_city = {"id": "pallanta_new", "name": "New Pallanta", "founder": fighters()[0]["name"] if fighters().size() > 0 else "the levy", "pos": [10, 7], "band": "upland", "walled": true}
+					tally["ambition_done"] = "found_city"
+					_deed("Founded %s" % founded_city["name"], 8, report, ["founded"])
 			if chapter == ambition["chapters"].size():
 				tally["archive_won"] += 1
 				_deed("Carried the archive out", 5, report, ["archive_won"])
@@ -735,6 +751,7 @@ func burn_ink(h: Dictionary) -> void:
 		h["scars"].append("burned_ink")
 	tally["sin"] += 3
 	_log("%s burns the ink off. The skin will not forget, and neither will the Temple." % h["name"])
+	_deed("%s burned the ink" % h["name"], 2, {"deeds": []}, ["burned_ink"])
 
 
 ## The tithe: Temple cities demand it from Rite Broken on. Pay a day and a line each, or refuse.
@@ -899,6 +916,8 @@ static func load_from(path: String) -> Run:
 
 
 var narrator: String = ""
+var named_hero: String = ""         # the ships ambition names one hero who must board
+var founded_city: Dictionary = {}   # set when the founding ambition completes
 
 
 ## The Chronicle in the Scribes' voice.
