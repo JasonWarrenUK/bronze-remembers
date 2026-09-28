@@ -36,3 +36,11 @@
 - [x] 15. Weather in the run log and map panel; field and map tint by Sea and Law stage; tile variants later
 - [x] 16. Temple, Smiths and Scribes actions on the map panel; the retirement scene with succession
 - [x] 17. Register screen additions: arcs, tracks as weather, the fall
+
+## After the loop (2026-09-28)
+
+- [x] A competent shared policy for tests and recordings
+- [x] Tongue in play: mismatched recruits, garbled letters, sorcery misfire away from home, name drift
+- [x] Scar marks on sprites; tile variants by stage
+- [x] Writ forgery at Law Lost; emeritus event chains; mercenaries from abroad
+- [x] The ships, drown and found ambitions; founded cities persist

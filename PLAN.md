@@ -2,7 +2,7 @@
 
 | Prop    | Value |
 |---------|-------|
-| Status  | Phase 4 (the MVP loop) built 2026-09-28, awaiting Jason's review |
+| Status  | MVP loop built 2026-09-28 and the rough edges worked: competent policy, Tongue in play, scar marks, tile variants, forgery, emeriti, mercenaries, five ambitions. Awaiting Jason's play |
 | Updated | 2026-09-26 |
 | Engine  | Godot 4.7.1 (installed at /Applications/Godot.app) |
 | Art     | Aseprite 1.3.18 CLI (installed) |

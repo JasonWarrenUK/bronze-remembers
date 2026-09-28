@@ -10,9 +10,9 @@
 | # | Question | Section | Raised |
 |---|---|---|---|
 | 1 | Wards: frequency, how they travel, whether they fight. Deferred by Jason as rare | 2 | 2026-09-26 |
-| 2 | Ambition list: first run's ambition answered 2026-09-27 (`design.md` section 15); full set still open | 3 | 2026-09-26 |
+| 2 | ~~Ambition list~~ Five ambitions built 2026-09-28: archive, ford, ships, drown, found; each unlocked by deeds | 3 | 2026-09-26 |
 | 3 | Institution end states answered 2026-09-28, section 17; transitions being authored | 5 | 2026-09-27 |
-| 4 | Seat recipes: the dozens of authored recipes and which unlock later | 7 | 2026-09-27 |
+| 4 | Seat recipes: seven pools and five recipes built 2026-09-28 (`data/seats.json`); more recipes and unlockable ones open | 7 | 2026-09-27 |
 | 5 | Trait pools per origin and the non-injury trait list | 8 | 2026-09-27 |
 | 6 | Class list, promotion trees, multiclass prerequisites and the Register unlock tree | 1, 8 | 2026-09-26 |
 | 7 | Graft catalogue: bronze (four) answered 2026-09-27, section 15; Sea joints and Temple marks open | 1 | 2026-09-26 |
@@ -23,11 +23,11 @@
 | 12 | ~~Chronicle method~~ Templated in the Scribes' voice, 2026-09-28; templates to write | 3, 5 | 2026-09-26 |
 | 13 | ~~Tick curves~~ First numbers 2026-09-28, section 17; tune in play | 10 | 2026-09-27 |
 | 14 | Testimony reach: what significance means and how far a deed travels to a scribe | 5 | 2026-09-27 |
-| 15 | Mercenaries and the world abroad: the hidden model of other empires falling | 8 | 2026-09-27 |
-| 16 | Substitution rites: rules for moving a death, cost in ink, failure at Broken Rite | 9 | 2026-09-27 |
+| 15 | ~~Mercenaries and the world abroad~~ Built 2026-09-28: availability by Tongue stage and generation, none once Tongue is Gone | 8 | 2026-09-27 |
+| 16 | Substitution built 2026-09-28: three lines, sin, the stand-in dies; failure at Broken Rite still open | 9 | 2026-09-27 |
 | 17 | Descendants contesting inheritance at Custom Gone: what the contest is | 10 | 2026-09-27 |
 | 18 | ~~The Road~~ Answered 2026-09-28, section 16 | 7 | 2026-09-27 |
-| 19 | Emeritus event chains: authored per route (deed, writ) | 7 | 2026-09-27 |
+| 19 | Emeritus chains built 2026-09-28: two events (the old general's levy, the old holder's offer); per-route variants open | 7 | 2026-09-27 |
 | 20 | Retirement scene: how the seat choice is presented and what the hero says | 2, 7 | 2026-09-27 |
 | 21 | ~~Age~~ Answered 2026-09-28: one step per campaign elapsed, played or not | 2 | 2026-09-26 |
 | 22 | ~~Difficulty formula~~ Answered 2026-09-28, section 16 | 2, 5 | 2026-09-26 |
@@ -56,7 +56,7 @@ Decisions are in `design.md` section 11. Numbers and lists still open:
 | 33 | Deployment zone sizes and reinforcement wave rules per objective | 2026-09-27 |
 | 34 | Deed significance values and the scribal range each buys | 2026-09-27 |
 | 35 | Movement cost of a downed body's tile | 2026-09-27 |
-| 36 | Contest reach for enemy scribes, priests and officers | 2026-09-27 |
+| 36 | ~~Contest reach~~ Three tiles, built 2026-09-28 | 2026-09-27 |
 | 37 | Terrain exposure: how many turns on a tide, shrine or mould-fire tile trigger a graft | 2026-09-27 |
 
 ## Roster
@@ -66,7 +66,7 @@ Decisions are in `design.md` section 11. Numbers and lists still open:
 | 38 | Promotion tree contents: the forty-two forms, their abilities and silhouettes | 2026-09-27 |
 | 39 | Named unit type pools per family and their personal decks | 2026-09-27 |
 | 40 | Name generator: Hittite and Ugaritic phonetics, per-city variation, drift with Tongue | 2026-09-27 |
-| 41 | Class unlock tree on the Register: what unlocks each class beyond origin | 2026-09-27 |
+| 41 | ~~Unlock tree~~ Built 2026-09-28: eight deed-gated unlocks (`data/unlocks.json`) | 2026-09-27 |
 
 ## Map
 
