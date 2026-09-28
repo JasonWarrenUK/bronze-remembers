@@ -22,6 +22,13 @@ var flooded: bool = false
 var revealed: Dictionary = {}       # node ids revealed by events
 var pending_event: Dictionary = {}  # event awaiting a choice at this node
 var pending_fight: String = ""      # family of a fight forced by an event or a landmark
+var pair_scores: Dictionary = {}    # "i:j" squad indices -> bond score this run
+var scaling: Dictionary = {"extra_enemies": 0, "extra_hp": 0}
+var wanderers: Array = []           # from the Register: {name, kind, tier, scars, grafts, gear, appearances, dead}
+var wanderer_here: Dictionary = {}  # a wanderer met at this node
+var wanderer_ally: Dictionary = {}  # a wanderer fighting the next battle
+var wanderer_deaths: Array = []
+var favours: Array = []             # {wanderer, node, done}
 var tablets: bool = false
 var log: Array = []
 var state: String = "ongoing"       # ongoing | won | lost
@@ -123,7 +130,56 @@ func travel_to(id: String) -> bool:
 		pending_fight = "levies"
 	if n["kind"] == "event" and not n.get("cleared", false):
 		pending_event = _draw_event()
+	wanderer_here = {}
+	if (n["kind"] == "rest" or n["kind"] == "city") and not wanderers.is_empty() and rng.range_int(1, 3) == 1:
+		for w in wanderers:
+			if not w["dead"] and w["appearances"] < 3:
+				wanderer_here = w
+				w["appearances"] += 1
+				_log("%s, once of the levy, is here at %s." % [w["name"], n["name"]])
+				break
+			elif not w["dead"] and w["appearances"] >= 3:
+				w["dead"] = true
+				wanderer_deaths.append(w["name"])
+				_log("%s is found dead at %s, wrapped in a cloak, the old %s beside them." % [w["name"], n["name"], w["gear"] if w["gear"] != "" else "kit"])
+				if w["gear"] != "":
+					for h in fighters():
+						if h["gear"] == "":
+							h["gear"] = w["gear"]
+							_log("%s takes up %s's %s." % [h["name"], w["name"], w["gear"]])
+							break
+				break
+	for f in favours:
+		if not f["done"] and f["node"] == at:
+			f["done"] = true
+			_deed("Kept a promise to %s" % f["wanderer"], 2, {"deeds": []})
 	return true
+
+
+## The wanderer here fights beside the squad in its next battle.
+func wanderer_joins() -> void:
+	if wanderer_here.is_empty():
+		return
+	wanderer_ally = wanderer_here
+	_log("%s will stand with the squad once more." % wanderer_here["name"])
+	wanderer_here = {}
+
+
+## The wanderer asks a favour: visit a named node before the run ends.
+func wanderer_favour() -> void:
+	if wanderer_here.is_empty():
+		return
+	var candidates: Array = []
+	for id in world["nodes"]:
+		var n: Dictionary = world["nodes"][id]
+		if (n["kind"] == "landmark" or n["kind"] == "rest") and id != at:
+			candidates.append(id)
+	if candidates.is_empty():
+		return
+	var target: String = candidates[rng.range_int(0, candidates.size() - 1)]
+	favours.append({"wanderer": wanderer_here["name"], "node": target, "done": false})
+	_log("%s asks the squad to go by %s, for their sake." % [wanderer_here["name"], world["nodes"][target]["name"]])
+	wanderer_here = {}
 
 
 func _draw_event() -> Dictionary:
@@ -208,6 +264,7 @@ func apply_battle(b: SimBattle, milestone: bool) -> Dictionary:
 		if u == null:
 			continue
 		h["hp"] = maxi(1, u.hp) if not u.downed else 1
+		h["unit_id_done"] = h["unit_id"]
 		h.erase("unit_id")
 	for d in draws:
 		var u := b.unit_by_id(d["unit"])
@@ -226,6 +283,8 @@ func apply_battle(b: SimBattle, milestone: bool) -> Dictionary:
 			"dead":
 				h["alive"] = false
 				_log("%s died at %s." % [h["name"], node()["name"]])
+	_score_pairs(b)
+	wanderer_ally = {}
 	var named_kills := 0
 	for e in b.enemies(false):
 		if e.downed and e.named:
@@ -259,6 +318,41 @@ func apply_battle(b: SimBattle, milestone: bool) -> Dictionary:
 	return report
 
 
+## Pair scores: both survive +1, adjacent at the end +1, avenging a downed comrade +2.
+func _score_pairs(b: SimBattle) -> void:
+	var idx_of: Dictionary = {}
+	for i in range(squad.size()):
+		if squad[i].has("unit_id_done"):
+			idx_of[squad[i]["unit_id_done"]] = i
+	var downed_by: Dictionary = {}     # enemy id -> unit id it downed
+	var killer_of: Dictionary = {}     # enemy id -> unit id that downed it
+	for ev in b.events:
+		if ev["type"] == "downed" and ev.get("by_id", -1) != -1:
+			downed_by[ev["by_id"]] = ev["unit"]
+		if ev["type"] == "downed" and ev.has("killer"):
+			killer_of[ev["unit"]] = ev["killer"]
+	var ids: Array = idx_of.keys()
+	for x in range(ids.size()):
+		for y in range(x + 1, ids.size()):
+			var ua := b.unit_by_id(ids[x])
+			var ub := b.unit_by_id(ids[y])
+			if ua == null or ub == null:
+				continue
+			var score := 0
+			if not ua.downed and not ub.downed:
+				score += 1
+				if SimGrid.distance(ua.pos, ub.pos) == 1:
+					score += 1
+			for enemy_id in downed_by:
+				var victim: int = downed_by[enemy_id]
+				var avenger: int = killer_of.get(enemy_id, -1)
+				if (victim == ua.id and avenger == ub.id) or (victim == ub.id and avenger == ua.id):
+					score += 2
+			if score > 0:
+				var key := "%d:%d" % [mini(idx_of[ids[x]], idx_of[ids[y]]), maxi(idx_of[ids[x]], idx_of[ids[y]])]
+				pair_scores[key] = int(pair_scores.get(key, 0)) + score
+
+
 func _deed(text: String, significance: int, report: Dictionary) -> void:
 	var d := {"text": text, "significance": significance, "day": day, "node": at, "recorded": false}
 	deeds.append(d)
@@ -281,8 +375,11 @@ func _scribal_within(days: int) -> bool:
 
 
 ## Channel 2: visiting a scribal node records every queued deed.
+var elder_cities: Dictionary = {}   # cities whose Elder seat is held: gates never shut
+
+
 func gates_shut() -> bool:
-	return writ["outlaw"] and node()["kind"] == "city" and node()["flags"].get("walled", false)
+	return writ["outlaw"] and node()["kind"] == "city" and node()["flags"].get("walled", false) and not elder_cities.has(at)
 
 
 func testify() -> int:
@@ -378,7 +475,8 @@ func to_dict() -> Dictionary:
 		"seed": seed, "rng_state": rng.state(), "chapter": chapter, "day": day, "at": at, "visited": visited,
 		"squad": squad, "deeds": deeds, "writ": writ, "tablets": tablets, "log": log, "state": state,
 		"milestone_reached": milestone_reached, "flooded": flooded, "revealed": revealed, "pending_fight": pending_fight,
-		"cleared": _cleared_ids(),
+		"cleared": _cleared_ids(), "pair_scores": pair_scores, "scaling": scaling, "wanderers": wanderers,
+		"wanderer_deaths": wanderer_deaths, "favours": favours, "elder_cities": elder_cities,
 	}
 
 
@@ -422,6 +520,12 @@ static func load_from(path: String) -> Run:
 	r.pending_fight = d.get("pending_fight", "")
 	for id in d.get("cleared", []):
 		r.world["nodes"][id]["cleared"] = true
+	r.pair_scores = d.get("pair_scores", {})
+	r.scaling = d.get("scaling", {"extra_enemies": 0, "extra_hp": 0})
+	r.wanderers = d.get("wanderers", [])
+	r.wanderer_deaths = d.get("wanderer_deaths", [])
+	r.favours = d.get("favours", [])
+	r.elder_cities = d.get("elder_cities", {})
 	return r
 
 

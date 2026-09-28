@@ -490,7 +490,7 @@ func _damage(t: SimUnit, amount: int, source: SimUnit, cause: String) -> void:
 		t.hp = 0
 		t.downed = true
 		t.downed_by = source.kind if source != null else cause
-		emit("downed", {"unit": t.id, "by": t.downed_by, "overkill": t.overkill})
+		emit("downed", {"unit": t.id, "by": t.downed_by, "by_id": source.id if source != null else -1, "killer": source.id if source != null else -1, "overkill": t.overkill})
 
 
 func _apply_condition(t: SimUnit, cond: String, turns: int, source: SimUnit) -> void:

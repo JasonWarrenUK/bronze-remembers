@@ -27,7 +27,22 @@ func _ready() -> void:
 
 
 func _show_placeholder() -> void:
-	var label := Label.new()
-	label.text = "Bronze Remembers\nlauncher: pass -- --scene=<name>"
-	label.position = Vector2(16, 16)
-	add_child(label)
+	var layer := CanvasLayer.new()
+	add_child(layer)
+	var col := VBoxContainer.new()
+	col.position = Vector2(220, 100)
+	col.add_theme_constant_override("separation", 8)
+	layer.add_child(col)
+	var title := Label.new()
+	title.text = "BRONZE REMEMBERS"
+	col.add_child(title)
+	for item in [["The Register", "res://scenes/register/register.tscn"], ["Continue the run", ""], ["The slice fight", "res://scenes/battle_smoke/battle_smoke.tscn"]]:
+		var b := Button.new()
+		b.text = item[0]
+		if item[1] == "":
+			b.pressed.connect(func():
+				DebugApi.user_args["load"] = true
+				get_tree().change_scene_to_file("res://scenes/run/run.tscn"))
+		else:
+			b.pressed.connect(func(): get_tree().change_scene_to_file(item[1]))
+		col.add_child(b)

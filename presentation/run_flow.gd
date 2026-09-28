@@ -13,6 +13,9 @@ var map: MapView
 var battle_view: BattleView
 var pending_milestone: bool = false
 var auto: bool = false
+var register: Register
+var roster: Array = []
+var spent: int = 0
 
 
 func start(r: Run, auto_: bool = false) -> void:
@@ -147,6 +150,26 @@ func _show_result() -> void:
 	body += "\n" + run.chronicle_stub()
 	text.text = body
 	panel.add_child(text)
+	if register != null:
+		var col := VBoxContainer.new()
+		panel.add_child(col)
+		col.add_child(Control.new())
+		var enter := Button.new()
+		enter.text = "Enter the Register"
+		enter.pressed.connect(_enter_register)
+		col.add_child(enter)
+		col.get_child(0).custom_minimum_size = Vector2(0, 220)
+		if auto:
+			call_deferred("_enter_register")
+
+
+func _enter_register() -> void:
+	if register == null:
+		return
+	register.wanderers = run.wanderers
+	var rep := register.enter_from_run(run, roster)
+	register.save()
+	get_tree().change_scene_to_file("res://scenes/register/register.tscn")
 
 
 ## Auto mode: a policy walks the run for recordings and smoke tests.

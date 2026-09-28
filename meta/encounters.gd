@@ -22,10 +22,18 @@ static func build(run: Run, node: Dictionary, objective: Dictionary, families: A
 			u.apply_graft(g)
 		h["unit_id"] = u.id
 		y += 1
+	if not run.wanderer_ally.is_empty():
+		var w: Dictionary = run.wanderer_ally
+		var ally := b.add_hero(w["kind"], Vector2i(0, y), w.get("gear", ""))
+		ally.name = w["name"]
+		for sc in w.get("scars", []):
+			ally.apply_scar(sc)
+		for g in w.get("grafts", []):
+			ally.apply_graft(g)
 	if objective["type"] == "protect":
 		b.add_object("tablets", Vector2i(2, 4))
 	var chapter: int = run.chapter
-	var count: int = (1 if road else 2) + chapter
+	var count: int = (1 if road else 2) + chapter + int(run.scaling.get("extra_enemies", 0))
 	var x := 7
 	var ey := 2
 	for i in count:
@@ -33,7 +41,9 @@ static func build(run: Run, node: Dictionary, objective: Dictionary, families: A
 		var kind := _pick(fam, i, chapter, grafted, run.rng)
 		while b.unit_at(Vector2i(x, ey)) != null or not b.grid.passable(Vector2i(x, ey)):
 			ey += 1
-		b.add_enemy(kind, Vector2i(x, ey))
+		var e := b.add_enemy(kind, Vector2i(x, ey))
+		e.max_hp += int(run.scaling.get("extra_hp", 0))
+		e.hp = e.max_hp
 		ey += 2
 		if ey > 8:
 			ey = 1

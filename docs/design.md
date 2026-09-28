@@ -530,3 +530,16 @@ Numbers are first-run defaults for tuning in play.
 | Landmarks fight | A ford or a pass hosts levies, a marsh or tide road hosts sea-things, a tomb hosts nothing. The fight cannot be walked past. A landmark that is also a chapter milestone hosts only the milestone fight |
 | Events hold the squad | An event node presents a two-way choice before travel continues: fix the cart (a day, healing, a deed) or walk on; go up to the smoke under the writ (a fight, a deed) or keep to the road; read the tablet (reveal two nodes) or carry it; judge the goat (report deadline extended) or take the hearth's thanks (healing); let the road smith cast (a graft now, the Smiths' arc steps) or send him on |
 | Rest costs | A day, counted against the season and the report |
+
+## 16. First Register decisions
+
+Agreed 2026-09-28.
+
+- **Age.** Every hero on the Register ages one step per campaign elapsed, played or not. A shelved hero still dies of age; the Register is a clock.
+- **Difficulty against tier budget.** Each tier point spent at squad creation adds one enemy HP per three points and one extra enemy per five points. Tuned in play.
+- **The Road.** A retiree with no seat wanders and appears in later runs at rest nodes and cities: fights beside the squad once at their old kit, or asks a favour (a small errand on the route that is a testified deed when done). After three appearances they are found dead at a rest node, with their heirloom and a scene.
+- **Descendants before bonds.** Comrade bonds form between heroes from shared fights (pairing rule below). A bonded pair at run end yields a descendant on the Register inheriting one property from each parent (heirloom gear, a grudge against what downed them, a trait). Unbonded retirees yield one descendant by origin house.
+- **Pairing.** Bonds are scored per pair. Every fight both survive adds 1; ending a fight adjacent adds 1; one carrying, interposing for or avenging the other adds 2. A pair bonds at 5. Bonds are not exclusive. At run end, descendants come from greedy matching by score: strongest pair first, each hero used once, unmatched retirees fall to the origin-house rule.
+- **Tier cost curve.** Tier 1 costs 1, tier 2 costs 2, and each tier after costs the sum of the two before (3, 5, 8, 13). Tier 0 is free.
+- **First Register's seat pool.** One civic pool: Elder of an origin city, one per city, tenure three generations. Effect: that city's gates never shut to the squad and the tier budget rises by one while the seat is held.
+- **The fall, stand-in.** Until the tracks move (phase 4), a Register falls after eight generations.

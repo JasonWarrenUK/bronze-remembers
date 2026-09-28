@@ -26,11 +26,11 @@
 | 15 | Mercenaries and the world abroad: the hidden model of other empires falling | 8 | 2026-09-27 |
 | 16 | Substitution rites: rules for moving a death, cost in ink, failure at Broken Rite | 9 | 2026-09-27 |
 | 17 | Descendants contesting inheritance at Custom Gone: what the contest is | 10 | 2026-09-27 |
-| 18 | The Road: encounter design for wandering retirees | 7 | 2026-09-27 |
+| 18 | ~~The Road~~ Answered 2026-09-28, section 16 | 7 | 2026-09-27 |
 | 19 | Emeritus event chains: authored per route (deed, writ) | 7 | 2026-09-27 |
 | 20 | Retirement scene: how the seat choice is presented and what the hero says | 2, 7 | 2026-09-27 |
-| 21 | Age: whether unplayed Register heroes age, and at what rate | 2 | 2026-09-26 |
-| 22 | Difficulty scaling formula against tier budget | 2, 5 | 2026-09-26 |
+| 21 | ~~Age~~ Answered 2026-09-28: one step per campaign elapsed, played or not | 2 | 2026-09-26 |
+| 22 | ~~Difficulty formula~~ Answered 2026-09-28, section 16 | 2, 5 | 2026-09-26 |
 
 ## Topics not yet discussed
 
