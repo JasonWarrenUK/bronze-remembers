@@ -1,0 +1,8 @@
+{
+	"grudge_levies": { "name": "A grudge against the deserters", "planted_by": "downed:levies", "resolves_on": "kill_named:levies", "trait": "Deserter's bane", "curdle": "Flinches at spears", "text": "They will pay for the ridge." },
+	"grudge_sea":    { "name": "A grudge against the Sea",       "planted_by": "downed:sea",    "resolves_on": "kill_named:sea",    "trait": "Tide-breaker",     "curdle": "Hears the tide",  "text": "Something with too many joints owes a debt." },
+	"heresy":        { "name": "A heresy",                      "planted_by": "event:goat_dispute", "resolves_on": "temple",       "trait": "Unbowed",          "curdle": "Ink-shy",         "text": "The gods answer through the Temple, and the Temple lies." },
+	"debt":          { "name": "A debt to collect",             "planted_by": "event:stopped_cart", "resolves_on": "market",       "trait": "Creditor",         "curdle": "Owed and bitter", "text": "The Tin Road driver promised payment at the next market." },
+	"fear_of_water": { "name": "A fear of water",               "planted_by": "exposure",       "resolves_on": "tide",             "trait": "Salt-steady",      "curdle": "Will not cross",  "text": "The tide got into the boots and never left." },
+	"hunger_for_bronze": { "name": "A hunger for bronze",       "planted_by": "downed:smiths",  "resolves_on": "graft",            "trait": "Bronze-willing",   "curdle": "Bronze-hungry",   "text": "The arm the smith took was the wrong one." }
+}

@@ -1,0 +1,19 @@
+{
+	"note": "Seat pools and recipes. A recipe's anchors must all be satisfied by the retiree; 'world' conditions by the Register.",
+	"pools": {
+		"elder":     { "name": "Elder of {city}",           "kind": "civic",         "band": 0, "per": "city",        "effects": { "gates_open": true, "budget": 1 }, "text": "The hearth answers to a name it knows." },
+		"warden":    { "name": "Warden of {landmark}",      "kind": "civic",         "band": 1, "per": "landmark",    "effects": { "hold": "law" },                  "text": "One road keeps its law a while longer." },
+		"general":   { "name": "General of the Sun",        "kind": "institutional", "band": 1, "per": "palace",      "requires": { "institution": "palace", "not_state": "Dissolved" }, "effects": { "arc_step": "palace", "hold": "law" }, "text": "The writs bear a second seal now." },
+		"high_priest": { "name": "Voice of the Thousand",   "kind": "institutional", "band": 1, "per": "temple",      "requires": { "institution": "temple", "not_state": "Burned", "ink_min": 1 }, "effects": { "arc_step": "temple", "hold": "rite" }, "text": "The oracle speaks in a voice the squad knows." },
+		"archivist": { "name": "Keeper of the Archive",     "kind": "institutional", "band": 1, "per": "scribes",     "requires": { "institution": "scribes", "not_state": "Scattered", "false_lines_max": 0 }, "effects": { "arc_step": "scribes", "testimony_range": 2, "hold": "tongue" }, "text": "What is written travels further." },
+		"master_of_moulds": { "name": "Master of Moulds",   "kind": "institutional", "band": 1, "per": "smiths",      "requires": { "institution": "smiths", "not_state": "Armourers of the Sea", "graft_min": 1 }, "effects": { "arc_step": "smiths", "graft_quality": 1 }, "text": "The moulds are cut a little truer." },
+		"chronicler": { "name": "Voice of the Chronicle",   "kind": "chronicle",     "band": 2, "per": "register",    "effects": { "narrator": true },                "text": "The next Registers are told in this voice." }
+	},
+	"recipes": [
+		{ "id": "drowned_gate", "name": "Warden of the Drowned Gate at {city}", "band": 1, "anchors": ["deed:kill_named:sea", "graft:sea_or_bronze", "origin:coast"], "world": { "no_seat": "drowned_gate" }, "effects": { "hold": "sea" }, "text": "A gate the tide will not pass while the warden stands." },
+		{ "id": "ford_keeper", "name": "Keeper of the Kings' Ford", "band": 1, "anchors": ["deed:held:The Kings' Ford", "deed:held:The Kings' Ford"], "world": { "no_seat": "ford_keeper" }, "effects": { "hold": "law", "budget": 1 }, "text": "The ford is held by someone who has held it twice." },
+		{ "id": "reader_of_the_road", "name": "Reader of the Road", "band": 1, "anchors": ["deed:learned", "false_lines:0", "deed:testified:5"], "world": { "no_seat": "reader_of_the_road" }, "effects": { "testimony_range": 3 }, "text": "The scribes send letters where this one has walked." },
+		{ "id": "bronze_elder", "name": "Bronze Elder of {city}", "band": 2, "anchors": ["graft:bronze", "deed:mould_honoured", "origin:any"], "world": { "no_seat": "bronze_elder", "smiths_not": "Armourers of the Sea" }, "effects": { "graft_quality": 1, "gates_open": true }, "text": "Remade, and still welcome at the hearth." },
+		{ "id": "tide_speaker", "name": "Speaker for the Tide", "band": 2, "anchors": ["deed:survived:The Drowned Mile", "scar:sea", "ink:2"], "world": { "sea_stage_min": 2 }, "effects": { "hold": "sea", "arc_step": "temple" }, "text": "Someone the Sea has heard, and the Temple listens to." }
+	]
+}

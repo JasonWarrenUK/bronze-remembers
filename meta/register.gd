@@ -69,8 +69,28 @@ func budget() -> int:
 	var b := BASE_BUDGET
 	for s in seats:
 		if s["holder"] != -1:
-			b += 1
+			var eff: Dictionary = s.get("effects", {"budget": 1})
+			var bonus: int = int(eff.get("budget", 0))
+			if int(s.get("contested_until", 0)) > generation:
+				bonus = bonus / 2
+			b += bonus
 	return b
+
+
+func gates_open_cities() -> Dictionary:
+	var out: Dictionary = {}
+	for s in seats:
+		if s["holder"] != -1 and s.get("effects", {"gates_open": true}).get("gates_open", false):
+			out[s.get("city", "")] = true
+	return out
+
+
+func testimony_bonus() -> int:
+	var n := 0
+	for s in seats:
+		if s["holder"] != -1:
+			n += int(s.get("effects", {}).get("testimony_range", 0))
+	return n
 
 
 ## Difficulty scaling from tier points spent: extra enemies and HP.
@@ -92,8 +112,17 @@ func enter_from_run(run: Run, roster: Array) -> Dictionary:
 			continue
 		h["scars"] = rec["scars"].duplicate()
 		h["grafts"] = rec["grafts"].duplicate()
+		h["traits"] = rec.get("traits", []).duplicate()
+		h["ink"] = int(rec.get("ink", 0))
 		h["campaigns"] += 1
 		h["deeds"] += _deeds_for(run, rec["name"])
+		h["tier"] += int(rec.get("tier_bonus", 0))
+		for d in run.deeds:
+			if d["recorded"]:
+				for tag in d.get("tags", []):
+					h["deed_tags"] = h.get("deed_tags", [])
+					h["deed_tags"].append(tag)
+					_earn_unlock(tag)
 		if not rec["alive"]:
 			h["status"] = "dead"
 			h["died"] = {"generation": generation, "by": rec.get("injury", {}).get("by", "the road")}
@@ -151,7 +180,7 @@ func enter_from_run(run: Run, roster: Array) -> Dictionary:
 	chronicle.append({"generation": generation, "state": run.state, "day": run.day, "text": run.chronicle_stub()})
 	world.record_run(run.dealings())
 	for s in seats:
-		if s["holder"] != -1 and s.get("holds", "") != "":
+		if s["holder"] != -1 and s.get("holds", "") != "" and int(s.get("contested_until", 0)) <= generation:
 			world.holds[s["holds"]] = true
 	report["world"] = world.tick_generation()
 	if world.fallen():
@@ -237,11 +266,192 @@ func _add_wanderer(h: Dictionary) -> void:
 	wanderers.append({"hero_id": h["id"], "name": h["name"], "kind": h["kind"], "tier": h["tier"], "scars": h["scars"].duplicate(), "grafts": h["grafts"].duplicate(), "gear": h["gear"], "appearances": 0, "dead": false})
 
 
+# ---------------------------------------------------------------- unlocks
+
+func _earn_unlock(tag: String) -> void:
+	var data: Dictionary = SimData.load_json("unlocks")
+	for key in data["order"]:
+		var u: Dictionary = data["unlocks"][key]
+		if tag == u["deed"] or tag.begins_with(u["deed"]):
+			var progress: Dictionary = unlocks.get("progress", {})
+			progress[key] = int(progress.get(key, 0)) + 1
+			unlocks["progress"] = progress
+			if progress[key] >= int(u["count"]) and not unlocks.get("earned", {}).has(key):
+				var earned: Dictionary = unlocks.get("earned", {})
+				earned[key] = generation
+				unlocks["earned"] = earned
+
+
+func next_unlock() -> Dictionary:
+	var data: Dictionary = SimData.load_json("unlocks")
+	for key in data["order"]:
+		if not unlocks.get("earned", {}).has(key):
+			var u: Dictionary = data["unlocks"][key].duplicate()
+			u["progress"] = int(unlocks.get("progress", {}).get(key, 0))
+			return u
+	return {}
+
+
+func has_unlock(key: String) -> bool:
+	return unlocks.get("earned", {}).has(key)
+
+
+# ---------------------------------------------------------------- seats
+
+## Seats a hero may take now: pool seats they qualify for, recipes whose anchors they satisfy.
+func seat_offers(h: Dictionary) -> Array:
+	var data: Dictionary = SimData.load_json("seats")
+	var out: Array = []
+	var band := band_index(h["tier"])
+	for key in data["pools"]:
+		var pool: Dictionary = data["pools"][key]
+		if band < int(pool["band"]):
+			continue
+		var req: Dictionary = pool.get("requires", {})
+		if req.has("institution") and world.institutions[req["institution"]]["state"] == req.get("not_state", ""):
+			continue
+		if req.has("ink_min") and int(h.get("ink", 0)) < int(req["ink_min"]):
+			continue
+		if req.has("graft_min") and h["grafts"].size() < int(req["graft_min"]):
+			continue
+		if req.has("false_lines_max") and int(h.get("false_lines", 0)) > int(req["false_lines_max"]):
+			continue
+		var place: String = h["origin"] if pool["per"] == "city" else pool["per"]
+		out.append({"id": key, "name": pool["name"].replace("{city}", place).replace("{landmark}", "the road"), "place": place, "effects": pool["effects"], "text": pool["text"], "holder": _holder(key, place), "recipe": false})
+	for r in data["recipes"]:
+		if band < int(r["band"]) or not _anchors_met(h, r["anchors"]) or not _world_met(r.get("world", {}), r["id"]):
+			continue
+		out.append({"id": r["id"], "name": r["name"].replace("{city}", h["origin"]), "place": h["origin"], "effects": r["effects"], "text": r["text"], "holder": _holder(r["id"], h["origin"]), "recipe": true})
+	return out
+
+
+static func band_index(tier: int) -> int:
+	var idx := 0
+	for i in range(BANDS.size()):
+		if tier >= BANDS[i][1]:
+			idx = i
+	return idx
+
+
+func _anchors_met(h: Dictionary, anchors: Array) -> bool:
+	var tags: Array = h.get("deed_tags", [])
+	var counts: Dictionary = {}
+	for t in tags:
+		counts[t] = int(counts.get(t, 0)) + 1
+	var needed: Dictionary = {}
+	for a in anchors:
+		var parts: Array = a.split(":")
+		match parts[0]:
+			"deed":
+				var tag: String = a.substr(5)
+				if tag.begins_with("testified:"):
+					if h["deeds"] < int(tag.substr(10)):
+						return false
+				else:
+					needed[tag] = int(needed.get(tag, 0)) + 1
+			"graft":
+				if parts[1] == "bronze" and h["grafts"].is_empty():
+					return false
+				if parts[1] == "sea_or_bronze" and h["grafts"].is_empty() and not _has_sea_scar(h):
+					return false
+			"scar":
+				if parts[1] == "sea" and not _has_sea_scar(h):
+					return false
+			"origin":
+				if parts[1] == "coast" and not _origin_band(h) == "coast":
+					return false
+			"false_lines":
+				if int(h.get("false_lines", 0)) > int(parts[1]):
+					return false
+			"ink":
+				if int(h.get("ink", 0)) < int(parts[1]):
+					return false
+	for tag in needed:
+		var have := 0
+		for t in counts:
+			if t == tag or t.begins_with(tag):
+				have += counts[t]
+		if have < needed[tag]:
+			return false
+	return true
+
+
+func _has_sea_scar(h: Dictionary) -> bool:
+	for sc in h["scars"]:
+		if SimData.load_json("scars").get(sc, {}).get("sources", []).has("sea"):
+			return true
+	return false
+
+
+func _origin_band(h: Dictionary) -> String:
+	return SimData.load_json("world")["cities"].get(h["origin"], {}).get("band", "river")
+
+
+func _world_met(cond: Dictionary, recipe_id: String) -> bool:
+	if cond.has("no_seat") and _holder(cond["no_seat"], "") != -1:
+		return false
+	if cond.has("smiths_not") and world.institutions["smiths"]["state"] == cond["smiths_not"]:
+		return false
+	if cond.has("sea_stage_min") and world.stage_num("sea") < int(cond["sea_stage_min"]):
+		return false
+	return true
+
+
+func _holder(seat_id: String, place: String) -> int:
+	for s in seats:
+		if s["kind"] == seat_id and (place == "" or s.get("city", "") == place):
+			return int(s["holder"])
+	return -1
+
+
+## Takes a seat. If held, succession by deed (more testified deeds wins) or by writ (Law at most Broken).
+func take_seat(h: Dictionary, offer: Dictionary, route: String = "deed") -> Dictionary:
+	var result := {"taken": false, "route": route, "contested": false, "emeritus": -1}
+	var seat: Dictionary = {}
+	for s in seats:
+		if s["kind"] == offer["id"] and s.get("city", "") == offer["place"]:
+			seat = s
+	if seat.is_empty():
+		seat = {"kind": offer["id"], "city": offer["place"], "holder": -1, "since": 0, "effects": offer["effects"], "name": offer["name"], "contested_until": 0, "holds": offer["effects"].get("hold", "")}
+		seats.append(seat)
+	if seat["holder"] != -1:
+		var holder := hero_by_id(seat["holder"])
+		var wins := false
+		if route == "writ":
+			wins = world.stage_num("law") <= 2
+			if wins:
+				world.institutions["palace"]["kept_runs"] = maxi(0, world.institutions["palace"]["kept_runs"] - 1)
+		else:
+			wins = h["deeds"] > int(holder.get("deeds", 0))
+		if not wins:
+			return result
+		holder["status"] = "emeritus"
+		holder["grudges"] = holder.get("grudges", [])
+		holder["grudges"].append("unseated by %s" % h["name"])
+		result["emeritus"] = holder["id"]
+		result["contested"] = true
+		seat["contested_until"] = generation + 1
+	seat["holder"] = h["id"]
+	seat["since"] = generation
+	seat["effects"] = offer["effects"]
+	seat["name"] = offer["name"]
+	seat["holds"] = offer["effects"].get("hold", "")
+	h["status"] = "seated"
+	h["seat"] = offer["name"]
+	if offer["effects"].has("arc_step"):
+		var key: String = offer["effects"]["arc_step"]
+		var inst: Dictionary = world.institutions[key]
+		if inst["state"] != "Standing" and inst["step"] < 3:
+			inst["step"] += 1
+	result["taken"] = true
+	return result
+
+
 func elder_seat(city: String) -> Dictionary:
 	for s in seats:
 		if s["kind"] == "elder" and s["city"] == city:
 			return s
-	var s := {"kind": "elder", "city": city, "holder": -1, "since": 0}
+	var s := {"kind": "elder", "city": city, "holder": -1, "since": 0, "effects": {"gates_open": true, "budget": 1}, "name": "Elder of %s" % city, "contested_until": 0, "holds": ""}
 	seats.append(s)
 	return s
 

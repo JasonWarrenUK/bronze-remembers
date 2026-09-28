@@ -66,9 +66,8 @@ func _start_run(picks: Array, spent: int, reg: Register) -> void:
 	run.scaling = Register.scaling(spent)
 	run.apply_world(reg.world)
 	run.wanderers = reg.wanderers.duplicate(true)
-	for s in reg.seats:
-		if s["holder"] != -1:
-			run.elder_cities[s["city"]] = true
+	run.elder_cities = reg.gates_open_cities()
+	run.testimony_bonus = reg.testimony_bonus()
 	reg.save()
 	var flow_scene := preload("res://scenes/run/run.tscn").instantiate()
 	flow_scene.set_meta("run", run)

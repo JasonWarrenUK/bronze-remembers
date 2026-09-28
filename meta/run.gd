@@ -128,6 +128,7 @@ func travel_to(id: String) -> bool:
 				tally["moulds_honoured"] += 1
 				h.erase("mould_debt")
 				_log("%s returns to the Smiths and the mould is honoured." % h["name"])
+				_deed("%s honoured the mould" % h["name"], 2, {"deeds": []}, ["mould_honoured"])
 			elif h["mould_debt"]["days"] <= 0:
 				tally["moulds_defaulted"] += 1
 				if node().get("flags", {}).get("band", "") == "coast":
@@ -246,6 +247,8 @@ func choose(option: int) -> Dictionary:
 	var n := node()
 	n["cleared"] = true
 	_log("%s: %s." % [pending_event["name"], opt["label"]])
+	if option == 1 and fighters().size() > 0:
+		_plant_fixation(fighters()[rng.range_int(0, fighters().size() - 1)], "event:%s" % pending_event["key"])
 	if fx.has("days"):
 		day += int(fx["days"])
 	if fx.has("heal"):
@@ -328,11 +331,16 @@ func apply_battle(b: SimBattle, milestone: bool) -> Dictionary:
 				_log("%s's arm moves on its own in the fight. The old grudge is awake." % h["name"])
 		h["unit_id_done"] = h["unit_id"]
 		h.erase("unit_id")
+	for h in fighters():
+		for f in h.get("fixations", []):
+			f["fights"] += 1
 	for d in draws:
 		var u := b.unit_by_id(d["unit"])
 		var h := _hero_named(u.name)
 		if h.is_empty():
 			continue
+		var by_family: String = SimData.units()["enemies"].get(d["by"], {}).get("family", "levies")
+		_plant_fixation(h, "downed:%s" % by_family)
 		match d["outcome"]:
 			"scar":
 				var scar := _pick_scar(u, d["by"])
@@ -354,13 +362,18 @@ func apply_battle(b: SimBattle, milestone: bool) -> Dictionary:
 				h["alive"] = false
 				_log("%s died at %s." % [h["name"], node()["name"]])
 	_score_pairs(b)
+	_curdle_fixations()
 	wanderer_ally = {}
 	var named_kills := 0
 	for e in b.enemies(false):
 		if e.downed and e.named:
 			named_kills += 1
+	for e in b.enemies(false):
+		if e.downed and e.named:
+			_deed("Killed %s at %s" % [e.name, node()["name"]], 3, report, ["kill_named:%s" % e.family])
 	if b.state == "won":
-		_deed("Held %s against %d" % [node()["name"], b.enemies(false).size()], 2 + named_kills, report)
+		var objective_tag := "survived:%s" % node()["name"] if b.objective["type"] == "survive" else "held:%s" % node()["name"]
+		_deed("Held %s against %d" % [node()["name"], b.enemies(false).size()], 2 + named_kills, report, [objective_tag])
 		if milestone:
 			var ch: Dictionary = ambition["chapters"][chapter - 1]
 			_deed(ch["title"], 4, report)
@@ -368,6 +381,7 @@ func apply_battle(b: SimBattle, milestone: bool) -> Dictionary:
 				tablets = true
 			if chapter == ambition["chapters"].size():
 				tally["archive_won"] += 1
+				_deed("Carried the archive out", 5, report, ["archive_won"])
 				_log("The tablets of Tarhuna are under seal in the squad's keeping.")
 			for hh in squad:
 				hh.erase("substitute")
@@ -428,12 +442,14 @@ func _score_pairs(b: SimBattle) -> void:
 				pair_scores[key] = int(pair_scores.get(key, 0)) + score
 
 
-func _deed(text: String, significance: int, report: Dictionary) -> void:
-	var d := {"text": text, "significance": significance, "day": day, "node": at, "recorded": false}
+func _deed(text: String, significance: int, report: Dictionary, tags: Array = []) -> void:
+	var d := {"text": text, "significance": significance, "day": day, "node": at, "recorded": false, "tags": tags}
+	for tag in tags:
+		_resolve_fixations(tag)
 	deeds.append(d)
 	report["deeds"].append(d)
 	# Channel 1: the deed travels to a scribal node within reach.
-	if _scribal_within(significance * TESTIMONY_RANGE_BASE):
+	if _scribal_within(significance * TESTIMONY_RANGE_BASE + testimony_bonus):
 		d["recorded"] = true
 		tally["truth"] += 1
 
@@ -452,6 +468,7 @@ func _scribal_within(days: int) -> bool:
 
 ## Channel 2: visiting a scribal node records every queued deed.
 var elder_cities: Dictionary = {}   # cities whose Elder seat is held: gates never shut
+var testimony_bonus: int = 0
 var stages: Dictionary = {"law": 0, "rite": 0, "custom": 0, "tongue": 0, "sea": 0}   # track stage numbers at run start
 var weather: Array = []             # the Chronicle's weather lines for this run
 var tally: Dictionary = {"reports_kept": 0, "reports_defaulted": 0, "faith": 0, "sin": 0, "truth": 0, "lies": 0, "grafts_fitted": 0, "moulds_honoured": 0, "moulds_defaulted": 0, "archive_won": 0, "archive_lost": 0, "coastal_callbacks": 0, "nudges": {}}
@@ -473,6 +490,57 @@ func testify() -> int:
 	if n > 0:
 		_log("%d deeds testified at %s." % [n, node()["name"]])
 	return n
+
+
+# ---------------------------------------------------------------- fixations
+
+func _plant_fixation(h: Dictionary, planted_by: String) -> void:
+	var fx: Dictionary = SimData.load_json("fixations")
+	for key in fx:
+		if fx[key]["planted_by"] == planted_by:
+			for existing in h.get("fixations", []):
+				if existing["key"] == key:
+					return
+			if h.get("traits", []).has(fx[key]["trait"]) or h.get("traits", []).has(fx[key]["curdle"]):
+				return
+			if not h.has("fixations"):
+				h["fixations"] = []
+			h["fixations"].append({"key": key, "fights": 0})
+			_log("%s cannot stop thinking about it: %s." % [h["name"], fx[key]["name"].to_lower()])
+			return
+
+
+func _resolve_fixations(tag: String) -> void:
+	var fx: Dictionary = SimData.load_json("fixations")
+	for h in fighters():
+		var keep: Array = []
+		for f in h.get("fixations", []):
+			var def: Dictionary = fx[f["key"]]
+			if tag.begins_with(def["resolves_on"]):
+				if not h.has("traits"):
+					h["traits"] = []
+				h["traits"].append(def["trait"])
+				h["tier_bonus"] = int(h.get("tier_bonus", 0)) + 1
+				_log("%s's fixation resolves: %s." % [h["name"], def["trait"]])
+			else:
+				keep.append(f)
+		h["fixations"] = keep
+
+
+## Fixations that sat through three fights curdle.
+func _curdle_fixations() -> void:
+	var fx: Dictionary = SimData.load_json("fixations")
+	for h in squad:
+		var keep: Array = []
+		for f in h.get("fixations", []):
+			if f["fights"] >= 3:
+				if not h.has("traits"):
+					h["traits"] = []
+				h["traits"].append(fx[f["key"]]["curdle"])
+				_log("%s's fixation curdles: %s." % [h["name"], fx[f["key"]]["curdle"]])
+			else:
+				keep.append(f)
+		h["fixations"] = keep
 
 
 func _hero_named(name: String) -> Dictionary:
@@ -523,7 +591,7 @@ func fit_graft(h: Dictionary, key: String) -> void:
 	h["injury"] = {}
 	h["hp"] = h["max_hp"]
 	_log("%s is fitted: %s. %s" % [h["name"], SimData.load_json("grafts")[key]["name"], SimData.load_json("grafts")[key]["text"]])
-	_deed("%s remade in bronze" % h["name"], 3, {"deeds": []})
+	_deed("%s remade in bronze" % h["name"], 3, {"deeds": []}, ["graft"])
 
 
 func refuse_graft(h: Dictionary) -> void:
@@ -550,6 +618,7 @@ func temple_heal() -> bool:
 	tally["faith"] += 1
 	day += 1
 	_check_calls()
+	_resolve_fixations("temple")
 	return true
 
 
@@ -637,7 +706,7 @@ func apprentice(h: Dictionary) -> bool:
 	h["sorcery_tier"] = int(h["sorcery_tier"]) + 1
 	var titles := ["Copyist", "Tablet-hand", "Archivist"]
 	_log("%s apprentices at %s for four days and leaves a %s." % [h["name"], node()["name"], titles[h["sorcery_tier"]]])
-	_deed("%s learned to write true at %s" % [h["name"], node()["name"]], 2, {"deeds": []})
+	_deed("%s learned to write true at %s" % [h["name"], node()["name"]], 2, {"deeds": []}, ["learned"])
 	return true
 
 
