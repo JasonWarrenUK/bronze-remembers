@@ -212,6 +212,11 @@ func _refresh_ui() -> void:
 			_button("Rest a day", func(): action_requested.emit("rest", {}))
 			if n["flags"].get("scribal", false):
 				_button("Testify", func(): action_requested.emit("testify", {}))
+				_button("Buy clay (a day)", func(): action_requested.emit("buy_clay", {}))
+				for i in range(run.squad.size()):
+					var hs: Dictionary = run.squad[i]
+					if hs["alive"] and not hs["left"] and int(hs["sorcery_tier"]) < 2:
+						_button("Apprentice %s (four days)" % hs["name"], func(): action_requested.emit("apprentice", {"hero": i}))
 			if n["flags"].get("temple", false):
 				_button("Temple healing (ink)", func(): action_requested.emit("temple_heal", {}))
 				if run.tithe_demanded():

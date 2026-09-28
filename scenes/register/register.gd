@@ -56,6 +56,12 @@ func _start_run(picks: Array, spent: int, reg: Register) -> void:
 		var rec := run.add_hero(h["kind"], h["name"], h["gear"])
 		rec["scars"] = h["scars"].duplicate()
 		rec["grafts"] = h["grafts"].duplicate()
+		rec["memory"] = h.get("memory", {}).duplicate()
+		if not rec["memory"].is_empty():
+			rec["memory"]["charges"] = int(rec["memory"].get("base_charges", 1))
+			rec["memory"]["used"] = 0
+		rec["sorcery_tier"] = int(h.get("sorcery_tier", -1))
+		rec["false_lines"] = int(h.get("false_lines", 0))
 		roster.append(h["id"])
 	run.scaling = Register.scaling(spent)
 	run.apply_world(reg.world)

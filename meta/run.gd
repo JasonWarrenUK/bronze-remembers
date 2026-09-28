@@ -85,7 +85,7 @@ func dealings() -> Dictionary:
 
 func add_hero(kind: String, name: String, gear: String = "") -> Dictionary:
 	var d: Dictionary = SimData.units()["heroes"][kind]
-	var h := {"kind": kind, "name": name, "gear": gear, "hp": d["hp"], "max_hp": d["hp"], "alive": true, "left": false, "scars": [], "grafts": [], "injury": {}, "deeds": 0, "ink": 0, "called": false}
+	var h := {"kind": kind, "name": name, "gear": gear, "hp": d["hp"], "max_hp": d["hp"], "alive": true, "left": false, "scars": [], "grafts": [], "injury": {}, "deeds": 0, "ink": 0, "called": false, "clay": 0, "sorcery_tier": -1, "memory": {}, "false_lines": 0}
 	squad.append(h)
 	return h
 
@@ -310,6 +310,22 @@ func apply_battle(b: SimBattle, milestone: bool) -> Dictionary:
 		if u == null:
 			continue
 		h["hp"] = maxi(1, u.hp) if not u.downed else 1
+		h["clay"] = u.clay
+		if u.false_lines > int(h["false_lines"]):
+			tally["lies"] += u.false_lines - int(h["false_lines"])
+			tally["nudges"]["law"] = int(tally["nudges"].get("law", 0)) + (u.false_lines - int(h["false_lines"]))
+			for i in range(u.false_lines - int(h["false_lines"])):
+				_deed("%s wrote a thing true that was not" % h["name"], 1, {"deeds": []})
+		h["false_lines"] = u.false_lines
+		if not u.memory.is_empty():
+			h["memory"] = u.memory.duplicate()
+			var over: int = int(u.memory.get("used", 0)) - int(u.memory.get("base_charges", 1))
+			if over >= 2:
+				h["taken"] = true
+				_log("%s is not %s any more. The bronze speaks with %s's voice." % [h["name"], h["name"], u.memory.get("ancestor", "the dead")])
+			elif over >= 1:
+				h["memory"]["possessed"] = true
+				_log("%s's arm moves on its own in the fight. The old grudge is awake." % h["name"])
 		h["unit_id_done"] = h["unit_id"]
 		h.erase("unit_id")
 	for d in draws:
@@ -608,6 +624,31 @@ func substitute(h: Dictionary, stand_in: Dictionary) -> bool:
 	tally["sin"] += 2
 	_log("A rite at %s: if death comes for %s this chapter, it will find %s." % [n["name"], h["name"], stand_in["name"]])
 	_check_calls()
+	return true
+
+
+## Scribal cities: apprentice a hero (four days, sorcery tier 0, or one tier up) and buy clay (a day, two tablets each).
+func apprentice(h: Dictionary) -> bool:
+	if not node()["flags"].get("scribal", false) or gates_shut() or h.get("mute", false):
+		return false
+	if int(h["sorcery_tier"]) >= 2:
+		return false
+	day += 4
+	h["sorcery_tier"] = int(h["sorcery_tier"]) + 1
+	var titles := ["Copyist", "Tablet-hand", "Archivist"]
+	_log("%s apprentices at %s for four days and leaves a %s." % [h["name"], node()["name"], titles[h["sorcery_tier"]]])
+	_deed("%s learned to write true at %s" % [h["name"], node()["name"]], 2, {"deeds": []})
+	return true
+
+
+func buy_clay() -> bool:
+	if not node()["flags"].get("scribal", false) or gates_shut():
+		return false
+	day += 1
+	for h in fighters():
+		if int(h["sorcery_tier"]) >= 0:
+			h["clay"] += 2
+	_log("Blank clay bought at %s." % node()["name"])
 	return true
 
 

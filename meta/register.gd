@@ -43,7 +43,7 @@ func new_hero(kind: String, name: String, origin: String, gear: String = "", tie
 		"id": next_id, "kind": kind, "name": name, "origin": origin, "gear": gear,
 		"tier": tier, "campaigns": 0, "age_steps": 0, "status": "playable",
 		"scars": [], "grafts": [], "traits": [], "grudges": [], "heirloom": "",
-		"line": {"parents": []}, "deeds": 0, "bonds": {},
+		"line": {"parents": []}, "deeds": 0, "bonds": {}, "memory": {}, "sorcery_tier": -1, "false_lines": 0,
 	}
 	next_id += 1
 	heroes.append(h)
@@ -99,10 +99,21 @@ func enter_from_run(run: Run, roster: Array) -> Dictionary:
 			h["died"] = {"generation": generation, "by": rec.get("injury", {}).get("by", "the road")}
 			report["dead"].append(h["name"])
 			continue
+		if rec.get("taken", false):
+			h["status"] = "taken"
+			h["died"] = {"generation": generation, "by": "the bronze"}
+			report["dead"].append(h["name"] + " (taken)")
+			continue
+		if rec.get("answered", false):
+			h["status"] = "temple"
+			continue
 		if rec.get("left", false):
 			h["status"] = "road"
 			_add_wanderer(h)
 			continue
+		h["memory"] = rec.get("memory", {})
+		h["sorcery_tier"] = int(rec.get("sorcery_tier", -1))
+		h["false_lines"] = int(rec.get("false_lines", 0))
 		h["tier"] += 1
 		report["tiered"].append(h["name"])
 		survivors.append(h)
@@ -198,6 +209,9 @@ func _child(parents: Array) -> Dictionary:
 		if p["gear"] != "" and child["gear"] == "":
 			child["gear"] = p["gear"]
 			child["heirloom"] = "%s's %s" % [p["name"], p["gear"]]
+			# Bronze remembers: the heirloom carries the parent's basic ability, charges by band.
+			var charges: int = 1 + mini(2, int(p["tier"]) / 5)
+			child["memory"] = {"ancestor": p["name"], "ability": SimData.units()["heroes"].get(p["kind"], {}).get("basic", "thrust"), "charges": charges, "base_charges": charges, "used": 0, "full": true}
 		elif p.get("died", {}).has("by") and p["died"]["by"] != "age":
 			child["grudges"].append(p["died"]["by"])
 		elif not p["scars"].is_empty():

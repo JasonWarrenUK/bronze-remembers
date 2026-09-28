@@ -79,6 +79,10 @@ func _on_action(action: String, payload: Dictionary) -> void:
 			run.fit_graft(run.squad[payload["hero"]], payload["graft"])
 		"refuse":
 			run.refuse_graft(run.squad[payload["hero"]])
+		"apprentice":
+			run.apprentice(run.squad[payload["hero"]])
+		"buy_clay":
+			run.buy_clay()
 		"temple_heal":
 			run.temple_heal()
 		"pay_tithe":

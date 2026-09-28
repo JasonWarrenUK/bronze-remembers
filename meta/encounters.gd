@@ -16,6 +16,12 @@ static func build(run: Run, node: Dictionary, objective: Dictionary, families: A
 		var u := b.add_hero(h["kind"], Vector2i(1, y), h.get("gear", ""))
 		u.name = h["name"]
 		u.ink = int(h.get("ink", 0))
+		u.clay = int(h.get("clay", 0))
+		u.sorcery_tier = maxi(u.sorcery_tier, int(h.get("sorcery_tier", -1)))
+		u.false_lines = int(h.get("false_lines", 0))
+		if not h.get("memory", {}).is_empty():
+			u.memory = h["memory"].duplicate()
+			u.possessed = bool(h["memory"].get("possessed", false))
 		u.hp = mini(u.max_hp, h["hp"])
 		for sc in h.get("scars", []):
 			u.apply_scar(sc)
