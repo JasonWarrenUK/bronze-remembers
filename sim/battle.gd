@@ -178,7 +178,10 @@ func start_round() -> void:
 	round += 1
 	cards.clear()
 	for u in units:
+		var keep := u.flags.has("recorded_dead")
 		u.flags.clear()
+		if keep:
+			u.flags["recorded_dead"] = true
 	# Draw one card per enemy unit type present.
 	for e in enemies():
 		if not cards.has(e.kind):
@@ -252,6 +255,18 @@ func _begin_turn() -> void:
 			_begin_turn()
 			return
 	emit("turn_start", {"unit": u.id, "side": u.side})
+	if u.side == "hero" and u.possessed:
+		var nearest: SimUnit = null
+		var best := 999
+		for e in enemies():
+			var d := SimGrid.distance(u.pos, e.pos)
+			if d < best:
+				best = d
+				nearest = e
+		if nearest != null and best <= 2:
+			emit("possessed_strike", {"unit": u.id, "target": nearest.id})
+			_damage(nearest, 3, u, "the ancestor")
+			turn["acted"] = true
 	if u.side == "enemy":
 		_enemy_turn(u)
 		end_turn()
@@ -271,6 +286,10 @@ func end_turn() -> void:
 
 
 func _end_round() -> void:
+	for u in units:
+		if u.flags.has("recorded_dead") and not u.downed:
+			emit("written_death", {"unit": u.id})
+			_damage(u, u.hp, null, "the tablet")
 	if objective["type"] == "hold":
 		var tile := Vector2i(objective["tile"][0], objective["tile"][1])
 		var holder := unit_at(tile)
@@ -376,6 +395,10 @@ func hero_act(u: SimUnit, key: String, target: Vector2i) -> bool:
 		return false
 	var a := SimData.ability(key)
 	var ok := false
+	if a.get("kind", "") == "sorcery":
+		return _write(u, key, a, target)
+	if a.get("kind", "") == "memory":
+		return _invoke(u, target)
 	match a.get("effect", ""):
 		"brace":
 			u.flags["brace"] = true
@@ -434,7 +457,7 @@ func _hero_attack(u: SimUnit, a: Dictionary, key: String, target: Vector2i) -> b
 	if a.get("line", false) and not grid.in_line(u.pos, target):
 		return false
 	u.facing = (target - u.pos).sign() if d == 1 or grid.in_line(u.pos, target) else u.facing
-	var dmg: int = a["damage"] + int(u.bonus_vs.get(t.family, 0))
+	var dmg: int = a["damage"] + int(u.bonus_vs.get(t.family, 0)) + int(u.bonus_vs.get("*", 0))
 	_damage(t, dmg, u, key)
 	if a.has("splash"):
 		for q in grid.neighbours(target):
@@ -461,6 +484,75 @@ func hero_delay(u: SimUnit, after: SimUnit) -> bool:
 	queue.insert(after_index, entry)
 	emit("delay", {"unit": u.id, "after": after.id})
 	_begin_turn()
+	return true
+
+
+# ---------------------------------------------------------------- sorcery and memory
+
+## A written lie. Contested and struck if an enemy who contests stands within 3; the clay is spent either way.
+func _write(u: SimUnit, key: String, a: Dictionary, target: Vector2i) -> bool:
+	var d := SimGrid.distance(u.pos, target)
+	if d < a["range"][0] or d > a["range"][1]:
+		return false
+	u.clay -= int(a.get("clay", 1))
+	u.false_lines += 1
+	turn["acted"] = true
+	for e in enemies():
+		if e.contests and SimGrid.distance(e.pos, u.pos) <= 3:
+			emit("contested", {"unit": u.id, "by": e.id, "ability": key})
+			return true
+	var t := unit_at(target)
+	match a["effect"]:
+		"count_up":
+			var ally := t if t != null and t.side == "hero" else u
+			ally.flags["spear_exists"] = true
+			ally.bonus_vs["*"] = int(ally.bonus_vs.get("*", 0)) + 1
+		"count_down":
+			if t == null or t.side != "enemy":
+				return false
+			for f in ["shield_line", "hold_road", "swell", "unpushable", "aim"]:
+				t.flags.erase(f)
+			t.flags["no_shield"] = true
+		"name_levy":
+			if t == null or t.side != "enemy":
+				return false
+			t.flags["stands_down"] = true
+		"name_unseen":
+			u.flags["unseen"] = true
+		"place":
+			if unit_at(target) != null:
+				return false
+			var tile := grid.get_tile(target)
+			grid.set_tile(target, SimGrid.Tile.FLOOR if tile != SimGrid.Tile.FLOOR else SimGrid.Tile.WALL)
+			emit("tile_written", {"pos": [target.x, target.y], "tile": grid.get_tile(target)})
+		"debt":
+			if t == null or t.side != "enemy":
+				return false
+			_push(t, (u.pos - t.pos).sign(), 1, u)
+		"death":
+			if t == null or t.side != "enemy":
+				return false
+			t.flags["recorded_dead"] = true
+	emit("written", {"unit": u.id, "ability": key, "target": [target.x, target.y]})
+	return true
+
+
+## Bronze memory: the ancestor's ability, full for the line or a bond, an echo otherwise.
+func _invoke(u: SimUnit, target: Vector2i) -> bool:
+	var m := u.memory
+	var ability: Dictionary = SimData.ability(m.get("ability", "thrust"))
+	var t := unit_at(target)
+	if t == null or t.side != "enemy":
+		return false
+	var dmg: int = int(ability.get("damage", 3))
+	if not m.get("full", false):
+		dmg = int(ceil(dmg / 2.0))
+	m["charges"] = int(m.get("charges", 0)) - 1
+	m["used"] = int(m.get("used", 0)) + 1
+	m["wear"] = int(m.get("wear", 0)) + 1
+	emit("invoke", {"unit": u.id, "ancestor": m.get("ancestor", ""), "target": t.id})
+	_damage(t, dmg, u, "the bronze")
+	turn["acted"] = true
 	return true
 
 
@@ -596,6 +688,8 @@ func _profile_focus(e: SimUnit, card: Dictionary) -> SimUnit:
 	var best: SimUnit = null
 	var best_key := 1e9
 	for h in candidates:
+		if h.flags.has("unseen"):
+			continue
 		var key: float
 		match profile:
 			"nearest_water":
@@ -618,6 +712,9 @@ func _path_len(e: SimUnit, to: Vector2i) -> int:
 
 
 func _enemy_turn(e: SimUnit) -> void:
+	if e.flags.has("stands_down"):
+		emit("stands_down", {"unit": e.id})
+		return
 	var card: Dictionary = cards[e.kind]
 	emit("enemy_card", {"unit": e.id, "card": card["name"]})
 	var special: String = card.get("special", "")

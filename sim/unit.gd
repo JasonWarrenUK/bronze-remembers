@@ -42,6 +42,12 @@ var permanent_stand: bool = false
 var downing_severity: int = 0
 var tide_immune: bool = false
 var mute: bool = false
+var clay: int = 0                  # tablets carried (sorcery)
+var sorcery_tier: int = -1         # -1: no sorcery; 0 Copyist, 1 Tablet-hand, 2 Archivist
+var false_lines: int = 0
+var memory: Dictionary = {}        # bronze memory: {ancestor, ability, charges, used, full}
+var possessed: bool = false
+var contests: bool = false         # enemy officers, priests and scribes strike written lies
 
 
 static func hero(id_: int, kind_: String, pos_: Vector2i, gear_key: String = "") -> SimUnit:
@@ -58,6 +64,7 @@ static func hero(id_: int, kind_: String, pos_: Vector2i, gear_key: String = "")
 	u.move = d["move"]
 	u.basic = d["basic"]
 	u.abilities = d["abilities"].duplicate()
+	u.sorcery_tier = int(d.get("sorcery_tier", -1))
 	if gear_key != "":
 		u.gear_ability = SimData.gear()[gear_key]["ability"]
 	return u
@@ -134,6 +141,7 @@ static func enemy(id_: int, kind_: String, pos_: Vector2i) -> SimUnit:
 	u.family = d["family"]
 	u.deck = d["deck"]
 	u.named = d.get("named", false)
+	u.contests = d.get("contests", false)
 	return u
 
 
@@ -152,6 +160,13 @@ func usable_abilities() -> Array:
 			out.append(key)
 	if gear_ability != "" and cooldowns.get(gear_ability, 0) == 0:
 		out.append(gear_ability)
+	if sorcery_tier >= 0 and clay > 0:
+		for key in SimData.abilities():
+			var a: Dictionary = SimData.abilities()[key]
+			if a.get("kind", "") == "sorcery" and int(a.get("tier", 0)) <= sorcery_tier and clay >= int(a.get("clay", 1)):
+				out.append(key)
+	if not memory.is_empty() and int(memory.get("charges", 0)) > 0:
+		out.append("invoke")
 	return out
 
 

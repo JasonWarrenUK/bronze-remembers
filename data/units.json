@@ -32,6 +32,18 @@
 				"wall",
 				"taunt"
 			]
+		},
+		"scribe": {
+			"name": "Scribe",
+			"hp": 6,
+			"speed": 2,
+			"move": 3,
+			"basic": "stylus",
+			"abilities": [
+				"witness",
+				"read"
+			],
+			"sorcery_tier": 0
 		}
 	},
 	"enemies": {
@@ -70,7 +82,8 @@
 				2
 			],
 			"deck": "officer",
-			"named": true
+			"named": true,
+			"contests": true
 		},
 		"jointed": {
 			"name": "Jointed",
@@ -107,7 +120,8 @@
 				3
 			],
 			"deck": "tidecaller",
-			"named": true
+			"named": true,
+			"contests": true
 		},
 		"jointed_bronzed": {
 			"name": "Bronzed jointed",

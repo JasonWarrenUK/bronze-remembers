@@ -108,5 +108,119 @@
 		"kind": "class",
 		"cooldown": 3,
 		"effect": "stamp"
+	},
+	"stylus": {
+		"name": "Stylus",
+		"kind": "basic",
+		"damage": 1,
+		"range": [
+			1,
+			1
+		]
+	},
+	"witness": {
+		"name": "Witness",
+		"kind": "class",
+		"cooldown": 3,
+		"effect": "witness"
+	},
+	"read": {
+		"name": "Read",
+		"kind": "class",
+		"cooldown": 2,
+		"effect": "read"
+	},
+	"write_count": {
+		"name": "Write: a spear exists",
+		"kind": "sorcery",
+		"category": "counts",
+		"tier": 0,
+		"clay": 1,
+		"effect": "count_up",
+		"range": [
+			0,
+			3
+		]
+	},
+	"write_uncount": {
+		"name": "Write: no shield",
+		"kind": "sorcery",
+		"category": "counts",
+		"tier": 0,
+		"clay": 1,
+		"effect": "count_down",
+		"range": [
+			1,
+			4
+		]
+	},
+	"write_name": {
+		"name": "Write: he is levy",
+		"kind": "sorcery",
+		"category": "names",
+		"tier": 1,
+		"clay": 1,
+		"effect": "name_levy",
+		"range": [
+			1,
+			4
+		]
+	},
+	"write_unseen": {
+		"name": "Write: struck from the roll",
+		"kind": "sorcery",
+		"category": "names",
+		"tier": 1,
+		"clay": 1,
+		"effect": "name_unseen",
+		"range": [
+			0,
+			0
+		]
+	},
+	"write_place": {
+		"name": "Write: a ford here",
+		"kind": "sorcery",
+		"category": "places",
+		"tier": 1,
+		"clay": 1,
+		"effect": "place",
+		"range": [
+			1,
+			3
+		]
+	},
+	"write_debt": {
+		"name": "Write: he owes a step",
+		"kind": "sorcery",
+		"category": "debts",
+		"tier": 2,
+		"clay": 1,
+		"effect": "debt",
+		"range": [
+			1,
+			4
+		]
+	},
+	"write_death": {
+		"name": "Write: recorded dead",
+		"kind": "sorcery",
+		"category": "deaths",
+		"tier": 2,
+		"clay": 2,
+		"effect": "death",
+		"range": [
+			1,
+			4
+		]
+	},
+	"invoke": {
+		"name": "Invoke the bronze",
+		"kind": "memory",
+		"effect": "invoke",
+		"range": [
+			1,
+			2
+		]
 	}
 }
