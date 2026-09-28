@@ -807,8 +807,16 @@ static func load_from(path: String) -> Run:
 	return r
 
 
-## A short paragraph in the setting's voice, from what was testified.
+var narrator: String = ""
+
+
+## The Chronicle in the Scribes' voice.
 func chronicle_stub() -> String:
+	return Chronicle.for_run(self, narrator)
+
+
+## The old stub, kept for the tests that read it.
+func chronicle_stub_plain() -> String:
 	var recorded: Array = []
 	var lost := 0
 	for d in deeds:

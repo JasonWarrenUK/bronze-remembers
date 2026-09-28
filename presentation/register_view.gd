@@ -4,6 +4,7 @@ extends Node
 ## squad creation within the tier budget. Emits when a run should start.
 
 signal run_requested(picks: Array, spent: int)
+signal ambition_chosen(key: String)
 
 var reg: Register
 var palette: Dictionary
@@ -87,15 +88,10 @@ func refresh() -> void:
 			pick.text = "Drop" if picks.has(h) else "Pick"
 			pick.pressed.connect(_toggle.bind(h))
 			line.add_child(pick)
-			var road := Button.new()
-			road.text = "Road"
-			road.pressed.connect(func(): reg.retire_to_road(h); picks.erase(h); refresh())
-			line.add_child(road)
-			var seat := Button.new()
-			seat.text = "Elder"
-			seat.disabled = reg.seat_holds(h["origin"])
-			seat.pressed.connect(func(): reg.retire_to_seat(h); picks.erase(h); refresh())
-			line.add_child(seat)
+			var retire := Button.new()
+			retire.text = "Retire"
+			retire.pressed.connect(_retirement_scene.bind(h))
+			line.add_child(retire)
 		roster_box.add_child(line)
 	for c in side_box.get_children():
 		c.queue_free()
@@ -104,12 +100,17 @@ func refresh() -> void:
 	side.fit_content = true
 	side.custom_minimum_size = Vector2(210, 0)
 	side.add_theme_color_override("default_color", palette["ink"])
-	var text := "[b]Seats[/b]\n"
+	var text := "[b]Ambition[/b]\n"
+	var text_pre := text
+	var unlock := reg.next_unlock()
+	text = "[b]Seats[/b]\n"
 	for s in reg.seats:
 		var holder := reg.hero_by_id(s["holder"]) if s["holder"] != -1 else {}
-		text += "Elder of %s: %s\n" % [s["city"], holder.get("name", "empty")]
+		text += "%s: %s\n" % [s.get("name", s["kind"]), holder.get("name", "empty")]
 	if reg.seats.is_empty():
 		text += "none\n"
+	if not unlock.is_empty():
+		text += "\n[b]Next unlock[/b]\n%s (%d of %d)\n%s\n" % [unlock["name"], unlock["progress"], int(unlock["count"]), unlock["text"]]
 	text += "\n[b]The Road[/b]\n"
 	for w in reg.wanderers:
 		text += "%s%s\n" % [w["name"], " (dead)" if w["dead"] else " (%d)" % w["appearances"]]
@@ -128,6 +129,11 @@ func refresh() -> void:
 	side.text = text
 	side_box.add_child(side)
 	if not reg.fallen:
+		for key in reg.ambitions_available():
+			var amb := Button.new()
+			amb.text = "Writ: " + SimData.load_json("ambitions")[key]["name"]
+			amb.pressed.connect(func(): ambition_chosen.emit(key))
+			side_box.add_child(amb)
 		var go := Button.new()
 		go.text = "Muster (%d picked, fresh levies fill the rest)" % picks.size()
 		go.pressed.connect(func(): run_requested.emit(picks.duplicate(), spent()))
@@ -141,6 +147,62 @@ func refresh() -> void:
 	save.text = "Save Register"
 	save.pressed.connect(func(): reg.save())
 	side_box.add_child(save)
+
+
+## The retirement scene: the seats this hero may take, what each does, who holds it, and the Road.
+func _retirement_scene(h: Dictionary) -> void:
+	for c in side_box.get_children():
+		c.queue_free()
+	var head := RichTextLabel.new()
+	head.bbcode_enabled = true
+	head.fit_content = true
+	head.custom_minimum_size = Vector2(210, 0)
+	head.add_theme_color_override("default_color", palette["ink"])
+	head.text = "[b]%s retires[/b]\n%s, tier %d, %d testified deeds." % [h["name"], Register.band_name(h["tier"]), h["tier"], h["deeds"]]
+	side_box.add_child(head)
+	var offers := reg.seat_offers(h)
+	for o in offers:
+		var holder := reg.hero_by_id(o["holder"]) if o["holder"] != -1 else {}
+		var lbl := RichTextLabel.new()
+		lbl.bbcode_enabled = true
+		lbl.fit_content = true
+		lbl.custom_minimum_size = Vector2(210, 0)
+		lbl.add_theme_color_override("default_color", palette["ink_muted"])
+		lbl.text = "[color=#%s]%s[/color]%s\n%s" % [palette["accent"].to_html(false), o["name"], (" (held by %s)" % holder["name"]) if not holder.is_empty() else "", o["text"]]
+		side_box.add_child(lbl)
+		if holder.is_empty():
+			var take := Button.new()
+			take.text = "Take the seat"
+			take.pressed.connect(func(): reg.take_seat(h, o); picks.erase(h); reg.save(); refresh())
+			side_box.add_child(take)
+		else:
+			var deed := Button.new()
+			deed.text = "Claim by deed"
+			deed.pressed.connect(func():
+				var res := reg.take_seat(h, o, "deed")
+				if res["taken"]:
+					picks.erase(h)
+					reg.save()
+				refresh())
+			side_box.add_child(deed)
+			var writ := Button.new()
+			writ.text = "Claim by writ"
+			writ.disabled = reg.world.stage_num("law") > 2
+			writ.pressed.connect(func():
+				var res := reg.take_seat(h, o, "writ")
+				if res["taken"]:
+					picks.erase(h)
+					reg.save()
+				refresh())
+			side_box.add_child(writ)
+	var road := Button.new()
+	road.text = "No seat: take the Road"
+	road.pressed.connect(func(): reg.retire_to_road(h); picks.erase(h); reg.save(); refresh())
+	side_box.add_child(road)
+	var back := Button.new()
+	back.text = "Back"
+	back.pressed.connect(refresh)
+	side_box.add_child(back)
 
 
 func _toggle(h: Dictionary) -> void:

@@ -2,9 +2,76 @@
 	"archive": {
 		"name": "Carry the archive out",
 		"chapters": [
-			{ "title": "The tablets of Tarhuna", "node": "tarhuna", "objective": { "type": "kill_all" }, "families": ["levies"], "on_complete": "take_tablets", "text": "The writ names the Tarhuna archive. Reach the scribal city and take the tablets under seal." },
-			{ "title": "The Salt Crossing", "node": "landmark:The Salt Crossing", "objective": { "type": "protect", "turns": 6 }, "families": ["levies"], "text": "Carry the tablets through the outlaw roads to the Salt Crossing. Nothing written survives water." },
-			{ "title": "The Drowned Mile", "node": "ugarit_lo", "objective": { "type": "survive", "turns": 7 }, "families": ["sea"], "grafted_variant": true, "text": "Reach Lower Ugra before the tide takes the harbour. Hold the quay until the ship is ready." }
+			{
+				"title": "The tablets of Tarhuna",
+				"node": "tarhuna",
+				"objective": {
+					"type": "kill_all"
+				},
+				"families": [
+					"levies"
+				],
+				"on_complete": "take_tablets",
+				"text": "The writ names the Tarhuna archive. Reach the scribal city and take the tablets under seal."
+			},
+			{
+				"title": "The Salt Crossing",
+				"node": "landmark:The Salt Crossing",
+				"objective": {
+					"type": "protect",
+					"turns": 6
+				},
+				"families": [
+					"levies"
+				],
+				"text": "Carry the tablets through the outlaw roads to the Salt Crossing. Nothing written survives water."
+			},
+			{
+				"title": "The Drowned Mile",
+				"node": "ugarit_lo",
+				"objective": {
+					"type": "survive",
+					"turns": 7
+				},
+				"families": [
+					"sea"
+				],
+				"grafted_variant": true,
+				"text": "Reach Lower Ugra before the tide takes the harbour. Hold the quay until the ship is ready."
+			}
+		]
+	},
+	"ford": {
+		"name": "Hold the ford road",
+		"chapters": [
+			{
+				"title": "The Kings' Ford",
+				"node": "landmark:The Kings' Ford",
+				"objective": {
+					"type": "kill_all"
+				},
+				"families": [
+					"levies"
+				],
+				"text": "The writ names the ford. Clear it."
+			},
+			{
+				"title": "The Muster season",
+				"node": "landmark:The Kings' Ford",
+				"objective": {
+					"type": "hold",
+					"tile": [
+						5,
+						5
+					],
+					"turns": 5
+				},
+				"families": [
+					"levies"
+				],
+				"grafted_variant": true,
+				"text": "Hold the ford for the Muster season. They will come back with more."
+			}
 		]
 	}
 }

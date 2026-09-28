@@ -166,6 +166,8 @@ func _show_result() -> void:
 	for d in run.deeds:
 		body += "%s %s (%d)\n" % ["[color=#%s]testified[/color]" % palette["ok"].to_html(false) if d["recorded"] else "[color=#%s]unrecorded[/color]" % palette["ink_muted"].to_html(false), d["text"], d["significance"]]
 	body += "\n" + run.chronicle_stub()
+	text.fit_content = true
+	text.custom_minimum_size = Vector2(540, 0)
 	text.text = body
 	panel.add_child(text)
 	if register != null:

@@ -85,6 +85,20 @@ func gates_open_cities() -> Dictionary:
 	return out
 
 
+func narrator() -> String:
+	for s in seats:
+		if s["holder"] != -1 and s.get("effects", {}).get("narrator", false):
+			return hero_by_id(s["holder"]).get("name", "")
+	return ""
+
+
+func ambitions_available() -> Array:
+	var out: Array = ["archive"]
+	if has_unlock("hold_ford_ambition"):
+		out.append("ford")
+	return out
+
+
 func testimony_bonus() -> int:
 	var n := 0
 	for s in seats:

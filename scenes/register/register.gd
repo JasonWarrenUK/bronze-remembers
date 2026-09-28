@@ -20,6 +20,7 @@ func _ready() -> void:
 	add_child(view)
 	view.setup(reg, palette, theme_ui)
 	view.run_requested.connect(_start_run.bind(reg))
+	view.ambition_chosen.connect(func(key): chosen_ambition = key)
 	if DebugApi.user_args.has("auto"):
 		# Auto picks the highest-tier playable heroes the budget allows, so recordings show the Register at work.
 		var picks: Array = []
@@ -42,9 +43,13 @@ func _palette() -> Dictionary:
 	return out
 
 
+var chosen_ambition: String = "archive"
+
+
 func _start_run(picks: Array, spent: int, reg: Register) -> void:
 	var seed: int = int(DebugApi.user_args.get("seed", 100 + reg.generation))
-	var run := Run.new(seed)
+	var run := Run.new(seed, chosen_ambition if reg.ambitions_available().has(chosen_ambition) else "archive")
+	run.narrator = reg.narrator()
 	var kinds := ["spear", "sling", "shield"]
 	var gear := ["greaves", "bracers", "corselet"]
 	var roster: Array = []
