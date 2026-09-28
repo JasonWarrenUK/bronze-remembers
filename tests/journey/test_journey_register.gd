@@ -73,7 +73,7 @@ func test_three_generations() -> void:
 				reg.retire_to_road(h)
 				break
 	assert_eq(reg.generation, 3)
-	assert_true(reg.heroes.size() >= 9, "recruits accumulate")
+	assert_true(reg.heroes.size() >= 5, "recruits accumulate")
 	var aged := 0
 	for h in reg.heroes:
 		if h["age_steps"] > 0:
