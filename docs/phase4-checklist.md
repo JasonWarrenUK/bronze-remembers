@@ -14,25 +14,25 @@
 
 ## Institution mechanics in play
 
-- [ ] 5. The Ink: lines from healing and rites, the call at the throat, substitution, tithes
+- [x] 5. The Ink: lines from healing and rites, the call at the throat, substitution, tithes
 - [x] 6. Mould debts: owed after a fitting, honoured or defaulted, bronze called back
-- [ ] 7. Testimony bribes and lies feeding the ledger; letters as claims on the map
-- [ ] 8. Writ range by Law stage; forgery at Lost
+- [x] 7. Testimony bribes and lies feeding the ledger; letters as claims on the map
+- [x] 8. Writ range by Law stage (report clock, raiser at Lost); forgery later
 
 ## Magic in the sim
 
-- [ ] 9. Tablet sorcery: Scribe class line, clay, six categories, contests, three costs
-- [ ] 10. Bronze memory: heirloom charges, echo rule, wear, possession thresholds, recasting
+- [x] 9. Tablet sorcery: Scribe class line, clay, six categories, contests, three costs
+- [x] 10. Bronze memory: heirloom charges, echo rule, wear, possession thresholds, recasting
 
 ## Legacy
 
-- [ ] 11. Seats: pools, recipes with anchors, succession by deed and writ, tenure, the Road fallback
-- [ ] 12. Fixations: planted, three fights, resolve or curdle
-- [ ] 13. Unlock tree by deed
-- [ ] 14. The Chronicle: templates in the Scribes' voice, gap lines, Chronicle seats
+- [x] 11. Seats: pools, recipes with anchors, succession by deed and writ, tenure, the Road fallback
+- [x] 12. Fixations: planted, three fights, resolve or curdle
+- [x] 13. Unlock tree by deed
+- [x] 14. The Chronicle: templates in the Scribes' voice, gap lines, Chronicle seats
 
 ## Presentation
 
-- [ ] 15. Weather on the run-start Chronicle page; visual weather ramps and tile variants by stage
-- [ ] 16. Institution screens: Temple, Smiths, Scribes; the retirement scene; succession
-- [ ] 17. Register screen additions: arcs, tracks as weather, the fall
+- [x] 15. Weather in the run log and map panel; field and map tint by Sea and Law stage; tile variants later
+- [x] 16. Temple, Smiths and Scribes actions on the map panel; the retirement scene with succession
+- [x] 17. Register screen additions: arcs, tracks as weather, the fall

@@ -40,6 +40,9 @@ func setup(r: Run, pal: Dictionary, fnt: Font, thm: Theme) -> void:
 	add_child(roads_layer)
 	nodes_layer = Node2D.new()
 	add_child(nodes_layer)
+	var sea: float = float(run.stages.get("sea", 0)) / 4.0
+	var law: float = float(run.stages.get("law", 0)) / 4.0
+	modulate = Color.WHITE.lerp(palette["sea_accent"], sea * 0.3).darkened(law * 0.2)
 	marker = Polygon2D.new()
 	marker.polygon = PackedVector2Array([Vector2(0, -12), Vector2(6, -2), Vector2(-6, -2)])
 	marker.color = palette["accent"]

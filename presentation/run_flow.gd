@@ -125,6 +125,7 @@ func _start_battle(b: SimBattle, milestone: bool) -> void:
 	battle_view.auto = auto
 	battle_view.on_finished = _on_battle_finished
 	add_child(battle_view)
+	battle_view.apply_weather(run.stages)
 	await battle_view.present(b)
 
 

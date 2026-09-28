@@ -100,6 +100,20 @@ func sfx(name: String, pitch: float = 1.0) -> void:
 # ---------------------------------------------------------------- setup
 
 ## Builds the field from a battle that has been set up but not started.
+var weather_stages: Dictionary = {}
+
+
+## Tints the world by the tracks: Sea pulls the field green and wet, Law dims the light.
+func apply_weather(stages: Dictionary) -> void:
+	weather_stages = stages
+	var sea: float = float(stages.get("sea", 0)) / 4.0
+	var law: float = float(stages.get("law", 0)) / 4.0
+	var tint := Color.WHITE.lerp(palette["sea_accent"], sea * 0.45)
+	tint = tint.darkened(law * 0.25)
+	tiles.modulate = tint
+	units_layer.modulate = Color.WHITE.lerp(palette["sea_accent"], sea * 0.2)
+
+
 func present(b: SimBattle) -> void:
 	battle = b
 	for y in b.grid.height:
