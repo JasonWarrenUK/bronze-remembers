@@ -27,7 +27,9 @@ func _policy_run(reg: Register, seed: int) -> Run:
 		rec["grafts"] = h["grafts"].duplicate()
 		roster.append(h["id"])
 	run.scaling = Register.scaling(spent)
+	run.apply_world(reg.world)
 	run.wanderers = reg.wanderers.duplicate(true)
+	run.narrator = reg.narrator()
 	var guard := 0
 	while run.state == "ongoing" and guard < 80:
 		guard += 1
@@ -65,13 +67,21 @@ func _policy_run(reg: Register, seed: int) -> Run:
 
 func test_three_generations() -> void:
 	var reg := Register.new()
+	var seats_taken := 0
 	for seed in [1, 2, 3]:
 		_policy_run(reg, seed)
-		# Retire one tiered survivor to the Road each generation so wanderers exist.
+		# Retire one tiered survivor each generation: a seat if offered, else the Road.
 		for h in reg.playable():
-			if h["tier"] >= 1 and reg.wanderers.size() < reg.generation:
-				reg.retire_to_road(h)
+			if h["tier"] >= 1 and reg.wanderers.size() + seats_taken < reg.generation:
+				var offers := reg.seat_offers(h)
+				if not offers.is_empty() and reg.take_seat(h, offers[0])["taken"]:
+					seats_taken += 1
+				else:
+					reg.retire_to_road(h)
 				break
+	assert_true(seats_taken >= 1, "a seat was taken across three generations")
+	assert_true(reg.world.scores["law"] > 0, "the world ticked")
+	gut.p("world after 3: %s; institutions %s; next unlock %s" % [str(reg.world.scores), str(reg.world.institutions["smiths"]["state"]), str(reg.next_unlock().get("name", "none"))])
 	assert_eq(reg.generation, 3)
 	assert_true(reg.heroes.size() >= 5, "recruits accumulate")
 	var aged := 0
