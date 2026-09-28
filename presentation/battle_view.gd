@@ -432,46 +432,11 @@ func _playback() -> void:
 			_auto_turn(cur)
 
 
-## A naive policy for recordings: close on the nearest enemy, attack with the first usable attack, end.
+## Auto mode plays the shared policy, one hero action at a time so the playback shows it.
 func _auto_turn(h: SimUnit) -> void:
-	var target: SimUnit = null
-	var best := 999
-	for e in battle.enemies():
-		var d := SimGrid.distance(h.pos, e.pos)
-		if d < best:
-			best = d
-			target = e
-	if target != null and not battle.turn.get("moved", false):
-		var basic := SimData.ability(h.basic)
-		var goal := h.pos
-		var goal_d := SimGrid.distance(h.pos, target.pos)
-		var goal_fits: bool = goal_d >= basic["range"][0] and goal_d <= basic["range"][1]
-		for p in battle.movable_tiles(h):
-			var d := SimGrid.distance(p, target.pos)
-			var fits: bool = d >= basic["range"][0] and d <= basic["range"][1]
-			if fits and (not goal_fits or d < goal_d):
-				goal = p
-				goal_d = d
-				goal_fits = true
-		if goal != h.pos and battle.hero_move(h, goal):
-			await _playback()
-			if battle.current() != h:
-				return
-	if not battle.turn.get("acted", false):
-		for key in h.usable_abilities():
-			var a := SimData.ability(key)
-			if a.has("damage") and a.has("range"):
-				for e in battle.enemies():
-					if battle.hero_act(h, key, e.pos):
-						_log("%s: %s" % [h.name, a["name"]])
-						await _playback()
-						if battle.current() != h:
-							return
-						break
-				if battle.turn.get("acted", false):
-					break
-	if battle.current() == h and battle.state == "ongoing":
-		battle.end_turn()
+	var before := battle.events.size()
+	SimPolicy.take_turn(battle, h)
+	if battle.events.size() > before or battle.current() != h:
 		await _playback()
 
 
