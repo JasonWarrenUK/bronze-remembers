@@ -49,9 +49,13 @@ func setup(r: Register, pal: Dictionary, thm: Theme) -> void:
 	left.add_child(scroll)
 	roster_box = VBoxContainer.new()
 	scroll.add_child(roster_box)
+	var side_scroll := ScrollContainer.new()
+	side_scroll.custom_minimum_size = Vector2(220, 320)
+	side_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	row.add_child(side_scroll)
 	side_box = VBoxContainer.new()
-	side_box.custom_minimum_size = Vector2(210, 0)
-	row.add_child(side_box)
+	side_box.custom_minimum_size = Vector2(205, 0)
+	side_scroll.add_child(side_box)
 	refresh()
 
 
