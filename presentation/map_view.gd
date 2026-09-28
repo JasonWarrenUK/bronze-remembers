@@ -179,7 +179,8 @@ func _refresh_ui() -> void:
 			status = " left"
 		elif h["injury"].get("severity", "") == "severe":
 			status = " HURT %s (%dd)" % [h["injury"]["location"], h["injury"].get("days_left", 0)]
-		sq += "%s %d/%d%s%s\n" % [h["name"], h["hp"], h["max_hp"], status, (" +" + str(h["grafts"].size()) + " bronze") if h["grafts"].size() > 0 else ""]
+		var ink_mark := (" ink:%d" % h["ink"]) if h["ink"] > 0 else ""
+		sq += "%s %d/%d%s%s%s\n" % [h["name"], h["hp"], h["max_hp"], status, (" +" + str(h["grafts"].size()) + " bronze") if h["grafts"].size() > 0 else "", ink_mark]
 	squad_label.text = sq
 	for c in actions.get_children():
 		c.queue_free()
@@ -211,6 +212,25 @@ func _refresh_ui() -> void:
 			_button("Rest a day", func(): action_requested.emit("rest", {}))
 			if n["flags"].get("scribal", false):
 				_button("Testify", func(): action_requested.emit("testify", {}))
+			if n["flags"].get("temple", false):
+				_button("Temple healing (ink)", func(): action_requested.emit("temple_heal", {}))
+				if run.tithe_demanded():
+					_button("Pay the tithe", func(): action_requested.emit("pay_tithe", {}))
+					_button("Refuse the tithe", func(): action_requested.emit("refuse_tithe", {}))
+				for i in range(run.squad.size()):
+					var hh: Dictionary = run.squad[i]
+					if hh["alive"] and not hh["left"] and hh["ink"] > 0 and not hh.has("substitute"):
+						for j in range(run.squad.size()):
+							if j != i and run.squad[j]["alive"] and not run.squad[j]["left"]:
+								_button("Rite: %s's death to %s" % [hh["name"], run.squad[j]["name"]], func(): action_requested.emit("substitute", {"hero": i, "stand_in": j}))
+								break
+			for i in range(run.squad.size()):
+				var hc: Dictionary = run.squad[i]
+				if hc["alive"] and not hc["left"] and hc["called"]:
+					_button("%s answers the ink" % hc["name"], func(): action_requested.emit("answer_call", {"hero": i}))
+					_button("%s ignores the call" % hc["name"], func(): action_requested.emit("ignore_call", {"hero": i}))
+				if hc["alive"] and not hc["left"] and hc["ink"] > 0:
+					_button("%s burns the ink" % hc["name"], func(): action_requested.emit("burn_ink", {"hero": i}))
 			if n["flags"].get("smiths", false):
 				for i in range(run.squad.size()):
 					var h: Dictionary = run.squad[i]

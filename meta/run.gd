@@ -5,6 +5,7 @@ extends RefCounted
 
 const ROAD_KILLS_DAYS := 6          # untreated severe injury is fatal after this many days
 const TESTIMONY_RANGE_BASE := 2     # days a deed travels per point of significance
+const THROAT := 5                   # ink lines at which the Temple calls
 
 var seed: int
 var rng: SimRng
@@ -84,7 +85,7 @@ func dealings() -> Dictionary:
 
 func add_hero(kind: String, name: String, gear: String = "") -> Dictionary:
 	var d: Dictionary = SimData.units()["heroes"][kind]
-	var h := {"kind": kind, "name": name, "gear": gear, "hp": d["hp"], "max_hp": d["hp"], "alive": true, "left": false, "scars": [], "grafts": [], "injury": {}, "deeds": 0}
+	var h := {"kind": kind, "name": name, "gear": gear, "hp": d["hp"], "max_hp": d["hp"], "alive": true, "left": false, "scars": [], "grafts": [], "injury": {}, "deeds": 0, "ink": 0, "called": false}
 	squad.append(h)
 	return h
 
@@ -326,6 +327,14 @@ func apply_battle(b: SimBattle, milestone: bool) -> Dictionary:
 				h["injury"] = {"severity": "severe", "location": loc, "days_left": ROAD_KILLS_DAYS, "by": d["by"]}
 				_log("%s is badly hurt: the %s. A smith is needed within %d days." % [h["name"], loc, ROAD_KILLS_DAYS])
 			"dead":
+				if h.has("substitute"):
+					var stand_in := _hero_named(h["substitute"])
+					h.erase("substitute")
+					if not stand_in.is_empty() and stand_in["alive"]:
+						stand_in["alive"] = false
+						h["scars"].append("substituted")
+						_log("Death came for %s at %s and found %s, as the rite said." % [h["name"], node()["name"], stand_in["name"]])
+						continue
 				h["alive"] = false
 				_log("%s died at %s." % [h["name"], node()["name"]])
 	_score_pairs(b)
@@ -344,6 +353,8 @@ func apply_battle(b: SimBattle, milestone: bool) -> Dictionary:
 			if chapter == ambition["chapters"].size():
 				tally["archive_won"] += 1
 				_log("The tablets of Tarhuna are under seal in the squad's keeping.")
+			for hh in squad:
+				hh.erase("substitute")
 			chapter += 1
 			milestone_reached = false
 			if chapter > ambition["chapters"].size():
@@ -505,6 +516,100 @@ func refuse_graft(h: Dictionary) -> void:
 
 
 # ---------------------------------------------------------------- rest
+
+## The Temple heals for ink: full HP and cured Wound-like states, at a cost in lines that rises with Rite.
+func temple_heal() -> bool:
+	var n := node()
+	if n["kind"] != "city" or not n["flags"].get("temple", false) or gates_shut():
+		return false
+	if stages["rite"] >= 3:
+		_log("The Temple at %s has stopped healing." % n["name"])
+		return false
+	var cost := 1 + maxi(0, stages["rite"] - 1)
+	for h in fighters():
+		if h["hp"] < h["max_hp"]:
+			h["hp"] = h["max_hp"]
+			h["ink"] += cost
+			_log("%s is healed at the Temple: %d more line%s of ink." % [h["name"], cost, "s" if cost > 1 else ""])
+	tally["faith"] += 1
+	day += 1
+	_check_calls()
+	return true
+
+
+## Heroes at the throat are called. Answering is faith; ignoring is sin, every time.
+func _check_calls() -> void:
+	for h in fighters():
+		if h["ink"] >= THROAT and not h["called"]:
+			h["called"] = true
+			_log("The ink has reached %s's throat. The Temple calls." % h["name"])
+
+
+func answer_call(h: Dictionary) -> void:
+	if not h["called"]:
+		return
+	h["left"] = true
+	h["answered"] = true
+	tally["faith"] += 2
+	_log("%s goes to the Temple, as the ink asks." % h["name"])
+	_deed("%s answered the ink" % h["name"], 2, {"deeds": []})
+
+
+func ignore_call(h: Dictionary) -> void:
+	if not h["called"]:
+		return
+	tally["sin"] += 1
+	h["called"] = false
+	h["ink"] += 1
+	_log("%s does not answer. The lines climb." % h["name"])
+
+
+## Burn the ink off at any hearth: a scar and the Temple's enmity.
+func burn_ink(h: Dictionary) -> void:
+	if h["ink"] <= 0:
+		return
+	h["ink"] = 0
+	h["called"] = false
+	if not h["scars"].has("burned_ink"):
+		h["scars"].append("burned_ink")
+	tally["sin"] += 3
+	_log("%s burns the ink off. The skin will not forget, and neither will the Temple." % h["name"])
+
+
+## The tithe: Temple cities demand it from Rite Broken on. Pay a day and a line each, or refuse.
+func tithe_demanded() -> bool:
+	var n := node()
+	return n["kind"] == "city" and n["flags"].get("temple", false) and stages["rite"] >= 2 and not n.get("tithed", false)
+
+
+func pay_tithe() -> void:
+	node()["tithed"] = true
+	day += 1
+	for h in fighters():
+		h["ink"] += 1
+	tally["faith"] += 1
+	_log("The tithe is paid at %s: a day and a line each." % node()["name"])
+	_check_calls()
+
+
+func refuse_tithe() -> void:
+	node()["tithed"] = true
+	tally["sin"] += 1
+	_log("The tithe is refused at %s." % node()["name"])
+
+
+## Substitution: at a Temple, name who dies instead if the ink-bearer's downing draws death this chapter.
+func substitute(h: Dictionary, stand_in: Dictionary) -> bool:
+	var n := node()
+	if n["kind"] != "city" or not n["flags"].get("temple", false) or h == stand_in:
+		return false
+	h["substitute"] = stand_in["name"]
+	h["ink"] += 3
+	tally["sin"] += 2
+	_log("A rite at %s: if death comes for %s this chapter, it will find %s." % [n["name"], h["name"], stand_in["name"]])
+	_check_calls()
+	return true
+
 
 func rest() -> void:
 	if node()["kind"] != "rest" and node()["kind"] != "city":

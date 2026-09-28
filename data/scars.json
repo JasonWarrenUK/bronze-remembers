@@ -1,9 +1,87 @@
 {
-	"crushed_hand":  { "name": "Crushed hand",  "sources": ["levies", "smiths"], "reach": -1, "free_parry": true },
-	"torn_ear":      { "name": "Torn ear",      "sources": ["levies"], "immune": ["bound"], "longer": { "dread": 1 } },
-	"broken_nose":   { "name": "Broken nose",   "sources": ["levies"], "speed": 1, "max_hp": -1 },
-	"salt_lungs":    { "name": "Salt-scarred lungs", "sources": ["sea"], "tide_immune": true, "move": -1 },
-	"lamed":         { "name": "Lamed",         "sources": ["levies", "sea"], "move": -1, "face_nearest": true },
-	"shield_shoulder": { "name": "Shield-shoulder", "sources": ["levies"], "shield_shoulder": true },
-	"bitten":        { "name": "Bitten",        "sources": ["sea"], "longer": { "wound": 1 }, "bonus_vs": { "sea": 1 } }
+	"crushed_hand": {
+		"name": "Crushed hand",
+		"sources": [
+			"levies",
+			"smiths"
+		],
+		"reach": -1,
+		"free_parry": true
+	},
+	"torn_ear": {
+		"name": "Torn ear",
+		"sources": [
+			"levies"
+		],
+		"immune": [
+			"bound"
+		],
+		"longer": {
+			"dread": 1
+		}
+	},
+	"broken_nose": {
+		"name": "Broken nose",
+		"sources": [
+			"levies"
+		],
+		"speed": 1,
+		"max_hp": -1
+	},
+	"salt_lungs": {
+		"name": "Salt-scarred lungs",
+		"sources": [
+			"sea"
+		],
+		"tide_immune": true,
+		"move": -1
+	},
+	"lamed": {
+		"name": "Lamed",
+		"sources": [
+			"levies",
+			"sea"
+		],
+		"move": -1,
+		"face_nearest": true
+	},
+	"shield_shoulder": {
+		"name": "Shield-shoulder",
+		"sources": [
+			"levies"
+		],
+		"shield_shoulder": true
+	},
+	"bitten": {
+		"name": "Bitten",
+		"sources": [
+			"sea"
+		],
+		"longer": {
+			"wound": 1
+		},
+		"bonus_vs": {
+			"sea": 1
+		}
+	},
+	"burned_ink": {
+		"name": "Burned ink",
+		"sources": [
+			"temple"
+		],
+		"immune": [
+			"bound"
+		],
+		"max_hp": -1
+	},
+	"substituted": {
+		"name": "Substituted",
+		"sources": [
+			"temple"
+		],
+		"speed": -1,
+		"longer": {
+			"dread": 1
+		}
+	}
 }

@@ -15,6 +15,7 @@ static func build(run: Run, node: Dictionary, objective: Dictionary, families: A
 			continue
 		var u := b.add_hero(h["kind"], Vector2i(1, y), h.get("gear", ""))
 		u.name = h["name"]
+		u.ink = int(h.get("ink", 0))
 		u.hp = mini(u.max_hp, h["hp"])
 		for sc in h.get("scars", []):
 			u.apply_scar(sc)

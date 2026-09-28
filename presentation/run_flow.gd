@@ -79,6 +79,20 @@ func _on_action(action: String, payload: Dictionary) -> void:
 			run.fit_graft(run.squad[payload["hero"]], payload["graft"])
 		"refuse":
 			run.refuse_graft(run.squad[payload["hero"]])
+		"temple_heal":
+			run.temple_heal()
+		"pay_tithe":
+			run.pay_tithe()
+		"refuse_tithe":
+			run.refuse_tithe()
+		"substitute":
+			run.substitute(run.squad[payload["hero"]], run.squad[payload["stand_in"]])
+		"answer_call":
+			run.answer_call(run.squad[payload["hero"]])
+		"ignore_call":
+			run.ignore_call(run.squad[payload["hero"]])
+		"burn_ink":
+			run.burn_ink(run.squad[payload["hero"]])
 		"choose":
 			run.choose(payload["option"])
 			if run.pending_fight != "":

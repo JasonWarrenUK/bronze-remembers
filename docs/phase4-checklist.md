@@ -7,15 +7,15 @@
 
 ## World state (headless, tested)
 
-- [ ] 1. Tracks: five scores with stages, per-track curves, gameplay modifiers, tick at generation end
-- [ ] 2. Institution state machines: Palace (reports), Temple (plague prayer), Scribes (ledger of truth), Smiths (count of moulds), with counters fed by runs
-- [ ] 3. The fall by three tracks Gone; Register falls and a new one begins with unlocks
-- [ ] 4. Stage effects into the run: Law (writ range, gates), Rite (Temple healing), Custom (guest-right, burial), Tongue (recruits, letters), Sea (tide inland, coast lost)
+- [x] 1. Tracks: five scores with stages, per-track curves, gameplay modifiers, tick at generation end
+- [x] 2. Institution state machines: Palace (reports), Temple (plague prayer), Scribes (ledger of truth), Smiths (count of moulds), with counters fed by runs
+- [x] 3. The fall by three tracks Gone; Register falls and a new one begins with unlocks
+- [x] 4. Stage effects into the run: Law (report clock, raiser at Lost), Custom (cold nights at rest), Sea (tide and ship days). Rite and Tongue effects arrive with the Ink and the Scribes
 
 ## Institution mechanics in play
 
 - [ ] 5. The Ink: lines from healing and rites, the call at the throat, substitution, tithes
-- [ ] 6. Mould debts: owed after a fitting, honoured or defaulted, bronze called back
+- [x] 6. Mould debts: owed after a fitting, honoured or defaulted, bronze called back
 - [ ] 7. Testimony bribes and lies feeding the ledger; letters as claims on the map
 - [ ] 8. Writ range by Law stage; forgery at Lost
 
