@@ -1,0 +1,1025 @@
+[
+	{
+		"name": "Beyond MVP",
+		"path": "docs/roadmaps/BEYOND_MVP.md",
+		"project": "Bronze Remembers",
+		"archived": false,
+		"externalGates": [
+			{
+				"id": "G1",
+				"name": "Jason's first full MVP playthrough",
+				"status": "external",
+				"imposes": "blocked",
+				"blocks": [
+					"1TR.1"
+				],
+				"notes": "The MVP loop was built 2026-09-28 and awaits play. Field pairs wait on its triage (1TR.1)."
+			}
+		],
+		"milestones": [
+			{
+				"id": "M1",
+				"name": "Interplay",
+				"goal": "Every pair of the seven systems has a written answer to how each changes the other, and the roadmap has grown from those answers.",
+				"tasks": [
+					{
+						"id": "1DS.1",
+						"description": "Create docs/interplay.md: a 7×7 matrix of the systems (Field, Road, Body, Register, Institutions, Collapse, Chronicle) with a section template per pair",
+						"status": "todo",
+						"dependsOn": []
+					},
+					{
+						"id": "1DS.2",
+						"description": "Spike Road × Body: how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1"
+						]
+					},
+					{
+						"id": "1DS.3",
+						"description": "Spike Road × Register: how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1"
+						]
+					},
+					{
+						"id": "1DS.4",
+						"description": "Spike Road × Institutions: how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1"
+						]
+					},
+					{
+						"id": "1DS.5",
+						"description": "Spike Road × Collapse: how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1"
+						]
+					},
+					{
+						"id": "1DS.6",
+						"description": "Spike Road × Chronicle: how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1"
+						]
+					},
+					{
+						"id": "1DS.7",
+						"description": "Spike Body × Register: how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1"
+						]
+					},
+					{
+						"id": "1DS.8",
+						"description": "Spike Body × Institutions: how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1"
+						]
+					},
+					{
+						"id": "1DS.9",
+						"description": "Spike Body × Collapse: how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1"
+						]
+					},
+					{
+						"id": "1DS.10",
+						"description": "Spike Body × Chronicle: how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1"
+						]
+					},
+					{
+						"id": "1DS.11",
+						"description": "Spike Register × Institutions: how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1"
+						]
+					},
+					{
+						"id": "1DS.12",
+						"description": "Spike Register × Collapse: how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1"
+						]
+					},
+					{
+						"id": "1DS.13",
+						"description": "Spike Register × Chronicle: how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1"
+						]
+					},
+					{
+						"id": "1DS.14",
+						"description": "Spike Institutions × Collapse: how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1"
+						]
+					},
+					{
+						"id": "1DS.15",
+						"description": "Spike Institutions × Chronicle: how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1"
+						]
+					},
+					{
+						"id": "1DS.16",
+						"description": "Spike Collapse × Chronicle, including name drift with Tongue (Q40): how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1"
+						]
+					},
+					{
+						"id": "1DS.17",
+						"description": "Spike Field × Road: how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1",
+							"1TR.1"
+						]
+					},
+					{
+						"id": "1DS.18",
+						"description": "Spike Field × Body: how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1",
+							"1TR.1"
+						]
+					},
+					{
+						"id": "1DS.19",
+						"description": "Spike Field × Register: how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1",
+							"1TR.1"
+						]
+					},
+					{
+						"id": "1DS.20",
+						"description": "Spike Field × Institutions: how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1",
+							"1TR.1"
+						]
+					},
+					{
+						"id": "1DS.21",
+						"description": "Spike Field × Collapse: how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1",
+							"1TR.1"
+						]
+					},
+					{
+						"id": "1DS.22",
+						"description": "Spike Field × Chronicle: how each changes the other; write its design.md section and matrix cell, then propose build tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.1",
+							"1TR.1"
+						]
+					},
+					{
+						"id": "1DS.23",
+						"description": "Consolidate the interplay matrix: reconcile conflicts between pairs and hand the proposed build tasks to the roadmap",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.2",
+							"1DS.3",
+							"1DS.4",
+							"1DS.5",
+							"1DS.6",
+							"1DS.7",
+							"1DS.8",
+							"1DS.9",
+							"1DS.10",
+							"1DS.11",
+							"1DS.12",
+							"1DS.13",
+							"1DS.14",
+							"1DS.15",
+							"1DS.16",
+							"1DS.17",
+							"1DS.18",
+							"1DS.19",
+							"1DS.20",
+							"1DS.21",
+							"1DS.22"
+						]
+					},
+					{
+						"id": "1TR.1",
+						"description": "Triage G1 playthrough notes into tasks",
+						"status": "blocked",
+						"dependsOn": [
+							"G1"
+						]
+					}
+				]
+			},
+			{
+				"id": "M2",
+				"name": "The Field",
+				"goal": "Combat mechanics answer to every other system, and every unit and tile they introduce reads at 32×32.",
+				"tasks": [
+					{
+						"id": "2CT.1",
+						"description": "Class list and multiclass prerequisites (Q6, Field half)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.18",
+							"1DS.19"
+						]
+					},
+					{
+						"id": "2CT.2",
+						"description": "Tier-1 promotion forms: 12 forms, one ability and one silhouette each (Q38)",
+						"status": "blocked",
+						"dependsOn": [
+							"2CT.1"
+						]
+					},
+					{
+						"id": "2CT.3",
+						"description": "Enemy family list, profiles and grafted variant decks per chapter (Q29)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.20",
+							"1DS.21"
+						]
+					},
+					{
+						"id": "2CT.4",
+						"description": "Named unit type pools per family, minimum set (Q39)",
+						"status": "blocked",
+						"dependsOn": [
+							"2CT.3",
+							"1DS.22"
+						]
+					},
+					{
+						"id": "2SY.1",
+						"description": "Speed formula shape: which of class, graft, scar, age, ink and armour modify it (Q27 rule)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.18"
+						]
+					},
+					{
+						"id": "2SY.2",
+						"description": "Deployment zone and reinforcement wave rules per objective (Q33 rule)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.17"
+						]
+					},
+					{
+						"id": "2AR.1",
+						"description": "Legibility: ink lines, scars and heraldry at 32×32 across four facings (Q51)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.18"
+						]
+					},
+					{
+						"id": "2AR.2",
+						"description": "Sprites for the 12 tier-1 promotion forms",
+						"status": "blocked",
+						"dependsOn": [
+							"2CT.2",
+							"2AR.1"
+						]
+					},
+					{
+						"id": "2AR.3",
+						"description": "Sprites for new enemy families and named units",
+						"status": "blocked",
+						"dependsOn": [
+							"2CT.4",
+							"2AR.1"
+						]
+					},
+					{
+						"id": "2AR.4",
+						"description": "Tile list with per-stage variants (Q49)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.17",
+							"1DS.21"
+						]
+					},
+					{
+						"id": "2AR.5",
+						"description": "Tile art for the tile list",
+						"status": "blocked",
+						"dependsOn": [
+							"2AR.4"
+						]
+					}
+				]
+			},
+			{
+				"id": "M3",
+				"name": "The Road",
+				"goal": "The map, its seasons and ships, and the events on it carry what every other system does to a journey.",
+				"tasks": [
+					{
+						"id": "3CT.1",
+						"description": "Twelve starting capitals: terrain bands, harbours and landmarks (Q42)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.3",
+							"1DS.5"
+						]
+					},
+					{
+						"id": "3SY.1",
+						"description": "Season model: which roads close when, and how seasons map to days and chapters (Q43)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.5",
+							"1DS.17"
+						]
+					},
+					{
+						"id": "3SY.2",
+						"description": "Ship rules: days saved, exposure per crossing, the tide-caller's attention (Q44)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.2",
+							"1DS.5"
+						]
+					},
+					{
+						"id": "3SY.3",
+						"description": "Day-cost rules: what costs days and what falls due (Q46 rule)",
+						"status": "blocked",
+						"dependsOn": [
+							"3SY.1"
+						]
+					},
+					{
+						"id": "3CT.2",
+						"description": "Ambition milestone tables per chapter (Q45)",
+						"status": "blocked",
+						"dependsOn": [
+							"3CT.1"
+						]
+					},
+					{
+						"id": "3SY.4",
+						"description": "Event placement: road versus node (Q47)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.2",
+							"1DS.4",
+							"1DS.6"
+						]
+					},
+					{
+						"id": "3CT.3",
+						"description": "Event deck to a healthy size, carrying fixation, grudge and emeritus hooks (Q47, Q9)",
+						"status": "blocked",
+						"dependsOn": [
+							"3SY.4",
+							"4CT.4",
+							"4SY.2"
+						],
+						"notes": "Exempt from the minimum-content rule: events carry most of the narrative-into-mechanics load."
+					},
+					{
+						"id": "3CT.4",
+						"description": "Ward event (Q1, event half)",
+						"status": "blocked",
+						"dependsOn": [
+							"3SY.4",
+							"1DS.3"
+						]
+					},
+					{
+						"id": "3AR.1",
+						"description": "Map, node and edge art",
+						"status": "blocked",
+						"dependsOn": [
+							"3CT.1"
+						]
+					}
+				]
+			},
+			{
+				"id": "M4",
+				"name": "The Body Remembers",
+				"goal": "What happens to a hero's body and heart changes how they fight, travel and are remembered.",
+				"tasks": [
+					{
+						"id": "4CT.1",
+						"description": "Trait pools per origin and the non-injury trait list, minimum set (Q5)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.2",
+							"1DS.7"
+						]
+					},
+					{
+						"id": "4CT.2",
+						"description": "Sea joints and Temple marks grafts (Q7)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.8",
+							"1DS.9"
+						]
+					},
+					{
+						"id": "4CT.3",
+						"description": "Quirks list (Q8)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.18"
+						]
+					},
+					{
+						"id": "4CT.4",
+						"description": "Fixation list, grown alongside the event deck (Q9)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.10"
+						]
+					},
+					{
+						"id": "4SY.1",
+						"description": "Bond types: how they form and what each unlocks (Q10)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.7",
+							"1DS.18"
+						]
+					},
+					{
+						"id": "4SY.2",
+						"description": "Grudges: what a grudge does when its scene arrives (Q11)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.10",
+							"1DS.18"
+						]
+					},
+					{
+						"id": "4AR.1",
+						"description": "Overlay layers for new grafts and quirks",
+						"status": "blocked",
+						"dependsOn": [
+							"4CT.2",
+							"4CT.3",
+							"2AR.1"
+						]
+					}
+				]
+			},
+			{
+				"id": "M5",
+				"name": "The Register",
+				"goal": "Every life that ends on the Register, by retirement, death or inheritance, leaves a mark the next campaign can feel.",
+				"tasks": [
+					{
+						"id": "5CT.1",
+						"description": "Seat recipes, minimum set (Q4)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.3",
+							"1DS.7",
+							"1DS.11",
+							"1DS.13"
+						]
+					},
+					{
+						"id": "5SY.1",
+						"description": "Descendants contesting inheritance at Custom Gone (Q17)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.12"
+						]
+					},
+					{
+						"id": "5CT.2",
+						"description": "Emeritus chain variants per route, minimum set (Q19)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.3"
+						]
+					},
+					{
+						"id": "5SY.2",
+						"description": "Retirement scene: how the seat choice is presented (Q20)",
+						"status": "blocked",
+						"dependsOn": [
+							"8SY.2"
+						]
+					},
+					{
+						"id": "5SY.3",
+						"description": "Ward lineage: caregivers from bonds, tier 0 with a grudge when none qualify (Q1, lineage half)",
+						"status": "blocked",
+						"dependsOn": [
+							"3CT.4",
+							"4SY.1",
+							"4SY.2"
+						]
+					},
+					{
+						"id": "5SY.4",
+						"description": "Register unlock tree (Q6, Register half)",
+						"status": "blocked",
+						"dependsOn": [
+							"2CT.1"
+						]
+					}
+				]
+			},
+			{
+				"id": "M6",
+				"name": "The Institutions",
+				"goal": "Each institution's arc moves with the player's choices and reaches its end states through authored transitions.",
+				"tasks": [
+					{
+						"id": "6CT.1",
+						"description": "Author arc transitions to the section 17 end states (Q3)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.4",
+							"1DS.8",
+							"1DS.11",
+							"1DS.14",
+							"1DS.15",
+							"1DS.20"
+						]
+					},
+					{
+						"id": "6SY.1",
+						"description": "Substitution failure at Broken Rite (Q16)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.14"
+						]
+					}
+				]
+			},
+			{
+				"id": "M7",
+				"name": "The Collapse",
+				"goal": "The five tracks reach into every other system.",
+				"tasks": [
+					{
+						"id": "7SY.1",
+						"description": "Placeholder: Collapse build tasks proposed by Interplay",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.23"
+						]
+					}
+				]
+			},
+			{
+				"id": "M8",
+				"name": "The Chronicle",
+				"goal": "The game tells its story in the Scribes' voice and the heroes' own, and what it says feeds back into play.",
+				"tasks": [
+					{
+						"id": "8CT.1",
+						"description": "Chronicle templates per deed and seat type (Q12)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.6",
+							"1DS.10",
+							"1DS.13",
+							"1DS.15"
+						]
+					},
+					{
+						"id": "8SY.1",
+						"description": "Testimony reach: what significance means and how far a deed travels to a scribe (Q14)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.6",
+							"1DS.15"
+						]
+					},
+					{
+						"id": "8SY.2",
+						"description": "Hero voice: how a hero speaks by origin, bonds and scars, heard first at retirement",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.10",
+							"1DS.13"
+						]
+					},
+					{
+						"id": "8SY.3",
+						"description": "Rumours at nodes: what travels, how true it is and what it changes",
+						"status": "blocked",
+						"dependsOn": [
+							"8SY.1"
+						]
+					},
+					{
+						"id": "8SY.4",
+						"description": "Name generator: Hittite and Ugaritic phonetics, per-city variation, drift with Tongue (Q40)",
+						"status": "blocked",
+						"dependsOn": [
+							"1DS.16",
+							"3CT.1"
+						]
+					}
+				]
+			},
+			{
+				"id": "M9",
+				"name": "The Field (Secondary)",
+				"goal": "Combat numbers are tuned in play and a hit lands with weight.",
+				"tasks": [
+					{
+						"id": "9TN.1",
+						"description": "Speed values (Q27)",
+						"status": "blocked",
+						"dependsOn": [
+							"M2",
+							"M3",
+							"M4",
+							"M5",
+							"M6",
+							"M7",
+							"M8"
+						]
+					},
+					{
+						"id": "9TN.2",
+						"description": "Cooldowns per ability and the basic attack's damage scale (Q28)",
+						"status": "blocked",
+						"dependsOn": [
+							"M2",
+							"M3",
+							"M4",
+							"M5",
+							"M6",
+							"M7",
+							"M8"
+						]
+					},
+					{
+						"id": "9TN.3",
+						"description": "Condition durations and treatments: Wound, Bound, Dread (Q30)",
+						"status": "blocked",
+						"dependsOn": [
+							"M2",
+							"M3",
+							"M4",
+							"M5",
+							"M6",
+							"M7",
+							"M8"
+						]
+					},
+					{
+						"id": "9TN.4",
+						"description": "Downing draw weights: scar, severe, death against overkill and enemy strength (Q31)",
+						"status": "blocked",
+						"dependsOn": [
+							"M2",
+							"M3",
+							"M4",
+							"M5",
+							"M6",
+							"M7",
+							"M8"
+						]
+					},
+					{
+						"id": "9TN.5",
+						"description": "Deployment zone sizes and reinforcement wave counts (Q33)",
+						"status": "blocked",
+						"dependsOn": [
+							"M2",
+							"M3",
+							"M4",
+							"M5",
+							"M6",
+							"M7",
+							"M8"
+						]
+					},
+					{
+						"id": "9TN.6",
+						"description": "Movement cost of a downed body's tile (Q35)",
+						"status": "blocked",
+						"dependsOn": [
+							"M2",
+							"M3",
+							"M4",
+							"M5",
+							"M6",
+							"M7",
+							"M8"
+						]
+					},
+					{
+						"id": "9TN.7",
+						"description": "Terrain exposure counts per graft (Q37)",
+						"status": "blocked",
+						"dependsOn": [
+							"M2",
+							"M3",
+							"M4",
+							"M5",
+							"M6",
+							"M7",
+							"M8"
+						]
+					},
+					{
+						"id": "9TN.8",
+						"description": "Hit feel: weight, juice and timing",
+						"status": "blocked",
+						"dependsOn": [
+							"M2",
+							"M3",
+							"M4",
+							"M5",
+							"M6",
+							"M7",
+							"M8"
+						]
+					},
+					{
+						"id": "9CT.1",
+						"description": "Tier-2 promotion forms: 24 forms (Q38)",
+						"status": "blocked",
+						"dependsOn": [
+							"M2",
+							"M3",
+							"M4",
+							"M5",
+							"M6",
+							"M7",
+							"M8"
+						]
+					},
+					{
+						"id": "9CT.2",
+						"description": "Named unit pools to target size (Q39)",
+						"status": "blocked",
+						"dependsOn": [
+							"M2",
+							"M3",
+							"M4",
+							"M5",
+							"M6",
+							"M7",
+							"M8"
+						]
+					},
+					{
+						"id": "9AR.1",
+						"description": "Sprites for the 24 tier-2 promotion forms",
+						"status": "blocked",
+						"dependsOn": [
+							"9CT.1"
+						]
+					},
+					{
+						"id": "9AR.2",
+						"description": "Extra animation frames for hit feel",
+						"status": "blocked",
+						"dependsOn": [
+							"9TN.8"
+						]
+					}
+				]
+			},
+			{
+				"id": "M10",
+				"name": "The Road (Secondary)",
+				"goal": "Journey costs are tuned so the road presses without grinding.",
+				"tasks": [
+					{
+						"id": "10TN.1",
+						"description": "Road kills: nodes before an untreated severe injury is fatal, per injury type (Q32)",
+						"status": "blocked",
+						"dependsOn": [
+							"M2",
+							"M3",
+							"M4",
+							"M5",
+							"M6",
+							"M7",
+							"M8"
+						]
+					},
+					{
+						"id": "10TN.2",
+						"description": "Day-cost values and due dates for reports, ink calls and injuries (Q46)",
+						"status": "blocked",
+						"dependsOn": [
+							"M2",
+							"M3",
+							"M4",
+							"M5",
+							"M6",
+							"M7",
+							"M8"
+						]
+					}
+				]
+			},
+			{
+				"id": "M11",
+				"name": "The Body Remembers (Secondary)",
+				"goal": "Trait variety reaches its target and heroes have faces.",
+				"tasks": [
+					{
+						"id": "11CT.1",
+						"description": "Trait pools to target size (Q5)",
+						"status": "blocked",
+						"dependsOn": [
+							"M2",
+							"M3",
+							"M4",
+							"M5",
+							"M6",
+							"M7",
+							"M8"
+						]
+					},
+					{
+						"id": "11AR.1",
+						"description": "Portrait format (Q50, portrait half)",
+						"status": "blocked",
+						"dependsOn": [
+							"M2",
+							"M3",
+							"M4",
+							"M5",
+							"M6",
+							"M7",
+							"M8"
+						]
+					}
+				]
+			},
+			{
+				"id": "M12",
+				"name": "The Register (Secondary)",
+				"goal": "Seats and emeritus chains reach their target variety.",
+				"tasks": [
+					{
+						"id": "12CT.1",
+						"description": "Seat recipes to target size (Q4)",
+						"status": "blocked",
+						"dependsOn": [
+							"M2",
+							"M3",
+							"M4",
+							"M5",
+							"M6",
+							"M7",
+							"M8"
+						]
+					},
+					{
+						"id": "12CT.2",
+						"description": "Emeritus chain variants to target size (Q19)",
+						"status": "blocked",
+						"dependsOn": [
+							"M2",
+							"M3",
+							"M4",
+							"M5",
+							"M6",
+							"M7",
+							"M8"
+						]
+					}
+				]
+			},
+			{
+				"id": "M13",
+				"name": "The Collapse (Secondary)",
+				"goal": "The tracks tick at a pace that feels earned, and the world's colour shows it.",
+				"tasks": [
+					{
+						"id": "13TN.1",
+						"description": "Track tick curves (Q13)",
+						"status": "blocked",
+						"dependsOn": [
+							"M2",
+							"M3",
+							"M4",
+							"M5",
+							"M6",
+							"M7",
+							"M8"
+						]
+					},
+					{
+						"id": "13AR.1",
+						"description": "World and Sea palettes through the theme skill, bleed by region and stage (Q48)",
+						"status": "blocked",
+						"dependsOn": [
+							"M2",
+							"M3",
+							"M4",
+							"M5",
+							"M6",
+							"M7",
+							"M8"
+						]
+					}
+				]
+			},
+			{
+				"id": "M14",
+				"name": "The Chronicle (Secondary)",
+				"goal": "Deeds are weighted so testimony rewards what matters, and the UI has a style.",
+				"tasks": [
+					{
+						"id": "14TN.1",
+						"description": "Deed significance values and the scribal range each buys (Q34)",
+						"status": "blocked",
+						"dependsOn": [
+							"M2",
+							"M3",
+							"M4",
+							"M5",
+							"M6",
+							"M7",
+							"M8"
+						]
+					},
+					{
+						"id": "14AR.1",
+						"description": "UI style (Q50, UI half)",
+						"status": "blocked",
+						"dependsOn": [
+							"M2",
+							"M3",
+							"M4",
+							"M5",
+							"M6",
+							"M7",
+							"M8"
+						]
+					}
+				]
+			},
+			{
+				"id": "M15",
+				"name": "Shippable (Tertiary)",
+				"goal": "The game is ready for strangers.",
+				"tasks": [
+					{
+						"id": "15DS.1",
+						"description": "Scope spike: decide Shippable contents, starting from the phase 5 list (tutorial, audio, UI, accessibility, performance, itch build)",
+						"status": "blocked",
+						"dependsOn": [
+							"M9",
+							"M10",
+							"M11",
+							"M12",
+							"M13",
+							"M14"
+						]
+					},
+					{
+						"id": "15AR.1",
+						"description": "Final art: portraits, icons, itch key art and a consistency pass",
+						"status": "blocked",
+						"dependsOn": [
+							"15DS.1"
+						]
+					}
+				]
+			}
+		]
+	}
+]
